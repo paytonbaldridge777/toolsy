@@ -1,0 +1,59 @@
+<!-- =========================
+File: /hr/index.html
+Category landing: HR tools
+========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HR Tools — Toolsy</title>
+  <meta name="description" content="HR calculators and planners: PTO accrual, onboarding timelines, leave estimators. Runs locally, no sign-up." />
+  <link rel="canonical" href="https://toolsy.pages.dev/hr/" />
+  <style>
+    :root{--bg:#0b0d10;--card:#121720;--text:#e7eef6;--muted:#8fa3b8;--accent:#6aa3ff;--border:#233042;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)}
+    *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:linear-gradient(180deg,#0b0d10,#0f1318 30%,#0b0d10);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    a{color:#7bd389;text-underline-offset:3px}
+    header{display:grid;gap:6px;margin:6px 0 20px}
+    h1{margin:0;font-size:clamp(1.6rem,3vw,2.2rem)}
+    p.sub{margin:0;color:var(--muted)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    .list{display:grid;gap:12px}
+    .tool{display:flex;justify-content:space-between;gap:10px;padding:12px;background:#0f141b;border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text)}
+    .tool:hover{outline:2px solid var(--accent)}
+    footer{margin:28px 0 8px;color:var(--muted);font-size:.9rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a href="/">← Back to Toolsy</a>
+      <h1>HR Tools</h1>
+      <p class="sub">Accurate, private, and fast calculators for HR professionals and employees.</p>
+    </header>
+
+    <main class="card">
+      <h2>Available tools</h2>
+      <div class="list">
+        <a class="tool" href="/hr/pto-calculator.html"><span>PTO & Vacation Accrual Calculator</span><span class="muted">Estimate current & year‑end</span></a>
+        <!-- Future tools (placeholders you can add later): -->
+        <a class="tool" href="#"><span>Onboarding Timeline Generator</span><span class="muted">Key forms & due dates</span></a>
+        <a class="tool" href="#"><span>FMLA Hours Estimator</span><span class="muted">Rough planning only</span></a>
+      </div>
+    </main>
+
+    <section class="card" style="margin-top:16px">
+      <h2>Disclaimer</h2>
+      <p class="sub"><strong>Informational only.</strong> These tools support planning and education and are not legal or HR advice. Verify results with your HR/payroll provider.</p>
+    </section>
+
+    <footer>
+      <p>© <span id="y"></span> Toolsy. <a href="/legal/terms.html">Terms</a> • <a href="/legal/privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
+
+

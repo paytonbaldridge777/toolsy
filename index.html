@@ -1,0 +1,285 @@
+<!-- =========================
+File: /index.html
+Landing page for Toolsy (one-repo, subfolder categories)
+========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Toolsy — Fast, Private, Useful Web Tools</title>
+  <meta name="description" content="Toolsy is a curated set of fast, privacy-friendly tools. Runs entirely in your browser. No sign-up." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://toolsy.pages.dev/" />
+  <meta property="og:title" content="Toolsy — Fast, Private, Useful Web Tools" />
+  <meta property="og:description" content="HR calculators, wrestling planners, GPA converters and more. Everything runs on your device." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolsy.pages.dev/" />
+  <meta property="og:image" content="https://toolsy.pages.dev/assets/og-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Toolsy",
+    "url": "https://toolsy.pages.dev/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://toolsy.pages.dev/?q={search_term}",
+      "query-input": "required name=search_term"
+    }
+  }
+  </script>
+  <style>
+    :root{--bg:#0b0d10;--card:#121720;--text:#e7eef6;--muted:#8fa3b8;--accent:#6aa3ff;--accent2:#7bd389;--border:#233042;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)}
+    *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:linear-gradient(180deg,#0b0d10,#0f1318 30%,#0b0d10);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header{display:grid;gap:10px;margin:8px 0 24px}
+    h1{margin:0;font-size:clamp(1.8rem,4vw,2.6rem)}
+    p.sub{margin:0;color:var(--muted)}
+    .search{display:flex;gap:10px;margin:10px 0 4px}
+    .search input{flex:1;background:#0f131a;border:1px solid var(--border);color:var(--text);padding:12px;border-radius:12px}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(min-width:800px){.tiles{grid-template-columns:repeat(3,1fr)}}
+    .tile{display:grid;gap:6px;padding:14px;background:#0f141b;border:1px solid var(--border);border-radius:14px;text-decoration:none;color:var(--text)}
+    .tile:hover{outline:2px solid var(--accent)}
+    .tile h3{margin:0;font-size:1.05rem}
+    .muted{color:var(--muted)}
+    footer{margin:28px 0 8px;color:var(--muted);font-size:.9rem}
+    a{color:var(--accent2);text-underline-offset:3px}
+    .disclaimer{font-size:.9rem;line-height:1.5}
+    .list{display:grid;gap:10px}
+    .tool{display:flex;justify-content:space-between;gap:10px;padding:12px;background:#0f141b;border:1px solid var(--border);border-radius:12px}
+    .badge{display:inline-block;padding:3px 10px;border-radius:999px;background:#112134;border:1px solid #2a3b52;color:var(--muted);font-size:.8rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="badge" aria-hidden="true">Runs 100% in your browser • No sign‑up</span>
+      <h1>Toolsy</h1>
+      <p class="sub">A pocket toolkit of fast, privacy‑friendly web tools. No accounts. No tracking bloat.</p>
+      <div class="search" role="search">
+        <input id="q" type="search" placeholder="Search tools (e.g., PTO, bracket, GPA)…" aria-label="Search tools" />
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <h2>Categories</h2>
+        <div class="tiles" id="cats">
+          <a class="tile" href="/hr/">
+            <h3>HR Tools</h3>
+            <div class="muted">PTO accrual, onboarding timelines, leave estimators</div>
+          </a>
+          <a class="tile" href="/wrestling/">
+            <h3>Wrestling Tools</h3>
+            <div class="muted">Weight descent planner, seeding helpers, hydration logs</div>
+          </a>
+          <a class="tile" href="/gpa/">
+            <h3>GPA & School</h3>
+            <div class="muted">Texas tiered GPA converter, rank estimator, course planners</div>
+          </a>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Featured tools</h2>
+        <div class="list" id="featured">
+          <a class="tool" href="/hr/pto-calculator.html"><span>PTO & Vacation Accrual Calculator</span><span class="muted">HR</span></a>
+          <a class="tool" href="/wrestling/weight-planner.html"><span>Wrestling Weight Descent Planner</span><span class="muted">Wrestling</span></a>
+          <a class="tool" href="/gpa/tx-weighted-converter.html"><span>Texas Weighted GPA Converter</span><span class="muted">GPA</span></a>
+        </div>
+      </section>
+
+      <section class="card" style="grid-column:1/-1">
+        <h2>About Toolsy</h2>
+        <p class="muted">Toolsy is a curated set of small, focused tools that run entirely in your browser. We don’t store your inputs. We add clear disclaimers and keep content updated. If you spot an error, open an issue on GitHub.</p>
+      </section>
+    </main>
+
+    <section class="card" style="margin-top:16px">
+      <h2>Disclaimer</h2>
+      <p class="disclaimer"><strong>Informational only.</strong> Tools on Toolsy are for educational and planning purposes and do not constitute legal, HR, medical, or financial advice. Policies vary by employer and jurisdiction. Always confirm results with your HR, school, or professional advisor.</p>
+    </section>
+
+    <footer>
+      <p>© <span id="y"></span> Toolsy. <a href="/legal/terms.html">Terms</a> • <a href="/legal/privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const q = document.getElementById('q');
+    q.addEventListener('input', () => {
+      const term = q.value.toLowerCase();
+      for (const a of document.querySelectorAll('.tool')){
+        const show = a.textContent.toLowerCase().includes(term);
+        a.style.display = show ? '' : 'none';
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+<!-- =========================
+File: /hr/index.html
+Category landing: HR tools
+========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HR Tools — Toolsy</title>
+  <meta name="description" content="HR calculators and planners: PTO accrual, onboarding timelines, leave estimators. Runs locally, no sign-up." />
+  <link rel="canonical" href="https://toolsy.pages.dev/hr/" />
+  <style>
+    :root{--bg:#0b0d10;--card:#121720;--text:#e7eef6;--muted:#8fa3b8;--accent:#6aa3ff;--border:#233042;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)}
+    *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:linear-gradient(180deg,#0b0d10,#0f1318 30%,#0b0d10);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    a{color:#7bd389;text-underline-offset:3px}
+    header{display:grid;gap:6px;margin:6px 0 20px}
+    h1{margin:0;font-size:clamp(1.6rem,3vw,2.2rem)}
+    p.sub{margin:0;color:var(--muted)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    .list{display:grid;gap:12px}
+    .tool{display:flex;justify-content:space-between;gap:10px;padding:12px;background:#0f141b;border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text)}
+    .tool:hover{outline:2px solid var(--accent)}
+    footer{margin:28px 0 8px;color:var(--muted);font-size:.9rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a href="/">← Back to Toolsy</a>
+      <h1>HR Tools</h1>
+      <p class="sub">Accurate, private, and fast calculators for HR professionals and employees.</p>
+    </header>
+
+    <main class="card">
+      <h2>Available tools</h2>
+      <div class="list">
+        <a class="tool" href="/hr/pto-calculator.html"><span>PTO & Vacation Accrual Calculator</span><span class="muted">Estimate current & year‑end</span></a>
+        <!-- Future tools (placeholders you can add later): -->
+        <a class="tool" href="#"><span>Onboarding Timeline Generator</span><span class="muted">Key forms & due dates</span></a>
+        <a class="tool" href="#"><span>FMLA Hours Estimator</span><span class="muted">Rough planning only</span></a>
+      </div>
+    </main>
+
+    <section class="card" style="margin-top:16px">
+      <h2>Disclaimer</h2>
+      <p class="sub"><strong>Informational only.</strong> These tools support planning and education and are not legal or HR advice. Verify results with your HR/payroll provider.</p>
+    </section>
+
+    <footer>
+      <p>© <span id="y"></span> Toolsy. <a href="/legal/terms.html">Terms</a> • <a href="/legal/privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
+
+
+<!-- =========================
+File: /legal/terms.html
+Terms of Use (concise, protective)
+========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terms of Use — Toolsy</title>
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://toolsy.pages.dev/legal/terms.html" />
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto;line-height:1.55;margin:0;background:#0b0d10;color:#e7eef6}
+    .wrap{max-width:900px;margin:0 auto;padding:24px}
+    h1{margin:0 0 12px}
+    a{color:#7bd389}
+    .card{background:#121720;border:1px solid #233042;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:18px}
+    .muted{color:#8fa3b8}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Terms of Use</h1>
+    <div class="card">
+      <p class="muted">Last updated: November 6, 2025</p>
+      <h2>1) Informational Use Only</h2>
+      <p>Toolsy provides calculators, planners, and utilities for informational and educational purposes only. Tool outputs are estimates and may not reflect your employer policies, school rules, or applicable laws. Nothing on this site constitutes legal, HR, medical, financial, or professional advice.</p>
+      <h2>2) No Warranties</h2>
+      <p>The site is provided “as is” without warranties of any kind, express or implied, including accuracy, reliability, fitness for a particular purpose, or non‑infringement. You are responsible for verifying all results before acting.</p>
+      <h2>3) Limitation of Liability</h2>
+      <p>To the maximum extent permitted by law, Toolsy and its contributors are not liable for any direct, indirect, incidental, consequential, special, exemplary, or punitive damages arising from your use of the site or reliance on any results.</p>
+      <h2>4) User Responsibility</h2>
+      <p>You agree to use the tools responsibly and in compliance with all applicable laws, regulations, employer policies, and school rules. Do not input confidential, personal, or regulated data unless the tool explicitly states it is processed locally in your browser and not transmitted.</p>
+      <h2>5) Intellectual Property</h2>
+      <p>Unless otherwise noted, content on this site is owned by Toolsy or its contributors. You may link to and share pages with attribution. Code may be open‑sourced in associated repositories under their respective licenses.</p>
+      <h2>6) Third‑Party Links & Ads</h2>
+      <p>The site may include links or advertisements to third‑party sites or services. Toolsy is not responsible for their content, policies, or practices.</p>
+      <h2>7) Changes</h2>
+      <p>We may update these Terms at any time. Material changes will be indicated by updating the “Last updated” date. Your continued use constitutes acceptance of the revised Terms.</p>
+      <h2>8) Contact</h2>
+      <p>For questions, email: <a href="mailto:paytonbaldridge@gmail.com">paytonbaldridge@gmail.com</a>.</p>
+    </div>
+  </div>
+</body>
+</html>
+
+
+<!-- =========================
+File: /legal/privacy.html
+Privacy Policy (concise, ad/analytics‑ready)
+========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — Toolsy</title>
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://toolsy.pages.dev/legal/privacy.html" />
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto;line-height:1.55;margin:0;background:#0b0d10;color:#e7eef6}
+    .wrap{max-width:900px;margin:0 auto;padding:24px}
+    h1{margin:0 0 12px}
+    a{color:#7bd389}
+    .card{background:#121720;border:1px solid #233042;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:18px}
+    .muted{color:#8fa3b8}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Privacy Policy</h1>
+    <div class="card">
+      <p class="muted">Last updated: November 6, 2025</p>
+      <h2>1) Data Minimization</h2>
+      <p>Toolsy is designed to run tools directly in your browser. By default, we do not collect, store, or transmit your inputs. Avoid entering sensitive data unless a tool explicitly states that processing is local and no data leaves your device.</p>
+      <h2>2) Server Logs</h2>
+      <p>Our hosting provider may retain standard server logs (e.g., IP address, user agent) for security and reliability. We do not combine these logs with other data to identify you.</p>
+      <h2>3) Cookies & Local Storage</h2>
+      <p>Some tools may use local storage or cookies on your device to remember preferences. This data stays on your device unless you clear it.</p>
+      <h2>4) Analytics</h2>
+      <p>If we enable privacy‑respecting analytics (e.g., Plausible/Cloudflare Web Analytics), we collect aggregated, non‑identifying usage metrics to improve the site. We do not build profiles or sell personal data.</p>
+      <h2>5) Advertising</h2>
+      <p>If we show ads (e.g., Google AdSense), the ad provider may use cookies or similar technologies to deliver and measure ads. See their privacy policies and opt‑out mechanisms. We will place an <code>ads.txt</code> file at the site root to declare authorized sellers.</p>
+      <h2>6) Third‑Party Links</h2>
+      <p>Links to external sites are provided for convenience. We are not responsible for their content or privacy practices.</p>
+      <h2>7) Children</h2>
+      <p>This site is not directed to children under 13. If you believe a child has provided information, contact us to request deletion.</p>
+      <h2>8) Your Choices</h2>
+      <p>You can disable cookies in your browser, use tracking protection, or clear local storage at any time. Tools should continue to function for core features.</p>
+      <h2>9) Changes</h2>
+      <p>We may update this Privacy Policy. Material changes will be indicated by updating the “Last updated” date.</p>
+      <h2>10) Contact</h2>
+      <p>Questions? Email <a href="mailto:privacy@toolsy.pages.dev">privacy@toolsy.pages.dev</a>.</p>
+    </div>
+  </div>
+</body>
+</html>
