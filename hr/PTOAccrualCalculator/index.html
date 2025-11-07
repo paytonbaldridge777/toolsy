@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PTO & Vacation Accrual Calculator (U.S.) — Fast, Private, Free</title>
+  <meta name="description" content="Calculate estimated PTO and vacation hours accrued based on start date, pay period, and accrual method. Runs entirely in your browser. No data stored." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://example.com/tools/pto-accrual-calculator" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="PTO & Vacation Accrual Calculator (U.S.)" />
+  <meta property="og:description" content="Estimate PTO/vacation hours accrued to date and projected through year‑end. Fast, private, and free." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://example.com/tools/pto-accrual-calculator" />
+  <meta property="og:image" content="https://example.com/assets/pto-card.png" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PTO & Vacation Accrual Calculator (U.S.)" />
+  <meta name="twitter:description" content="Estimate PTO/vacation hours accrued to date and projected through year‑end. Fast, private, and free." />
+  <meta name="twitter:image" content="https://example.com/assets/pto-card.png" />
+  
+  <!-- JSON-LD: SoftwareApplication schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PTO & Vacation Accrual Calculator",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "Estimate PTO/vacation hours accrued based on start date, pay period, and accrual method. Runs entirely in the browser.",
+    "offers": { "@type": "Offer", "price": "0" }
+  }
+  </script>
+  
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --card: #141820;
+      --muted: #8fa3b8;
+      --text: #e7eef6;
+      --accent: #6aa3ff;
+      --accent-2: #7bd389;
+      --warn: #f7c948;
+      --danger: #ff6b6b;
+      --ok: #59d185;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
+      background: linear-gradient(180deg, #0b0d10, #0f1318 30%, #0b0d10);
+      color: var(--text);
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    header { display: grid; gap: 8px; margin: 12px 0 24px; }
+    h1 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); margin: 0; letter-spacing: .2px; }
+    p.sub { color: var(--muted); margin: 0; }
+
+    .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 960px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; }
+    .card h2 { margin: 4px 0 12px; font-size: 1.1rem; letter-spacing: .3px; }
+
+    fieldset { border: 0; padding: 0; margin: 0; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+    label { display: block; font-size: .9rem; color: var(--muted); margin: 8px 0 6px; }
+    input, select { width: 100%; background: #0f131a; color: var(--text); border: 1px solid #222b36; border-radius: 12px; padding: 10px 12px; font-size: 1rem; outline: none; box-sizing: border-box; }
+    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(106,163,255,.2); }
+
+    .radio-group { display: grid; gap: 8px; }
+    .radio { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 10px; background: #0f131a; border: 1px solid #222b36; border-radius: 12px; padding: 10px 12px; }
+    .radio strong { display: block; font-size: .95rem; }
+    .muted { color: var(--muted); font-size: .92rem; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    button { appearance: none; border: 0; background: var(--accent); color: #071019; padding: 10px 14px; border-radius: 12px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow); }
+    button.secondary { background: #1f2732; color: var(--text); border: 1px solid #2a3645; }
+
+    .results { display: grid; gap: 12px; }
+    .stat { background: #0f141b; border: 1px solid #233042; border-radius: 14px; padding: 12px; display: grid; gap: 2px; }
+    .stat .k { color: var(--muted); font-size: .9rem; }
+    .stat .v { font-size: 1.3rem; font-weight: 800; letter-spacing: .3px; }
+
+    .notice { background: #0f141b; border: 1px solid #233042; border-radius: 12px; padding: 12px; color: var(--muted); }
+    .notice.warn { border-color: #3a2d00; background: #141207; color: #f0e3b2; }
+
+    footer { margin: 28px 0 8px; color: var(--muted); font-size: .9rem; }
+    a { color: var(--accent-2); text-underline-offset: 3px; }
+    .disclaimer { font-size: .9rem; line-height: 1.4; }
+
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #112134; border: 1px solid #2a3b52; color: var(--muted); font-size: .82rem; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 1px, 1px); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="badge" aria-hidden="true">Runs 100% in your browser • No signup</div>
+      <h1>PTO & Vacation Accrual Calculator (U.S.)</h1>
+      <p class="sub">Estimate PTO/vacation hours accrued to date and projected through year‑end. Choose the accrual method your employer uses. <span aria-hidden="true">🗓️</span></p>
+    </header>
+
+    <main class="grid" id="app">
+      <!-- INPUTS -->
+      <section class="card" aria-labelledby="inputs-h">
+        <h2 id="inputs-h">Inputs</h2>
+        <form id="calc" novalidate>
+          <fieldset class="radio-group" aria-labelledby="method-h">
+            <legend id="method-h" class="sr-only">Accrual method</legend>
+
+            <label class="radio">
+              <input type="radio" name="method" value="perHour" checked />
+              <div>
+                <strong>Accrue per hour worked</strong>
+                <div class="muted">Example: <code>0.0462</code> hours PTO earned per hour worked (≈ 12 days/year at 40h/week)</div>
+                <div class="row">
+                  <div>
+                    <label for="ratePerHour">Hours accrued <em>per hour worked</em></label>
+                    <input id="ratePerHour" name="ratePerHour" type="number" inputmode="decimal" step="0.0001" min="0" value="0.0462" />
+                  </div>
+                  <div>
+                    <label for="hoursPerWeek">Work hours per week</label>
+                    <input id="hoursPerWeek" name="hoursPerWeek" type="number" step="0.1" min="0" value="40" />
+                  </div>
+                </div>
+              </div>
+            </label>
+
+            <label class="radio">
+              <input type="radio" name="method" value="perPeriod" />
+              <div>
+                <strong>Accrue a fixed amount each pay period</strong>
+                <div class="muted">Example: earn <code>3.33</code> hours every biweekly paycheck</div>
+                <div class="row">
+                  <div>
+                    <label for="hoursPerPeriod">Hours accrued per pay period</label>
+                    <input id="hoursPerPeriod" name="hoursPerPeriod" type="number" inputmode="decimal" step="0.01" min="0" value="3.33" />
+                  </div>
+                  <div>
+                    <label for="payPeriod">Pay period frequency</label>
+                    <select id="payPeriod" name="payPeriod">
+                      <option value="weekly">Weekly</option>
+                      <option value="biweekly" selected>Biweekly (every 2 weeks)</option>
+                      <option value="semimonthly">Semi‑monthly (2× per month)</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </label>
+
+            <label class="radio">
+              <input type="radio" name="method" value="annual" />
+              <div>
+                <strong>Fixed annual PTO allotment (linear accrual)</strong>
+                <div class="muted">Example: receive <code>120</code> hours per year, accruing evenly across the year</div>
+                <div class="row">
+                  <div>
+                    <label for="annualHours">Annual PTO hours</label>
+                    <input id="annualHours" name="annualHours" type="number" inputmode="decimal" step="0.1" min="0" value="120" />
+                  </div>
+                  <div>
+                    <label for="hoursPerDay">Hours in a workday (for display)</label>
+                    <input id="hoursPerDay" name="hoursPerDay" type="number" step="0.1" min="1" value="8" />
+                  </div>
+                </div>
+              </div>
+            </label>
+          </fieldset>
+
+          <div class="row-3">
+            <div>
+              <label for="startDate">Employment start date</label>
+              <input id="startDate" name="startDate" type="date" required />
+            </div>
+            <div>
+              <label for="asOfDate">As‑of date</label>
+              <input id="asOfDate" name="asOfDate" type="date" />
+            </div>
+            <div>
+              <label for="startingBalance">Starting PTO balance (optional)</label>
+              <input id="startingBalance" name="startingBalance" type="number" step="0.1" min="0" value="0" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="annualCap">Annual cap (optional)</label>
+              <input id="annualCap" name="annualCap" type="number" step="0.1" min="0" placeholder="e.g., 160" />
+            </div>
+            <div>
+              <label for="carryoverCap">Carryover cap (optional)</label>
+              <input id="carryoverCap" name="carryoverCap" type="number" step="0.1" min="0" placeholder="e.g., 80" />
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="button" id="btnCalc">Calculate</button>
+            <button type="button" id="btnReset" class="secondary">Reset</button>
+            <button type="button" id="btnShare" class="secondary" title="Copy a link that pre‑fills your inputs">Share prefilled link</button>
+            <button type="button" id="btnPrint" class="secondary" title="Open print dialog to save as PDF">Print / Save as PDF</button>
+          </div>
+        </form>
+
+        <p class="notice" style="margin-top:12px">Tip: Use the "Share prefilled link" button to bookmark your employer's settings for quick reuse.</p>
+      </section>
+
+      <!-- RESULTS -->
+      <section class="card" aria-labelledby="results-h">
+        <h2 id="results-h">Results</h2>
+        <div id="results" class="results" aria-live="polite" aria-atomic="true">
+          <div class="stat"><div class="k">Accrued PTO hours (as of date)</div><div class="v" id="rAccrued">—</div></div>
+          <div class="stat"><div class="k">Accrued PTO days (display)</div><div class="v" id="rDays">—</div></div>
+          <div class="stat"><div class="k">Starting balance applied</div><div class="v" id="rStartBal">—</div></div>
+          <div class="stat"><div class="k">Projected total by year‑end</div><div class="v" id="rYearEnd">—</div></div>
+          <div class="stat"><div class="k">Next accrual date</div><div class="v" id="rNext">—</div></div>
+          <div class="notice warn" id="rNotes" hidden></div>
+        </div>
+      </section>
+    </main>
+
+    <section class="card" style="margin-top:16px" aria-labelledby="about-h">
+      <h2 id="about-h">How this calculator works (and its limits)</h2>
+      <p class="muted">This tool offers three common accrual models and uses calendar math to estimate totals. "Per hour worked" assumes a steady weekly schedule; "per pay period" counts elapsed periods (weekly/biweekly precisely; semi‑monthly is approximated as two periods per entire month); "annual" distributes the yearly allotment evenly over the year. Because employers implement accrual and caps differently, treat results as estimates for planning only.</p>
+    </section>
+
+    <footer>
+      <p class="disclaimer"><strong>Disclaimer:</strong> This calculator is for <em>informational and educational purposes only</em> and does not constitute legal, compliance, or HR advice. Policies vary by employer and jurisdiction. Always confirm results with your HR or payroll provider. No data leaves your device; all calculations run locally in your browser.</p>
+      <p class="muted">Last updated: <time datetime="2025-11-06">November 6, 2025</time>. • <a href="#" rel="nofollow" id="link-terms">Terms of Use</a> • <a href="#" rel="nofollow" id="link-privacy">Privacy</a></p>
+    </footer>
+  </div>
+
+  <script>
+  (function(){
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+    // Helpers
+    const clamp = (n, lo, hi) => Math.min(Math.max(n, lo), hi);
+    const toNum = (el, def=0) => {
+      const v = parseFloat(el.value);
+      return Number.isFinite(v) ? v : def;
+    };
+    const fmt = n => isNaN(n) ? '—' : (Math.round(n*100)/100).toLocaleString();
+
+    function parseDate(input, fallbackToday=false){
+      if (!input || !input.value) return fallbackToday ? today() : null;
+      const d = new Date(input.value + 'T00:00:00');
+      if (Number.isNaN(d.getTime())) return null;
+      return d;
+    }
+
+    function today(){
+      const d = new Date();
+      d.setHours(0,0,0,0);
+      return d;
+    }
+
+    function endOfYear(date){
+      const d = new Date(date);
+      d.setMonth(11, 31); // Dec 31
+      d.setHours(0,0,0,0);
+      return d;
+    }
+
+    function daysBetween(a, b){
+      const ms = b - a; return ms / (1000*60*60*24);
+    }
+
+    function monthsBetweenInclusive(a, b){
+      // Count whole calendar months between two dates inclusive of start month when any part overlaps
+      let months = (b.getFullYear() - a.getFullYear())*12 + (b.getMonth() - a.getMonth()) + 1;
+      return Math.max(0, months);
+    }
+
+    function addDays(date, days){
+      const d = new Date(date); d.setDate(d.getDate()+days); return d;
+    }
+
+    function nextAccrualDate(start, asOf, freq){
+      if (freq === 'weekly' || freq === 'biweekly'){
+        const step = (freq==='weekly') ? 7 : 14;
+        let n = 0; let d = new Date(start);
+        while (d <= asOf){ d = addDays(start, (++n)*step); }
+        return d;
+      }
+      if (freq === 'monthly' || freq === 'semimonthly'){
+        const d = new Date(asOf);
+        if (freq==='monthly'){
+          d.setMonth(d.getMonth()+1, start.getDate());
+          d.setHours(0,0,0,0);
+          return d;
+        } else {
+          // Approximate: next 1st or 16th relative to asOf
+          const year = asOf.getFullYear();
+          const month = asOf.getMonth();
+          const day = asOf.getDate();
+          if (day < 16) return new Date(year, month, 16);
+          return new Date(year, month+1, 1);
+        }
+      }
+      return null; // continuous for per-hour and annual
+    }
+
+    // Core calculations
+    function calculate(){
+      const method = ($$('input[name="method"]').find(r=>r.checked)||{}).value || 'perHour';
+      const startDate = parseDate($('#startDate'));
+      const asOfDate = parseDate($('#asOfDate'), true) || today();
+      if (!startDate){
+        alert('Please enter a valid employment start date.');
+        return;
+      }
+      if (asOfDate < startDate){
+        alert('As‑of date must be on or after the start date.');
+        return;
+      }
+
+      const hoursPerDay = toNum($('#hoursPerDay'), 8) || 8;
+      const startingBalance = clamp(toNum($('#startingBalance'), 0), 0, 99999);
+      const annualCap = toNum($('#annualCap')) || null;
+      const carryoverCap = toNum($('#carryoverCap')) || null;
+
+      let accrued = 0;
+      let note = '';
+      let next = '—';
+
+      if (method === 'perHour'){
+        const ratePerHour = Math.max(0, toNum($('#ratePerHour'), 0));
+        const hoursPerWeek = Math.max(0, toNum($('#hoursPerWeek'), 40));
+        const d = Math.max(0, daysBetween(startDate, asOfDate));
+        const weeks = d/7;
+        const estHoursWorked = weeks * hoursPerWeek;
+        accrued = estHoursWorked * ratePerHour;
+        next = 'Accrues continuously (each hour worked)';
+      }
+      else if (method === 'perPeriod'){
+        const hoursPerPeriod = Math.max(0, toNum($('#hoursPerPeriod'), 0));
+        const freq = $('#payPeriod').value;
+        let periods = 0;
+        if (freq === 'weekly' || freq === 'biweekly'){
+          const step = (freq==='weekly') ? 7 : 14;
+          periods = Math.floor(daysBetween(startDate, asOfDate) / step) + 1; // include current period if reached its payday window
+        } else if (freq === 'monthly'){
+          periods = monthsBetweenInclusive(startDate, asOfDate);
+        } else if (freq === 'semimonthly'){
+          periods = monthsBetweenInclusive(startDate, asOfDate) * 2; // approximation
+          note += 'Semi‑monthly periods are approximated as 2 per whole month between dates. ';
+        }
+        periods = Math.max(0, periods);
+        accrued = periods * hoursPerPeriod;
+        const n = nextAccrualDate(startDate, asOfDate, freq);
+        next = n ? n.toLocaleDateString() : '—';
+      }
+      else if (method === 'annual'){
+        const annualHours = Math.max(0, toNum($('#annualHours'), 0));
+        // Distribute linearly across days of the year the employee is active
+        const startYear = startDate.getFullYear();
+        const asOfYear = asOfDate.getFullYear();
+        const yearStart = new Date(asOfYear, 0, 1);
+        const yearEnd = new Date(asOfYear, 11, 31);
+        const totalDaysInYear = daysBetween(yearStart, addDays(yearEnd,1));
+        const accrualStartThisYear = startDate > yearStart ? startDate : yearStart;
+        const elapsedDays = Math.max(0, daysBetween(accrualStartThisYear, addDays(asOfDate,1)));
+        const dailyRate = annualHours / totalDaysInYear;
+        accrued = elapsedDays * dailyRate;
+        next = 'Accrues continuously (linear across the year)';
+      }
+
+      let total = accrued + startingBalance;
+
+      // Apply annual cap if provided (soft cap on accrued portion)
+      if (annualCap != null && annualCap >= 0){
+        if (accrued > annualCap){
+          accrued = annualCap;
+        }
+        if (total > annualCap && (carryoverCap == null)){
+          note += `Annual cap ${annualCap} hrs reached; additional accrual may not apply. `;
+          total = Math.min(total, annualCap);
+        }
+      }
+
+      // Project to year end (simple projection using same method)
+      const eoy = endOfYear(asOfDate);
+      let projected = total; // start from current total
+      if (eoy > asOfDate){
+        if (($$('input[name="method"]').find(r=>r.checked)||{}).value === 'perHour'){
+          const ratePerHour = Math.max(0, toNum($('#ratePerHour'), 0));
+          const hoursPerWeek = Math.max(0, toNum($('#hoursPerWeek'), 40));
+          const weeksLeft = Math.max(0, daysBetween(asOfDate, eoy) / 7);
+          const futureHours = weeksLeft * hoursPerWeek;
+          projected += futureHours * ratePerHour;
+        } else if (($$('input[name="method"]').find(r=>r.checked)||{}).value === 'perPeriod'){
+          const hoursPerPeriod = Math.max(0, toNum($('#hoursPerPeriod'), 0));
+          const freq = $('#payPeriod').value;
+          let futurePeriods = 0;
+          if (freq === 'weekly' || freq === 'biweekly'){
+            const step = (freq==='weekly') ? 7 : 14;
+            futurePeriods = Math.floor(daysBetween(asOfDate, eoy) / step);
+          } else if (freq === 'monthly'){
+            const months = monthsBetweenInclusive(addDays(asOfDate,1), eoy);
+            futurePeriods = months;
+          } else if (freq === 'semimonthly'){
+            const months = monthsBetweenInclusive(addDays(asOfDate,1), eoy);
+            futurePeriods = months * 2; // approximate
+          }
+          projected += futurePeriods * hoursPerPeriod;
+        } else {
+          const annualHours = Math.max(0, toNum($('#annualHours'), 0));
+          const yearStart = new Date(asOfDate.getFullYear(), 0, 1);
+          const yearEnd = new Date(asOfDate.getFullYear(), 11, 31);
+          const totalDaysInYear = daysBetween(yearStart, addDays(yearEnd,1));
+          const remainingDays = Math.max(0, daysBetween(addDays(asOfDate,1), addDays(yearEnd,1)));
+          const dailyRate = annualHours / totalDaysInYear;
+          projected += remainingDays * dailyRate;
+        }
+      }
+
+      // Apply caps post-projection if provided
+      if (annualCap != null && annualCap >= 0){
+        if (projected > annualCap && (carryoverCap == null)){
+          note += `Projected total capped at ${annualCap} hrs by year‑end. `;
+          projected = Math.min(projected, annualCap);
+        }
+      }
+
+      // Display
+      $('#rAccrued').textContent = fmt(accrued + startingBalance);
+      $('#rDays').textContent = fmt((accrued + startingBalance)/hoursPerDay) + ' days';
+      $('#rStartBal').textContent = fmt(startingBalance) + ' hrs';
+      $('#rYearEnd').textContent = fmt(projected) + ' hrs';
+      $('#rNext').textContent = next;
+
+      const notesEl = $('#rNotes');
+      if (note){ notesEl.hidden = false; notesEl.textContent = note.trim(); }
+      else { notesEl.hidden = true; notesEl.textContent = ''; }
+    }
+
+    function resetForm(){
+      $('#calc').reset();
+      // restore some defaults
+      $('#ratePerHour').value = 0.0462;
+      $('#hoursPerWeek').value = 40;
+      $('#hoursPerPeriod').value = 3.33;
+      $('#payPeriod').value = 'biweekly';
+      $('#annualHours').value = 120;
+      $('#hoursPerDay').value = 8;
+      $('#startingBalance').value = 0;
+      $('#annualCap').value = '';
+      $('#carryoverCap').value = '';
+      setDefaultDates();
+      calculate();
+    }
+
+    function setDefaultDates(){
+      const start = new Date(); start.setMonth(start.getMonth()-3); start.setDate(1);
+      const asOf = today();
+      $('#startDate').valueAsDate = start;
+      $('#asOfDate').valueAsDate = asOf;
+    }
+
+    function encodeQuery(){
+      const data = new FormData($('#calc'));
+      const obj = {};
+      data.forEach((v,k)=>{ obj[k]=v; });
+      // also include method
+      obj.method = ($$('input[name="method"]').find(r=>r.checked)||{}).value || 'perHour';
+      const params = new URLSearchParams(obj);
+      return '?' + params.toString();
+    }
+
+    function applyFromQuery(){
+      const q = new URLSearchParams(location.search);
+      if ([...q.keys()].length === 0) { setDefaultDates(); calculate(); return; }
+      // set fields if present
+      const set = (id) => { if (q.has(id)) { const el = $('#'+id); if (el) el.value = q.get(id); } };
+      ['ratePerHour','hoursPerWeek','hoursPerPeriod','payPeriod','annualHours','hoursPerDay','startDate','asOfDate','startingBalance','annualCap','carryoverCap'].forEach(set);
+      if (q.has('method')){
+        const m = q.get('method');
+        const el = $$('input[name="method"]').find(r=>r.value===m);
+        if (el) el.checked = true;
+      }
+      calculate();
+    }
+
+    // Bindings
+    $('#btnCalc').addEventListener('click', calculate);
+    $('#btnReset').addEventListener('click', resetForm);
+    $('#btnShare').addEventListener('click', ()=>{
+      const url = location.origin + location.pathname + encodeQuery();
+      navigator.clipboard.writeText(url).then(()=>{
+        alert('Prefilled link copied to clipboard.');
+      }).catch(()=>{
+        prompt('Copy this link:', url);
+      });
+    });
+    $('#btnPrint').addEventListener('click', ()=> window.print());
+
+    // Auto-calc on input change (debounced)
+    let t;
+    $('#calc').addEventListener('input', ()=>{
+      clearTimeout(t); t = setTimeout(calculate, 120);
+    });
+
+    // Init
+    applyFromQuery();
+  })();
+  </script>
+</body>
+</html>
