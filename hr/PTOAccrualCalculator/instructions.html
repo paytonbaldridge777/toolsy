@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How to Use the PTO Accrual Calculator — Kitmodo</title>
+  <meta name="description" content="Learn how to use the PTO & Vacation Accrual Calculator to estimate your earned time off hours accurately." />
+  <link rel="canonical" href="https://toolsy-kwy.pages.dev/hr/PTOAccrualCalculator/instructions.html" />
+  <style>
+    :root{--bg:#0b0d10;--card:#121720;--text:#e7eef6;--muted:#8fa3b8;--accent:#6aa3ff;--accent2:#7bd389;--border:#233042;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35);--input-bg:#0f131a}
+    :root[data-theme="light"]{--bg:#f5f7fa;--card:#ffffff;--text:#1a1d23;--muted:#5a6b7f;--accent:#2b7de9;--accent2:#2a9d5f;--border:#d1d9e3;--shadow:0 10px 30px rgba(0,0,0,.08);--input-bg:#f8f9fb}
+    *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg));color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto;transition:background .3s,color .3s}
+    .wrap{max-width:900px;margin:0 auto;padding:24px}
+    a{color:var(--accent2);text-underline-offset:3px}
+    .site-header{display:flex;justify-content:space-between;align-items:center;padding:16px 0;margin-bottom:24px;border-bottom:1px solid var(--border)}
+    .site-header .logo-link{display:flex;align-items:center;text-decoration:none}
+    .site-header .logo{height:40px;width:auto}
+    .theme-toggle{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;cursor:pointer;color:var(--text);font-size:14px;transition:all .2s}
+    .theme-toggle:hover{background:var(--border)}
+    .theme-toggle-icon{width:20px;height:20px;vertical-align:middle}
+    header{display:grid;gap:6px;margin:6px 0 20px}
+    h1{margin:0;font-size:clamp(1.6rem,3vw,2.2rem)}
+    h2{margin:24px 0 12px;font-size:1.3rem;color:var(--accent)}
+    h3{margin:16px 0 8px;font-size:1.1rem}
+    p{line-height:1.6;color:var(--text);margin:12px 0}
+    p.sub{color:var(--muted)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
+    .btn{display:inline-block;background:var(--accent);color:#071019;padding:10px 20px;border-radius:12px;font-weight:700;text-decoration:none;margin-top:12px}
+    .btn:hover{opacity:0.9}
+    .notice{background:var(--input-bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin:16px 0;color:var(--muted)}
+    ul,ol{line-height:1.8;color:var(--text)}
+    code{background:var(--input-bg);border:1px solid var(--border);padding:2px 6px;border-radius:4px;font-size:0.9em}
+    strong{color:var(--accent2)}
+    footer{margin:28px 0 8px;color:var(--muted);font-size:.9rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="site-header">
+      <a href="/" class="logo-link">
+        <img src="/images/light-logo.png" alt="Kitmodo" class="logo" id="logo">
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <img src="/images/light-icon.png" alt="" class="theme-toggle-icon" id="themeIcon">
+      </button>
+    </div>
+    <header>
+      <a href="/hr/PTOAccrualCalculator/">← Back to PTO Calculator</a>
+      <h1>How to Use the PTO Accrual Calculator</h1>
+      <p class="sub">A step-by-step guide to accurately calculate your paid time off.</p>
+    </header>
+
+    <main class="card">
+      <h2>What is the PTO Accrual Calculator?</h2>
+      <p>The PTO & Vacation Accrual Calculator is a privacy-focused tool that helps you estimate how much paid time off (PTO) or vacation time you've earned based on your employer's accrual policy. All calculations happen locally in your browser—no data is sent to any server or stored anywhere.</p>
+
+      <h2>Who Should Use This Tool?</h2>
+      <ul>
+        <li><strong>Employees</strong> who want to track their PTO balance and plan time off</li>
+        <li><strong>HR professionals</strong> who need to verify accrual calculations</li>
+        <li><strong>Managers</strong> planning team coverage and approving leave requests</li>
+        <li><strong>Anyone</strong> considering a job offer and wanting to understand the PTO policy</li>
+      </ul>
+
+      <h2>Step-by-Step Instructions</h2>
+      
+      <h3>Step 1: Choose Your Accrual Method</h3>
+      <p>Select the method that matches how your employer calculates PTO. There are three options:</p>
+      <ul>
+        <li><strong>Accrue per hour worked</strong> — You earn a small amount of PTO for every hour you work (e.g., 0.0462 hours of PTO per hour worked equals about 12 days per year at 40 hours/week). This is common in hourly or shift-based jobs.</li>
+        <li><strong>Accrue per pay period</strong> — You earn a fixed amount of PTO with each paycheck (e.g., 3.33 hours every two weeks). Common in salaried positions.</li>
+        <li><strong>Fixed annual allotment</strong> — You receive a set amount of PTO per year (e.g., 120 hours = 15 days), which accrues evenly throughout the year. Typical for salaried professionals.</li>
+      </ul>
+
+      <h3>Step 2: Enter Your Accrual Rate</h3>
+      <p>Based on the method you selected, enter the specific numbers from your employment contract or employee handbook:</p>
+      <ul>
+        <li><strong>Per hour worked:</strong> Enter the accrual rate (e.g., <code>0.0462</code>) and your typical work hours per week (e.g., <code>40</code>).</li>
+        <li><strong>Per pay period:</strong> Enter how many hours you earn per paycheck (e.g., <code>3.33</code>) and select your pay frequency (weekly, biweekly, semi-monthly, or monthly).</li>
+        <li><strong>Annual allotment:</strong> Enter your total annual PTO hours (e.g., <code>120</code>) and specify how many hours are in your standard workday (typically <code>8</code>).</li>
+      </ul>
+
+      <h3>Step 3: Provide Employment Dates</h3>
+      <ul>
+        <li><strong>Employment start date:</strong> The date you began your current job or when your current PTO policy took effect.</li>
+        <li><strong>As-of date:</strong> The date you want to calculate your balance for (defaults to today). Use this to project balances for future dates.</li>
+      </ul>
+
+      <h3>Step 4: Add Optional Details</h3>
+      <ul>
+        <li><strong>Starting PTO balance:</strong> If you had PTO hours when you started or carried over from a previous period, enter that amount here.</li>
+        <li><strong>Annual cap:</strong> Some employers limit how much PTO you can accrue in a year. Enter this if applicable.</li>
+        <li><strong>Carryover cap:</strong> If there's a maximum amount you can roll over to the next year, enter it here.</li>
+      </ul>
+
+      <h3>Step 5: Calculate and Review</h3>
+      <p>Click the <strong>Calculate</strong> button (or the calculator will auto-update as you type). Review your results:</p>
+      <ul>
+        <li><strong>Accrued PTO hours (as of date):</strong> Your current estimated balance including any starting balance.</li>
+        <li><strong>Accrued PTO days:</strong> The same balance converted to days based on your workday hours.</li>
+        <li><strong>Projected total by year-end:</strong> An estimate of your balance at December 31st if you continue accruing at the same rate.</li>
+        <li><strong>Next accrual date:</strong> When you'll earn your next increment (for per-period methods).</li>
+      </ul>
+
+      <h2>Tips for Accurate Results</h2>
+      <ul>
+        <li><strong>Check your employee handbook</strong> or talk to HR to confirm your exact accrual method and rate.</li>
+        <li><strong>Account for PTO used:</strong> This calculator shows what you've <em>earned</em>, not your current usable balance. Subtract any PTO you've already taken.</li>
+        <li><strong>Update regularly:</strong> Use the "Share prefilled link" button to save your settings, then bookmark it for easy updates.</li>
+        <li><strong>Consider variations:</strong> Some policies have waiting periods, blackout dates, or pro-rated accrual for part-time employees—this calculator provides estimates based on standard scenarios.</li>
+        <li><strong>Verify with HR:</strong> Always confirm important decisions with your HR or payroll department.</li>
+      </ul>
+
+      <h2>Common Questions</h2>
+      
+      <h3>How accurate is this calculator?</h3>
+      <p>The calculator uses standard calendar math and the accrual method you provide. Results are estimates for planning purposes. Actual balances may vary due to employer-specific policies, partial pay periods, or payroll system quirks.</p>
+
+      <h3>Does this work for part-time employees?</h3>
+      <p>Yes! If you accrue per hour worked, enter your actual hours per week. For per-period or annual methods, adjust the rates proportionally if your policy is pro-rated.</p>
+
+      <h3>What about "use it or lose it" policies?</h3>
+      <p>Enter any annual or carryover caps in the optional fields. The calculator will flag when you approach those limits.</p>
+
+      <h3>Can I save my settings?</h3>
+      <p>Yes! Click <strong>"Share prefilled link"</strong> to copy a URL with all your inputs. Bookmark that link for quick access.</p>
+
+      <h3>Is my data private?</h3>
+      <p>Absolutely. All calculations happen in your browser. No data is sent to any server, stored in a database, or shared with third parties. Even we can't see your inputs.</p>
+
+      <div class="notice">
+        <strong>Important Disclaimer:</strong> This calculator is for informational and educational purposes only. It does not constitute legal, HR, or financial advice. PTO policies vary significantly by employer, state, and country. Always verify results with your HR department or payroll provider before making decisions.
+      </div>
+
+      <a href="/hr/PTOAccrualCalculator/" class="btn">Go to PTO Calculator →</a>
+    </main>
+
+    <footer>
+      <p>© <span id="y"></span> Kitmodo. <a href="/legal/terms.html">Terms</a> • <a href="/legal/privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+  <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const logo = document.getElementById('logo');
+    const root = document.documentElement;
+    
+    // Check for saved theme preference or default to 'dark'
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    root.setAttribute('data-theme', currentTheme);
+    updateThemeAssets(currentTheme);
+    
+    themeToggle.addEventListener('click', () => {
+      const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeAssets(newTheme);
+    });
+    
+    function updateThemeAssets(theme) {
+      if (theme === 'dark') {
+        logo.src = '/images/dark-logo.png';
+        themeIcon.src = '/images/dark-icon.png';
+      } else {
+        logo.src = '/images/light-logo.png';
+        themeIcon.src = '/images/light-icon.png';
+      }
+    }
+
+    // Year
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
