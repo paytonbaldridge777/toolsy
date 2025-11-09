@@ -1,17 +1,17 @@
 <!-- =========================
 File: /index.html
-Landing page for Toolsy (one-repo, subfolder categories)
+Landing page for Kitmodo (one-repo, subfolder categories)
 ========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Toolsy — Fast, Private, Useful Web Tools</title>
-  <meta name="description" content="Toolsy is a curated set of fast, privacy-friendly tools. Runs entirely in your browser. No sign-up." />
+  <title>Kitmodo — Fast, Private, Useful Web Tools</title>
+  <meta name="description" content="Kitmodo is a curated set of fast, privacy-friendly tools. Runs entirely in your browser. No sign-up." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://toolsy-kwy.pages.dev/" />
-  <meta property="og:title" content="Toolsy — Fast, Private, Useful Web Tools" />
+  <meta property="og:title" content="Kitmodo — Fast, Private, Useful Web Tools" />
   <meta property="og:description" content="HR calculators, wrestling planners, GPA converters and more. Everything runs on your device." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://toolsy-kwy.pages.dev/" />
@@ -22,7 +22,7 @@ Landing page for Toolsy (one-repo, subfolder categories)
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Toolsy",
+    "name": "Kitmodo",
     "url": "https://toolsy-kwy.pages.dev/",
     "potentialAction": {
       "@type": "SearchAction",
@@ -32,20 +32,27 @@ Landing page for Toolsy (one-repo, subfolder categories)
   }
   </script>
   <style>
-    :root{--bg:#0b0d10;--card:#121720;--text:#e7eef6;--muted:#8fa3b8;--accent:#6aa3ff;--accent2:#7bd389;--border:#233042;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)}
-    *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:linear-gradient(180deg,#0b0d10,#0f1318 30%,#0b0d10);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    :root{--bg:#0b0d10;--card:#121720;--text:#e7eef6;--muted:#8fa3b8;--accent:#6aa3ff;--accent2:#7bd389;--border:#233042;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35);--input-bg:#0f131a}
+    :root[data-theme="light"]{--bg:#f5f7fa;--card:#ffffff;--text:#1a1d23;--muted:#5a6b7f;--accent:#2b7de9;--accent2:#2a9d5f;--border:#d1d9e3;--shadow:0 10px 30px rgba(0,0,0,.08);--input-bg:#f8f9fb}
+    *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg));color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;transition:background .3s,color .3s}
     .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    .site-header{display:flex;justify-content:space-between;align-items:center;padding:16px 0;margin-bottom:24px;border-bottom:1px solid var(--border)}
+    .site-header .logo-link{display:flex;align-items:center;text-decoration:none}
+    .site-header .logo{height:40px;width:auto}
+    .theme-toggle{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;cursor:pointer;color:var(--text);font-size:14px;transition:all .2s}
+    .theme-toggle:hover{background:var(--border)}
+    .theme-toggle-icon{width:20px;height:20px;vertical-align:middle}
     header{display:grid;gap:10px;margin:8px 0 24px}
     h1{margin:0;font-size:clamp(1.8rem,4vw,2.6rem)}
     p.sub{margin:0;color:var(--muted)}
     .search{display:flex;gap:10px;margin:10px 0 4px}
-    .search input{flex:1;background:#0f131a;border:1px solid var(--border);color:var(--text);padding:12px;border-radius:12px}
+    .search input{flex:1;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:12px;border-radius:12px}
     .grid{display:grid;grid-template-columns:1fr;gap:16px}
     @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
     .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
     .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     @media(min-width:800px){.tiles{grid-template-columns:repeat(3,1fr)}}
-    .tile{display:grid;gap:6px;padding:14px;background:#0f141b;border:1px solid var(--border);border-radius:14px;text-decoration:none;color:var(--text)}
+    .tile{display:grid;gap:6px;padding:14px;background:var(--input-bg);border:1px solid var(--border);border-radius:14px;text-decoration:none;color:var(--text)}
     .tile:hover{outline:2px solid var(--accent)}
     .tile h3{margin:0;font-size:1.05rem}
     .muted{color:var(--muted)}
@@ -53,15 +60,23 @@ Landing page for Toolsy (one-repo, subfolder categories)
     a{color:var(--accent2);text-underline-offset:3px}
     .disclaimer{font-size:.9rem;line-height:1.5}
     .list{display:grid;gap:10px}
-    .tool{display:flex;justify-content:space-between;gap:10px;padding:12px;background:#0f141b;border:1px solid var(--border);border-radius:12px}
+    .tool{display:flex;justify-content:space-between;gap:10px;padding:12px;background:var(--input-bg);border:1px solid var(--border);border-radius:12px}
     .badge{display:inline-block;padding:3px 10px;border-radius:999px;background:#112134;border:1px solid #2a3b52;color:var(--muted);font-size:.8rem}
   </style>
 </head>
 <body>
   <div class="wrap">
+    <div class="site-header">
+      <a href="/" class="logo-link">
+        <img src="/images/light-logo.png" alt="Kitmodo" class="logo" id="logo">
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <img src="/images/light-icon.png" alt="" class="theme-toggle-icon" id="themeIcon">
+      </button>
+    </div>
     <header>
       <span class="badge" aria-hidden="true">Runs 100% in your browser • No sign‑up</span>
-      <h1>Toolsy</h1>
+      <h1>Kitmodo</h1>
       <p class="sub">A pocket toolkit of fast, privacy‑friendly web tools. No accounts. No tracking bloat.</p>
       <div class="search" role="search">
         <input id="q" type="search" placeholder="Search tools (e.g., PTO, bracket, GPA)…" aria-label="Search tools" />
@@ -97,21 +112,50 @@ Landing page for Toolsy (one-repo, subfolder categories)
       </section>
 
       <section class="card" style="grid-column:1/-1">
-        <h2>About Toolsy</h2>
-        <p class="muted">Toolsy is a curated set of small, focused tools that run entirely in your browser. We don’t store your inputs. We add clear disclaimers and keep content updated. If you spot an error, open an issue on GitHub.</p>
+        <h2>About Kitmodo</h2>
+        <p class="muted">Kitmodo is a curated set of small, focused tools that run entirely in your browser. We don’t store your inputs. We add clear disclaimers and keep content updated. If you spot an error, open an issue on GitHub.</p>
       </section>
     </main>
 
     <section class="card" style="margin-top:16px">
       <h2>Disclaimer</h2>
-      <p class="disclaimer"><strong>Informational only.</strong> Tools on Toolsy are for educational and planning purposes and do not constitute legal, HR, medical, or financial advice. Policies vary by employer and jurisdiction. Always confirm results with your HR, school, or professional advisor.</p>
+      <p class="disclaimer"><strong>Informational only.</strong> Tools on Kitmodo are for educational and planning purposes and do not constitute legal, HR, medical, or financial advice. Policies vary by employer and jurisdiction. Always confirm results with your HR, school, or professional advisor.</p>
     </section>
 
     <footer>
-      <p>© <span id="y"></span> Toolsy. <a href="/legal/terms.html">Terms</a> • <a href="/legal/privacy.html">Privacy</a></p>
+      <p>© <span id="y"></span> Kitmodo. <a href="/legal/terms.html">Terms</a> • <a href="/legal/privacy.html">Privacy</a></p>
     </footer>
   </div>
   <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const logo = document.getElementById('logo');
+    const root = document.documentElement;
+    
+    // Check for saved theme preference or default to 'dark'
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    root.setAttribute('data-theme', currentTheme);
+    updateThemeAssets(currentTheme);
+    
+    themeToggle.addEventListener('click', () => {
+      const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeAssets(newTheme);
+    });
+    
+    function updateThemeAssets(theme) {
+      if (theme === 'dark') {
+        logo.src = '/images/light-logo.png';
+        themeIcon.src = '/images/light-icon.png';
+      } else {
+        logo.src = '/images/dark-logo.png';
+        themeIcon.src = '/images/dark-icon.png';
+      }
+    }
+
+    // Year and search functionality
     document.getElementById('y').textContent = new Date().getFullYear();
     const q = document.getElementById('q');
     q.addEventListener('input', () => {
