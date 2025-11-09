@@ -45,14 +45,37 @@
       --ok: #59d185;
       --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius: 16px;
+      --input-bg: #0f131a;
+      --border: #222b36;
+    }
+    :root[data-theme="light"] {
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --muted: #5a6b7f;
+      --text: #1a1d23;
+      --accent: #2b7de9;
+      --accent-2: #2a9d5f;
+      --warn: #8b6914;
+      --danger: #d32f2f;
+      --ok: #2e7d32;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+      --input-bg: #f8f9fb;
+      --border: #d1d9e3;
     }
     html, body { height: 100%; }
     body {
       margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
-      background: linear-gradient(180deg, #0b0d10, #0f1318 30%, #0b0d10);
+      background: var(--bg);
       color: var(--text);
+      transition: background .3s, color .3s;
     }
     .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .site-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .site-header .logo-link { display: flex; align-items: center; text-decoration: none; }
+    .site-header .logo { height: 40px; width: auto; }
+    .theme-toggle { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; cursor: pointer; color: var(--text); font-size: 14px; transition: all .2s; }
+    .theme-toggle:hover { background: var(--border); }
+    .theme-toggle-icon { width: 20px; height: 20px; vertical-align: middle; }
     header { display: grid; gap: 8px; margin: 12px 0 24px; }
     h1 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); margin: 0; letter-spacing: .2px; }
     p.sub { color: var(--muted); margin: 0; }
@@ -70,11 +93,11 @@
     .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
     label { display: block; font-size: .9rem; color: var(--muted); margin: 8px 0 6px; }
-    input, select { width: 100%; background: #0f131a; color: var(--text); border: 1px solid #222b36; border-radius: 12px; padding: 10px 12px; font-size: 1rem; outline: none; box-sizing: border-box; }
+    input, select { width: 100%; background: var(--input-bg); color: var(--text); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; font-size: 1rem; outline: none; box-sizing: border-box; }
     input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(106,163,255,.2); }
 
     .radio-group { display: grid; gap: 8px; }
-    .radio { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 10px; background: #0f131a; border: 1px solid #222b36; border-radius: 12px; padding: 10px 12px; }
+    .radio { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 10px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; }
     .radio strong { display: block; font-size: .95rem; }
     .muted { color: var(--muted); font-size: .92rem; }
 
@@ -83,11 +106,11 @@
     button.secondary { background: #1f2732; color: var(--text); border: 1px solid #2a3645; }
 
     .results { display: grid; gap: 12px; }
-    .stat { background: #0f141b; border: 1px solid #233042; border-radius: 14px; padding: 12px; display: grid; gap: 2px; }
+    .stat { background: var(--input-bg); border: 1px solid var(--border); border-radius: 14px; padding: 12px; display: grid; gap: 2px; }
     .stat .k { color: var(--muted); font-size: .9rem; }
     .stat .v { font-size: 1.3rem; font-weight: 800; letter-spacing: .3px; }
 
-    .notice { background: #0f141b; border: 1px solid #233042; border-radius: 12px; padding: 12px; color: var(--muted); }
+    .notice { background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px; color: var(--muted); }
     .notice.warn { border-color: #3a2d00; background: #141207; color: #f0e3b2; }
 
     footer { margin: 28px 0 8px; color: var(--muted); font-size: .9rem; }
@@ -100,6 +123,14 @@
 </head>
 <body>
   <div class="wrap">
+    <div class="site-header">
+      <a href="/" class="logo-link">
+        <img src="/images/light-logo.png" alt="Kitmodo" class="logo" id="logo">
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <img src="/images/light-icon.png" alt="" class="theme-toggle-icon" id="themeIcon">
+      </button>
+    </div>
     <header>
       <div class="badge" aria-hidden="true">Runs 100% in your browser • No signup</div>
       <h1>PTO & Vacation Accrual Calculator (U.S.)</h1>
@@ -510,6 +541,36 @@
 
     // Init
     applyFromQuery();
+  })();
+
+  // Theme toggle functionality
+  (function(){
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const logo = document.getElementById('logo');
+    const root = document.documentElement;
+    
+    // Check for saved theme preference or default to 'dark'
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    root.setAttribute('data-theme', currentTheme);
+    updateThemeAssets(currentTheme);
+    
+    themeToggle.addEventListener('click', () => {
+      const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeAssets(newTheme);
+    });
+    
+    function updateThemeAssets(theme) {
+      if (theme === 'dark') {
+        logo.src = '/images/light-logo.png';
+        themeIcon.src = '/images/light-icon.png';
+      } else {
+        logo.src = '/images/dark-logo.png';
+        themeIcon.src = '/images/dark-icon.png';
+      }
+    }
   })();
   </script>
 </body>
