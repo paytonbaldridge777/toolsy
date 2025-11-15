@@ -1,1 +1,66 @@
+<!-- =========================
+File: /education/index.html
+Category landing: Education tools
+========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Education & Academic Tools — Kitmodo</title>
+  <meta name="description" content="Education calculators and planners: GPA calculators, study tools, course planning. Runs locally, no sign-up." />
+  <link rel="canonical" href="https://toolsy-kwy.pages.dev/education/" />
+  <link rel="stylesheet" href="/components/header.css" />
+  <script src="/components/header.js"></script>
+  <style>
+    :root{--bg:#0b0d10;--card:#121720;--text:#e7eef6;--muted:#8fa3b8;--accent:#6aa3ff;--border:#233042;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35);--input-bg:#0f131a}
+    :root[data-theme="light"]{--bg:#f5f7fa;--card:#ffffff;--text:#1a1d23;--muted:#5a6b7f;--accent:#2b7de9;--border:#d1d9e3;--shadow:0 10px 30px rgba(0,0,0,.08);--input-bg:#f8f9fb}
+    *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg));color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto;transition:background .3s,color .3s}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    a{color:#7bd389;text-underline-offset:3px}
+    header{display:grid;gap:6px;margin:6px 0 20px}
+    h1{margin:0;font-size:clamp(1.6rem,3vw,2.2rem)}
+    p.sub{margin:0;color:var(--muted)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    .list{display:grid;gap:12px}
+    .tool{display:flex;justify-content:space-between;gap:10px;padding:12px;background:var(--input-bg);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text)}
+    .tool:hover{outline:2px solid var(--accent)}
+    footer{margin:28px 0 8px;color:var(--muted);font-size:.9rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="header-placeholder"></div>
+    <header>
+      <a href="/">← Back to Kitmodo</a>
+      <h1>Education & Academic Tools</h1>
+      <p class="sub">Accurate, private, and fast calculators for students and educators.</p>
+    </header>
 
+    <main class="card">
+      <h2>Available tools</h2>
+      <div class="list">
+        <a class="tool" href="/education/gpa-calculator/"><span>Universal GPA Calculator</span><span class="muted">Multiple methods & scales</span></a>
+        <!-- Future tools (placeholders you can add later): -->
+        <a class="tool" href="#"><span>Study Schedule Planner</span><span class="muted">Plan your study time</span></a>
+        <a class="tool" href="#"><span>Course Credit Calculator</span><span class="muted">Track degree progress</span></a>
+      </div>
+    </main>
+
+    <section class="card" style="margin-top:16px">
+      <h2>Disclaimer</h2>
+      <p class="sub"><strong>Informational only.</strong> These tools support planning and education and are not academic advice. Verify results with your school's registrar or academic advisor.</p>
+    </section>
+
+    <footer>
+      <p>© <span id="y"></span> Kitmodo. <a href="/legal/terms.html">Terms</a> • <a href="/legal/privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+  <script>
+    // Year
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('y').textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>
