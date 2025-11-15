@@ -170,7 +170,8 @@
     elements.toggleUnweighted.addEventListener('click', () => setView('unweighted'));
     elements.calculateWhatIf.addEventListener('click', calculateWhatIf);
 
-    // Initialize with default school
+    // Initialize with default school - set dropdown to match state
+    elements.schoolSelect.value = state.selectedSchool;
     updateScaleInfo();
     addCourseRow();
     addCourseRow();
