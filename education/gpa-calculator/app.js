@@ -469,7 +469,8 @@
     let baseValue = null;
 
     if (config.type === 'letter') {
-      baseValue = config.scale[grade.toUpperCase()] || null;
+      const scaleValue = config.scale[grade.toUpperCase()];
+      baseValue = scaleValue !== undefined ? scaleValue : null;
     } else if (config.type === 'percentage') {
       const numGrade = parseFloat(grade);
       if (isNaN(numGrade)) return null;
@@ -481,7 +482,8 @@
         }
       }
     } else if (config.type === 'numeric') {
-      baseValue = config.scale[grade] || null;
+      const scaleValue = config.scale[grade];
+      baseValue = scaleValue !== undefined ? scaleValue : null;
     }
 
     if (baseValue === null) return null;
