@@ -5,10 +5,10 @@
 # For format details, see: https://gh.io/customagents/config
 
 name:
-description:
+description: General Kitmodo Site Agent
 ---
 
-# My Agent
+# Custom Agent
 
 Always maintain the header in every new page and tool created. All tools added will follow the same structure example:
 root\index.html
