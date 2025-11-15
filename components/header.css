@@ -1,0 +1,126 @@
+/* Site Header Styles */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header .logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.site-header .logo {
+  height: 40px;
+  width: auto;
+}
+
+/* Navigation Dropdown */
+.main-nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin: 0 20px;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-toggle {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 14px;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-toggle:hover {
+  background: var(--border);
+}
+
+.nav-icon {
+  font-size: 16px;
+}
+
+.nav-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  min-width: 220px;
+  padding: 8px;
+  display: none;
+  z-index: 1000;
+}
+
+.nav-menu.active {
+  display: block;
+}
+
+.nav-item {
+  display: block;
+  padding: 10px 14px;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background .2s;
+  font-size: 14px;
+}
+
+.nav-item:hover {
+  background: var(--input-bg);
+}
+
+.nav-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 6px 0;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 14px;
+  transition: all .2s;
+}
+
+.theme-toggle:hover {
+  background: var(--border);
+}
+
+.theme-toggle-icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-nav {
+    margin: 0 10px;
+  }
+  
+  .nav-menu {
+    right: auto;
+    left: 0;
+  }
+}

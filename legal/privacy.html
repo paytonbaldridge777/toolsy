@@ -10,6 +10,8 @@ Privacy Policy (concise, ad/analytics‑ready)
   <title>Privacy Policy — Kitmodo</title>
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://toolsy-kwy.pages.dev/legal/privacy.html" />
+  <link rel="stylesheet" href="/components/header.css" />
+  <script src="/components/header.js"></script>
   <style>
     :root{--bg:#0b0d10;--card:#121720;--text:#e7eef6;--muted:#8fa3b8;--accent:#6aa3ff;--border:#233042;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)}
     :root[data-theme="light"]{--bg:#f5f7fa;--card:#ffffff;--text:#1a1d23;--muted:#5a6b7f;--accent:#2b7de9;--border:#d1d9e3;--shadow:0 10px 30px rgba(0,0,0,.08)}
@@ -17,26 +19,13 @@ Privacy Policy (concise, ad/analytics‑ready)
     .wrap{max-width:900px;margin:0 auto;padding:24px}
     h1{margin:0 0 12px}
     a{color:#7bd389}
-    .site-header{display:flex;justify-content:space-between;align-items:center;padding:16px 0;margin-bottom:24px;border-bottom:1px solid var(--border)}
-    .site-header .logo-link{display:flex;align-items:center;text-decoration:none}
-    .site-header .logo{height:40px;width:auto}
-    .theme-toggle{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;cursor:pointer;color:var(--text);font-size:14px;transition:all .2s}
-    .theme-toggle:hover{background:var(--border)}
-    .theme-toggle-icon{width:20px;height:20px;vertical-align:middle}
     .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
     .muted{color:var(--muted)}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="site-header">
-      <a href="/" class="logo-link">
-        <img src="/images/light-logo.png" alt="Kitmodo" class="logo" id="logo">
-      </a>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <img src="/images/light-icon.png" alt="" class="theme-toggle-icon" id="themeIcon">
-      </button>
-    </div>
+    <div id="header-placeholder"></div>
     <h1>Privacy Policy</h1>
     <div class="card">
       <p class="muted">Last updated: November 6, 2025</p>
@@ -62,34 +51,5 @@ Privacy Policy (concise, ad/analytics‑ready)
       <p>Questions? Email <a href="mailto:privacy@toolsy-kwy.pages.dev">privacy@toolsy-kwy.pages.dev</a>.</p>
     </div>
   </div>
-  <script>
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const logo = document.getElementById('logo');
-    const root = document.documentElement;
-    
-    // Check for saved theme preference or default to 'dark'
-    const currentTheme = localStorage.getItem('theme') || 'dark';
-    root.setAttribute('data-theme', currentTheme);
-    updateThemeAssets(currentTheme);
-    
-    themeToggle.addEventListener('click', () => {
-      const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      updateThemeAssets(newTheme);
-    });
-    
-    function updateThemeAssets(theme) {
-      if (theme === 'dark') {
-        logo.src = '/images/light-logo.png';
-        themeIcon.src = '/images/light-icon.png';
-      } else {
-        logo.src = '/images/dark-logo.png';
-        themeIcon.src = '/images/dark-icon.png';
-      }
-    }
-  </script>
 </body>
 </html>
