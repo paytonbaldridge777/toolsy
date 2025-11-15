@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Universal GPA Calculator — Fast, Private, Free</title>
+  <meta name="description" content="Calculate your GPA using multiple methods: weighted, unweighted, numeric, and custom scales. Supports high school and college. Plan future grades with what-if scenarios. Runs entirely in your browser." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://toolsy-kwy.pages.dev/education/gpa-calculator/" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Universal GPA Calculator" />
+  <meta property="og:description" content="Calculate GPA with multiple methods, custom scales, and what-if planning. Fast, private, and free." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://toolsy-kwy.pages.dev/education/gpa-calculator/" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Universal GPA Calculator" />
+  <meta name="twitter:description" content="Calculate GPA with multiple methods, custom scales, and what-if planning." />
+  
+  <link rel="stylesheet" href="/components/header.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="/components/header.js"></script>
+
+  <!-- JSON-LD: SoftwareApplication schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Universal GPA Calculator",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web",
+    "description": "Calculate GPA using multiple methods including weighted, unweighted, numeric, and custom scales. Supports high school and college with what-if scenario planning.",
+    "offers": { "@type": "Offer", "price": "0" }
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <div id="header-placeholder"></div>
+    <header>
+      <div class="badge" aria-hidden="true">Runs 100% in your browser • No signup</div>
+      <h1>Universal GPA Calculator</h1>
+      <p class="sub">Calculate your GPA with multiple methods including weighted, unweighted, numeric scales, and custom configurations. Plan future grades with what-if scenarios. <span aria-hidden="true">🎓</span></p>
+    </header>
+
+    <main id="app">
+      <!-- SCHOOL/SCALE SETUP -->
+      <section class="card" aria-labelledby="setup-h">
+        <h2 id="setup-h">1. School/Scale Setup</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="schoolSelect">Select School/District (or Custom)</label>
+            <select id="schoolSelect" class="form-control">
+              <option value="custom">Custom/Other</option>
+              <option value="standard-4.0">Standard 4.0 Scale (Unweighted)</option>
+              <option value="standard-weighted">Standard Weighted (Regular/Honors/AP)</option>
+              <option value="percentage-90">Percentage Scale (90/80/70/60)</option>
+              <option value="percentage-93">Percentage Scale (93/85/77/70)</option>
+              <option value="ib-7-point">IB 7-Point Scale</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="calcType">Calculation Type</label>
+            <select id="calcType" class="form-control">
+              <option value="high-school">High School (Equal Weight per Course)</option>
+              <option value="college">College (Credit Hour Weighted)</option>
+            </select>
+          </div>
+        </div>
+        
+        <div id="customScaleContainer" class="custom-scale" style="display: none;">
+          <h3>Custom Scale Configuration</h3>
+          <p class="muted">Define your custom grade-to-GPA mappings below:</p>
+          <div id="customScaleInputs"></div>
+          <button type="button" id="addCustomGrade" class="btn-secondary">+ Add Grade</button>
+        </div>
+
+        <div id="scaleInfo" class="notice">
+          <strong>Selected Scale:</strong>
+          <div id="scaleDescription"></div>
+        </div>
+      </section>
+
+      <!-- GPA CALCULATOR -->
+      <section class="card" aria-labelledby="calc-h">
+        <h2 id="calc-h">2. GPA Calculator</h2>
+        <div class="table-container">
+          <table id="coursesTable" class="courses-table">
+            <thead>
+              <tr>
+                <th>Course Name</th>
+                <th>Grade</th>
+                <th id="levelHeader">Course Level</th>
+                <th id="creditsHeader">Credits</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="coursesBody">
+            </tbody>
+          </table>
+        </div>
+        <div class="actions">
+          <button type="button" id="addCourse" class="btn-primary">+ Add Course</button>
+          <button type="button" id="clearCourses" class="btn-secondary">Clear All</button>
+        </div>
+      </section>
+
+      <!-- RESULTS -->
+      <section class="card" aria-labelledby="results-h">
+        <h2 id="results-h">3. Results</h2>
+        
+        <div class="toggle-group">
+          <button type="button" id="toggleWeighted" class="toggle-btn active" data-type="weighted">Weighted</button>
+          <button type="button" id="toggleUnweighted" class="toggle-btn" data-type="unweighted">Unweighted</button>
+        </div>
+
+        <div class="results-grid">
+          <div class="stat-card">
+            <div class="stat-label">Term GPA</div>
+            <div class="stat-value" id="termGPA">—</div>
+            <div class="stat-detail" id="termGPAPercent"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Credits</div>
+            <div class="stat-value" id="totalCredits">—</div>
+          </div>
+          <div class="stat-card highlight">
+            <div class="stat-label">Cumulative GPA</div>
+            <div class="stat-value" id="cumulativeGPA">—</div>
+            <div class="stat-detail" id="cumulativeGPAPercent"></div>
+          </div>
+        </div>
+
+        <div id="resultsExplanation" class="notice">
+          <p><strong>How this is calculated:</strong></p>
+          <div id="explanationText"></div>
+        </div>
+      </section>
+
+      <!-- WHAT-IF PLANNER -->
+      <section class="card" aria-labelledby="planner-h">
+        <h2 id="planner-h">4. What-If Planner</h2>
+        <p class="muted">Enter your current cumulative GPA and plan what grades you need to reach your target.</p>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="currentGPA">Current Cumulative GPA</label>
+            <input type="number" id="currentGPA" class="form-control" step="0.01" min="0" max="5" placeholder="e.g., 3.50" />
+          </div>
+          <div class="form-group">
+            <label for="completedCredits">Completed Credits</label>
+            <input type="number" id="completedCredits" class="form-control" step="0.5" min="0" placeholder="e.g., 60" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="futureCredits">Future Term Credits</label>
+            <input type="number" id="futureCredits" class="form-control" step="0.5" min="0" placeholder="e.g., 15" />
+          </div>
+          <div class="form-group">
+            <label for="targetGPA">Target GPA</label>
+            <input type="number" id="targetGPA" class="form-control" step="0.01" min="0" max="5" placeholder="e.g., 3.75" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="calculateWhatIf" class="btn-primary">Calculate What-If Scenario</button>
+        </div>
+
+        <div id="whatIfResults" style="display: none;">
+          <div class="notice" id="whatIfNotice"></div>
+          <div id="whatIfExamples" class="what-if-examples"></div>
+        </div>
+      </section>
+    </main>
+
+    <section class="card disclaimer-section">
+      <h2>About this Calculator</h2>
+      <p class="muted">This universal GPA calculator supports multiple grading systems including standard 4.0 scales, weighted scales with honors/AP/IB courses, percentage-based systems, and fully custom configurations. It can handle both high school calculations (where each course has equal weight) and college calculations (where courses are weighted by credit hours).</p>
+      <p class="muted">The what-if planner helps you determine what grades you need in future courses to reach your target GPA. All calculations are performed locally in your browser—no data is sent to any server.</p>
+    </section>
+
+    <footer>
+      <p class="disclaimer"><strong>Disclaimer:</strong> This calculator is for <em>informational and educational purposes only</em>. GPA calculation methods vary by institution. Always verify your GPA with your school's registrar or academic advisor. All calculations run locally in your browser.</p>
+      <p class="muted">Last updated: <time datetime="2025-11-15">November 15, 2025</time>. • <a href="/legal/terms.html">Terms of Use</a> • <a href="/legal/privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
