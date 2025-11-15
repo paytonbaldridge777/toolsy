@@ -18,6 +18,9 @@ Landing page for Kitmodo (one-repo, subfolder categories)
   <meta property="og:image" content="https://toolsy-kwy.pages.dev/assets/og-card.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
+  <link rel="stylesheet" href="/components/header.css" />
+  <script src="/components/header.js"></script>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -36,12 +39,6 @@ Landing page for Kitmodo (one-repo, subfolder categories)
     :root[data-theme="light"]{--bg:#f5f7fa;--card:#ffffff;--text:#1a1d23;--muted:#5a6b7f;--accent:#2b7de9;--accent2:#2a9d5f;--border:#d1d9e3;--shadow:0 10px 30px rgba(0,0,0,.08);--input-bg:#f8f9fb}
     *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg));color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;transition:background .3s,color .3s}
     .wrap{max-width:1100px;margin:0 auto;padding:24px}
-    .site-header{display:flex;justify-content:space-between;align-items:center;padding:16px 0;margin-bottom:24px;border-bottom:1px solid var(--border)}
-    .site-header .logo-link{display:flex;align-items:center;text-decoration:none}
-    .site-header .logo{height:40px;width:auto}
-    .theme-toggle{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;cursor:pointer;color:var(--text);font-size:14px;transition:all .2s}
-    .theme-toggle:hover{background:var(--border)}
-    .theme-toggle-icon{width:20px;height:20px;vertical-align:middle}
     header{display:grid;gap:10px;margin:8px 0 24px}
     h1{margin:0;font-size:clamp(1.8rem,4vw,2.6rem)}
     p.sub{margin:0;color:var(--muted)}
@@ -66,14 +63,7 @@ Landing page for Kitmodo (one-repo, subfolder categories)
 </head>
 <body>
   <div class="wrap">
-    <div class="site-header">
-      <a href="/" class="logo-link">
-        <img src="/images/light-logo.png" alt="Kitmodo" class="logo" id="logo">
-      </a>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <img src="/images/light-icon.png" alt="" class="theme-toggle-icon" id="themeIcon">
-      </button>
-    </div>
+    <div id="header-placeholder"></div>
     <header>
       <span class="badge" aria-hidden="true">Runs 100% in your browser • No sign‑up</span>
       <h1>Kitmodo</h1>
@@ -135,43 +125,17 @@ Landing page for Kitmodo (one-repo, subfolder categories)
     </footer>
   </div>
   <script>
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const logo = document.getElementById('logo');
-    const root = document.documentElement;
-    
-    // Check for saved theme preference or default to 'dark'
-    const currentTheme = localStorage.getItem('theme') || 'dark';
-    root.setAttribute('data-theme', currentTheme);
-    updateThemeAssets(currentTheme);
-    
-    themeToggle.addEventListener('click', () => {
-      const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      updateThemeAssets(newTheme);
-    });
-    
-    function updateThemeAssets(theme) {
-      if (theme === 'dark') {
-        logo.src = '/images/dark-logo.png';
-        themeIcon.src = '/images/dark-icon.png';
-      } else {
-        logo.src = '/images/light-logo.png';
-        themeIcon.src = '/images/light-icon.png';
-      }
-    }
-
     // Year and search functionality
-    document.getElementById('y').textContent = new Date().getFullYear();
-    const q = document.getElementById('q');
-    q.addEventListener('input', () => {
-      const term = q.value.toLowerCase();
-      for (const a of document.querySelectorAll('.tool')){
-        const show = a.textContent.toLowerCase().includes(term);
-        a.style.display = show ? '' : 'none';
-      }
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('y').textContent = new Date().getFullYear();
+      const q = document.getElementById('q');
+      q.addEventListener('input', () => {
+        const term = q.value.toLowerCase();
+        for (const a of document.querySelectorAll('.tool')){
+          const show = a.textContent.toLowerCase().includes(term);
+          a.style.display = show ? '' : 'none';
+        }
+      });
     });
   </script>
 </body>
