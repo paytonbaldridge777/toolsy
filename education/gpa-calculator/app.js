@@ -469,8 +469,30 @@
     let baseValue = null;
 
     if (config.type === 'letter') {
+      // First try letter lookup
       const scaleValue = config.scale[grade.toUpperCase()];
-      baseValue = scaleValue !== undefined ? scaleValue : null;
+      if (scaleValue !== undefined) {
+        baseValue = scaleValue;
+      } else {
+        // If letter lookup failed, check if input is numeric
+        const numGrade = parseFloat(grade);
+        if (!isNaN(numGrade)) {
+          // For standard scales, convert numeric percentage to GPA using 90/80/70/60 thresholds
+          if (state.selectedSchool === 'standard-4.0' || state.selectedSchool === 'standard-weighted') {
+            if (numGrade >= 90 && numGrade <= 100) {
+              baseValue = 4.0;
+            } else if (numGrade >= 80 && numGrade < 90) {
+              baseValue = 3.0;
+            } else if (numGrade >= 70 && numGrade < 80) {
+              baseValue = 2.0;
+            } else if (numGrade >= 60 && numGrade < 70) {
+              baseValue = 1.0;
+            } else if (numGrade >= 0 && numGrade < 60) {
+              baseValue = 0.0;
+            }
+          }
+        }
+      }
     } else if (config.type === 'percentage') {
       const numGrade = parseFloat(grade);
       if (isNaN(numGrade)) return null;
