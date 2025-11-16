@@ -442,6 +442,63 @@ footer a {
   margin-top: 16px;
 }
 
+/* Inline Disclaimer */
+.inline-disclaimer {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 20px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.inline-disclaimer strong {
+  color: var(--text);
+}
+
+.inline-disclaimer p {
+  margin: 0;
+}
+
+/* FAQ Section */
+.faq-section {
+  margin-top: 16px;
+}
+
+.faq-item {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.faq-item:last-child {
+  margin-bottom: 0;
+}
+
+.faq-question {
+  color: var(--text);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.faq-answer {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.faq-answer p {
+  margin: 0 0 12px 0;
+}
+
+.faq-answer p:last-child {
+  margin-bottom: 0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .wrap {
