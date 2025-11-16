@@ -116,21 +116,21 @@ async function fetchScholarships(): Promise<CareerOneStopScholarship[]> {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json() as any;
         console.log(`✅ Successfully fetched data from ${endpoint}`);
         
         // Handle different response formats
         if (Array.isArray(data)) {
-          return data;
+          return data as CareerOneStopScholarship[];
         } else if (data.ScholarshipResults) {
-          return data.ScholarshipResults;
+          return data.ScholarshipResults as CareerOneStopScholarship[];
         } else if (data.scholarships) {
-          return data.scholarships;
+          return data.scholarships as CareerOneStopScholarship[];
         } else if (data.data) {
-          return Array.isArray(data.data) ? data.data : [data.data];
+          return Array.isArray(data.data) ? data.data as CareerOneStopScholarship[] : [data.data as CareerOneStopScholarship];
         }
         
-        return [data];
+        return [data as CareerOneStopScholarship];
       } else if (response.status === 404) {
         console.log(`   Endpoint not found, trying next...`);
         continue;
