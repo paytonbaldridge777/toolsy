@@ -1,14 +1,36 @@
 # Scholarship Data Integration
 
-This project integrates real scholarship data from the CareerOneStop API into the Scholarship Coach tool.
+This project integrates real scholarship data from multiple sources into the Scholarship Coach tool:
+- **Wikidata** (CC0/Public Domain) - International scholarships
+- **CareerOneStop API** - US-focused scholarships (requires API token)
 
 ## Overview
 
-The scholarship data is automatically updated daily via GitHub Actions from the CareerOneStop Scholarship Finder API. The data is normalized into a consistent schema and stored in `data/scholarships.json`, which the front-end loads to display scholarship opportunities.
+The scholarship data is automatically updated via GitHub Actions and stored in `data/scholarships.json`, which the front-end loads to display scholarship opportunities.
 
 ## Components
 
-### 1. Data Updater Script (`scripts/update-scholarships.ts`)
+### 1. Wikidata Fetcher Script (`scripts/fetch-wikidata-scholarships.ts`)
+
+A TypeScript script that:
+- Queries Wikidata's SPARQL endpoint for scholarship data
+- Uses CC0/public domain data - no API key required
+- Normalizes the data into a consistent schema
+- Writes the normalized data to `data/scholarships.json`
+- Includes source metadata (`source: "wikidata"`, `tags: ["seed_wikidata"]`)
+
+**Usage:**
+```bash
+npm run build:scholarships:wikidata
+```
+
+**Features:**
+- Fetches international scholarships from Wikidata
+- Includes scholarship name, description, country, and official website
+- Falls back to sample data if network is unavailable
+- Maps Wikidata entities to normalized schema
+
+### 2. Data Updater Script (`scripts/update-scholarships.ts`)
 
 A TypeScript script that:
 - Fetches scholarship data from the CareerOneStop API
@@ -25,28 +47,35 @@ npm run update-scholarships
 - Set the `CAREERONESTOP_API_TOKEN` environment variable with your API key
 - If no API token is provided, the script will use mock data for testing
 
-### 2. GitHub Actions Workflow (`.github/workflows/update-scholarships.yml`)
+### 3. GitHub Actions Workflows
 
-Automatically runs daily at 3:00 AM UTC to:
-- Install dependencies
-- Run the scholarship updater script
-- Commit and push changes if `data/scholarships.json` has been updated
+**Wikidata Scholarships (`.github/workflows/update-wikidata-scholarships.yml`):**
+- Runs weekly on Monday at 2:00 AM UTC
+- Fetches scholarships from Wikidata
+- Uses no proprietary APIs or secrets
+- Commits changes if data has been updated
+
+**CareerOneStop Scholarships (`.github/workflows/update-scholarships.yml`):**
+- Runs daily at 3:00 AM UTC
+- Requires `CAREERONESTOP_API_TOKEN` secret
+- Fetches US-focused scholarship data
+- Commits changes if data has been updated
 
 **Manual Trigger:**
-You can manually trigger the workflow from the Actions tab in GitHub.
+Both workflows can be manually triggered from the Actions tab in GitHub.
 
-### 3. Normalized Scholarship Schema
+### 4. Normalized Scholarship Schema
 
 Each scholarship in `data/scholarships.json` follows this structure:
 
 ```typescript
 {
-  "id": "COS-123456",                    // Unique identifier
+  "id": "WD-Q1144593",                    // Unique identifier (WD-* for Wikidata, COS-* for CareerOneStop)
   "title": "Example Scholarship Name",    // Scholarship name
   "provider": "Example Provider Name",    // Organization offering the scholarship
-  "source": "CareerOneStop",             // Data source
-  "amountMin": 1000,                     // Minimum award amount (USD)
-  "amountMax": 5000,                     // Maximum award amount (USD)
+  "source": "wikidata",                  // Data source ("wikidata" or "CareerOneStop")
+  "amountMin": 1000,                     // Minimum award amount (USD) - may be null
+  "amountMax": 5000,                     // Maximum award amount (USD) - may be null
   "currency": "USD",                     // Currency code
   "deadline": "2026-02-15",              // Application deadline (ISO 8601 date)
   "levelOfStudy": ["High School", "Undergraduate"], // Education levels
@@ -65,12 +94,12 @@ Each scholarship in `data/scholarships.json` follows this structure:
   "requiresEssay": "short",             // "none" | "short" | "long"
   "requiresRecommendation": true,       // Whether recommendation letters are required
   "applicationEffortLevel": 2,          // 1-3, indicating application complexity
-  "tags": ["STEM", "need_based", "national"], // Searchable tags
-  "officialUrl": "https://...",         // Official scholarship application URL
+  "tags": ["seed_wikidata", "international"], // Searchable tags (includes "seed_wikidata" for Wikidata sources)
+  "officialUrl": "https://...",         // Official scholarship application URL - may be null
   "description": "Short description.",   // Scholarship description
   "lastVerified": "2025-11-16",         // Date the data was last updated
   "rawSource": {
-    "careerOneStopId": "123456"         // Original API identifier
+    "wikidataId": "Q1144593"            // Original source identifier (wikidataId or careerOneStopId)
   }
 }
 ```
@@ -80,7 +109,8 @@ Each scholarship in `data/scholarships.json` follows this structure:
 ### Prerequisites
 
 - Node.js 18 or higher
-- CareerOneStop API Token (obtain from [CareerOneStop Developer Portal](https://www.careeronestop.org/Developers/WebAPI/web-api.aspx))
+- (Optional) CareerOneStop API Token for US scholarship data - obtain from [CareerOneStop Developer Portal](https://www.careeronestop.org/Developers/WebAPI/web-api.aspx)
+- No API token needed for Wikidata - it's CC0/public domain
 
 ### Local Development
 
@@ -89,13 +119,17 @@ Each scholarship in `data/scholarships.json` follows this structure:
    npm install
    ```
 
-2. **Set up API token:**
+2. **Fetch Wikidata scholarships (no API key needed):**
    ```bash
-   export CAREERONESTOP_API_TOKEN=your_api_token_here
+   npm run build:scholarships:wikidata
    ```
 
-3. **Run the updater script:**
+3. **(Optional) Fetch CareerOneStop scholarships:**
    ```bash
+   # Set up API token
+   export CAREERONESTOP_API_TOKEN=your_api_token_here
+   
+   # Run the updater script
    npm run update-scholarships
    ```
 
@@ -106,6 +140,12 @@ Each scholarship in `data/scholarships.json` follows this structure:
 
 ### GitHub Actions Setup
 
+**For Wikidata (no secrets needed):**
+- The workflow runs automatically weekly
+- Can be manually triggered from the Actions tab
+- No setup required - uses public domain data
+
+**For CareerOneStop (optional):**
 1. **Add the API token as a secret:**
    - Go to your repository Settings → Secrets and variables → Actions
    - Click "New repository secret"
@@ -135,25 +175,35 @@ The Scholarship Coach tool (`education/scholarship-coach/`) automatically loads 
 ## Data Flow
 
 ```
-CareerOneStop API
+Wikidata SPARQL Endpoint (CC0/Public Domain)
        ↓
-update-scholarships.ts
+fetch-wikidata-scholarships.ts
        ↓
 data/scholarships.json
        ↓
-GitHub Actions (daily commit)
+GitHub Actions (weekly commit)
        ↓
 Front-end (loads on page load)
        ↓
 User Interface
+
+Alternative path:
+CareerOneStop API (requires token)
+       ↓
+update-scholarships.ts
+       ↓
+data/scholarships.json (replaces Wikidata data)
 ```
 
 ## Testing
 
-### Test the Updater Script
+### Test the Updater Scripts
 
 ```bash
-# Without API token (uses mock data)
+# Wikidata (no API token needed)
+npm run build:scholarships:wikidata
+
+# CareerOneStop (requires API token, uses mock data without it)
 npm run update-scholarships
 
 # With API token
@@ -184,10 +234,12 @@ CAREERONESTOP_API_TOKEN=your_token npm run update-scholarships
 
 If you need to modify the normalized schema:
 
-1. Update the `NormalizedScholarship` interface in `scripts/update-scholarships.ts`
-2. Update the `normalizeScholarship()` function to map new fields
+1. Update the `NormalizedScholarship` interface in both:
+   - `scripts/fetch-wikidata-scholarships.ts`
+   - `scripts/update-scholarships.ts`
+2. Update the normalization functions in both scripts
 3. Update the front-end code in `education/scholarship-coach/app.js` to use the new fields
-4. Run the updater script to regenerate the data file
+4. Run the appropriate updater script to regenerate the data file
 5. Test the front-end to ensure everything works
 
 ### Monitoring
