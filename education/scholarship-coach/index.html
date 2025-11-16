@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scholarship Coach — Find & Track Scholarships</title>
+  <meta name="description" content="Find scholarships, track applications, and prepare materials. All your data stays in your browser—export to save progress." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://toolsy-kwy.pages.dev/education/scholarship-coach/" />
+  
+  <link rel="stylesheet" href="/components/header.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="/components/header.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Scholarship Coach",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web",
+    "description": "Find scholarships, track applications, and prepare materials. Privacy-first tool that stores all data locally in your browser.",
+    "offers": { "@type": "Offer", "price": "0" }
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <div id="header-placeholder"></div>
+    
+    <!-- Landing Screen -->
+    <div id="landingScreen">
+      <header>
+        <div class="badge" aria-hidden="true">100% Private • No Server Storage</div>
+        <h1>Scholarship Coach</h1>
+        <p class="sub">Find scholarships, track deadlines, and prepare your applications—all in your browser. 🎓</p>
+      </header>
+
+      <section class="card">
+        <h2>How It Works</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-icon">🔒</div>
+            <h3>Privacy First</h3>
+            <p class="muted">Your personal data never leaves your browser. No accounts, no cloud storage.</p>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">💾</div>
+            <h3>Export to Save</h3>
+            <p class="muted">Download your progress as a JSON file. Import it anytime to pick up where you left off.</p>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">🎯</div>
+            <h3>Smart Matching</h3>
+            <p class="muted">Get personalized scholarship recommendations based on your profile and goals.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card notice-card">
+        <h2>⚠️ Important: Save Your Work</h2>
+        <p><strong>This tool does not store your data on any server.</strong></p>
+        <p>All your information (profile, saved scholarships, notes, and progress) lives only in your browser while this page is open.</p>
+        <p><strong>To keep your progress:</strong></p>
+        <ul>
+          <li>Click "Export Plan" to download a JSON file with all your data</li>
+          <li>Save this file somewhere safe (Desktop, Google Drive, etc.)</li>
+          <li>Use "Import Plan" to restore your data on your next visit</li>
+        </ul>
+        <p class="muted">💡 Tip: Export frequently (especially after adding scholarships or updating your profile).</p>
+      </section>
+
+      <section class="card">
+        <div class="action-buttons">
+          <button class="btn-primary btn-large" id="startNewBtn">
+            <span class="btn-icon">🚀</span>
+            Start New Plan
+          </button>
+          <button class="btn-secondary btn-large" id="importBtn">
+            <span class="btn-icon">📂</span>
+            Import Existing Plan
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Onboarding Wizard -->
+    <div id="onboardingScreen" style="display: none;">
+      <header>
+        <h1>Build Your Profile</h1>
+        <p class="sub">Tell us about yourself to get personalized scholarship matches. All fields are optional.</p>
+      </header>
+
+      <section class="card">
+        <h2>Basic Information</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="gradeLevel">Current Grade/Level</label>
+            <select id="gradeLevel" class="form-control">
+              <option value="">Select...</option>
+              <option value="hs_sophomore">High School Sophomore</option>
+              <option value="hs_junior">High School Junior</option>
+              <option value="hs_senior">High School Senior</option>
+              <option value="undergraduate">Undergraduate</option>
+              <option value="graduate">Graduate Student</option>
+              <option value="trade">Trade/Technical School</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="targetYear">Target Enrollment Year</label>
+            <input type="number" id="targetYear" class="form-control" placeholder="e.g., 2026" min="2024" max="2035" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="country">Country</label>
+            <select id="country" class="form-control">
+              <option value="US">United States</option>
+              <option value="CA">Canada</option>
+              <option value="UK">United Kingdom</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="state">State/Province</label>
+            <input type="text" id="state" class="form-control" placeholder="e.g., TX, CA, ON" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Academic Information</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="gpa">GPA (0.0 - 5.0)</label>
+            <input type="number" id="gpa" class="form-control" step="0.01" min="0" max="5" placeholder="e.g., 3.7" />
+          </div>
+          <div class="form-group">
+            <label for="sat">SAT Score (optional)</label>
+            <input type="number" id="sat" class="form-control" min="400" max="1600" placeholder="e.g., 1320" />
+          </div>
+          <div class="form-group">
+            <label for="act">ACT Score (optional)</label>
+            <input type="number" id="act" class="form-control" min="1" max="36" placeholder="e.g., 28" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="intendedMajors">Intended Major(s)</label>
+          <input type="text" id="intendedMajors" class="form-control" placeholder="e.g., Computer Science, Engineering" />
+          <small class="form-hint">Separate multiple majors with commas</small>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Financial Information</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="needBased" />
+              I'm seeking need-based aid
+            </label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="incomeBand">Approximate Household Income</label>
+            <select id="incomeBand" class="form-control">
+              <option value="">Prefer not to say</option>
+              <option value="0-40000">$0 - $40,000</option>
+              <option value="40000-80000">$40,000 - $80,000</option>
+              <option value="80000-120000">$80,000 - $120,000</option>
+              <option value="120000+">$120,000+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="firstGen" />
+              First-generation college student
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Activities & Involvement</h2>
+        <p class="muted">Select all that apply:</p>
+        <div class="checkbox-grid">
+          <label><input type="checkbox" value="athletics" class="activity-checkbox" /> Athletics/Sports</label>
+          <label><input type="checkbox" value="robotics" class="activity-checkbox" /> Robotics</label>
+          <label><input type="checkbox" value="band" class="activity-checkbox" /> Band/Music</label>
+          <label><input type="checkbox" value="volunteering" class="activity-checkbox" /> Volunteering</label>
+          <label><input type="checkbox" value="student_govt" class="activity-checkbox" /> Student Government</label>
+          <label><input type="checkbox" value="stem_club" class="activity-checkbox" /> STEM Club</label>
+          <label><input type="checkbox" value="debate" class="activity-checkbox" /> Debate/Speech</label>
+          <label><input type="checkbox" value="ffa" class="activity-checkbox" /> FFA/Agriculture</label>
+          <label><input type="checkbox" value="employment" class="activity-checkbox" /> Part-Time Job</label>
+          <label><input type="checkbox" value="arts" class="activity-checkbox" /> Visual/Performing Arts</label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Special Circumstances (Optional)</h2>
+        <div class="checkbox-grid">
+          <label><input type="checkbox" id="militaryFamily" /> Military/Veteran Family</label>
+          <label><input type="checkbox" id="disability" /> Student with Disability</label>
+          <label><input type="checkbox" id="ruralBackground" /> Rural Background</label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="action-buttons">
+          <button class="btn-secondary" id="cancelOnboardingBtn">Cancel</button>
+          <button class="btn-primary" id="completeOnboardingBtn">Complete Profile</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" style="display: none;">
+      <header>
+        <h1>Scholarship Coach</h1>
+        <div class="header-actions">
+          <button class="btn-secondary btn-sm" id="exportBtn">💾 Export Plan</button>
+          <button class="btn-secondary btn-sm" id="importMainBtn">📂 Import</button>
+          <span class="export-reminder" id="exportReminder" style="display: none;">
+            💡 Remember to export to save your progress
+            <button class="close-reminder" id="closeReminder">✕</button>
+          </span>
+        </div>
+      </header>
+
+      <!-- Tab Navigation -->
+      <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="search">🔍 Search Scholarships</button>
+        <button class="tab-btn" data-tab="saved">📋 My Scholarships</button>
+        <button class="tab-btn" data-tab="toolkit">🛠️ Application Toolkit</button>
+      </nav>
+
+      <!-- Tab: Scholarship Search -->
+      <div id="searchTab" class="tab-content active">
+        <section class="card">
+          <h2>Find Scholarships</h2>
+          <div class="filters-section">
+            <details open>
+              <summary><strong>Filters</strong></summary>
+              <div class="filters-grid">
+                <div class="form-group">
+                  <label for="filterLevel">Education Level</label>
+                  <select id="filterLevel" class="form-control">
+                    <option value="">All Levels</option>
+                    <option value="hs_junior">HS Junior</option>
+                    <option value="hs_senior">HS Senior</option>
+                    <option value="undergraduate">Undergraduate</option>
+                    <option value="graduate">Graduate</option>
+                    <option value="trade">Trade/Technical</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="filterMinAmount">Min Award ($)</label>
+                  <input type="number" id="filterMinAmount" class="form-control" placeholder="0" />
+                </div>
+                <div class="form-group">
+                  <label for="filterDeadline">Deadline</label>
+                  <select id="filterDeadline" class="form-control">
+                    <option value="">All Deadlines</option>
+                    <option value="30">Next 30 Days</option>
+                    <option value="90">Next 3 Months</option>
+                    <option value="180">Next 6 Months</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>
+                    <input type="checkbox" id="filterNoEssay" />
+                    No Essay Required
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label>
+                    <input type="checkbox" id="filterNeedBased" />
+                    Need-Based Only
+                  </label>
+                </div>
+              </div>
+              <button class="btn-primary" id="applyFiltersBtn">Apply Filters</button>
+            </details>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="search-header">
+            <h2>Matching Scholarships</h2>
+            <div class="search-stats" id="searchStats"></div>
+          </div>
+          <div id="scholarshipResults" class="scholarship-list"></div>
+        </section>
+      </div>
+
+      <!-- Tab: My Scholarships -->
+      <div id="savedTab" class="tab-content">
+        <section class="card">
+          <h2>My Saved Scholarships</h2>
+          <div class="saved-stats" id="savedStats"></div>
+          <div class="saved-filters">
+            <select id="statusFilter" class="form-control">
+              <option value="">All Statuses</option>
+              <option value="not_started">Not Started</option>
+              <option value="in_progress">In Progress</option>
+              <option value="submitted">Submitted</option>
+            </select>
+          </div>
+          <div id="savedScholarships" class="saved-list"></div>
+        </section>
+      </div>
+
+      <!-- Tab: Application Toolkit -->
+      <div id="toolkitTab" class="tab-content">
+        <section class="card">
+          <h2>Application Toolkit</h2>
+          <p class="sub">Prepare your scholarship materials</p>
+
+          <div class="toolkit-nav">
+            <button class="toolkit-btn active" data-tool="resume">📄 Résumé Builder</button>
+            <button class="toolkit-btn" data-tool="essay">✍️ Essay Helper</button>
+            <button class="toolkit-btn" data-tool="email">📧 Email Templates</button>
+            <button class="toolkit-btn" data-tool="interview">🎤 Interview Prep</button>
+          </div>
+        </section>
+
+        <!-- Resume Builder -->
+        <div id="resumeTool" class="tool-content active">
+          <section class="card">
+            <h3>Scholarship Résumé Builder</h3>
+            <div class="resume-section">
+              <h4>Education</h4>
+              <textarea id="resumeEducation" class="form-control" rows="3" placeholder="School name, GPA, graduation date..."></textarea>
+            </div>
+            <div class="resume-section">
+              <h4>Awards & Honors</h4>
+              <textarea id="resumeAwards" class="form-control" rows="3" placeholder="Academic awards, honor roll, special recognitions..."></textarea>
+            </div>
+            <div class="resume-section">
+              <h4>Activities & Leadership</h4>
+              <textarea id="resumeActivities" class="form-control" rows="4" placeholder="Clubs, sports, leadership positions..."></textarea>
+            </div>
+            <div class="resume-section">
+              <h4>Employment</h4>
+              <textarea id="resumeEmployment" class="form-control" rows="3" placeholder="Part-time jobs, internships..."></textarea>
+            </div>
+            <div class="resume-section">
+              <h4>Volunteering & Community Service</h4>
+              <textarea id="resumeVolunteering" class="form-control" rows="3" placeholder="Volunteer work, community involvement..."></textarea>
+            </div>
+            <div class="resume-section">
+              <h4>Skills</h4>
+              <textarea id="resumeSkills" class="form-control" rows="2" placeholder="Technical skills, languages, certifications..."></textarea>
+            </div>
+            <div class="action-buttons">
+              <button class="btn-secondary" id="previewResumeBtn">👁️ Preview</button>
+              <button class="btn-primary" id="copyResumeBtn">📋 Copy to Clipboard</button>
+            </div>
+          </section>
+        </div>
+
+        <!-- Essay Helper -->
+        <div id="essayTool" class="tool-content">
+          <section class="card">
+            <h3>Essay Helper</h3>
+            <p class="muted">Select a common prompt and organize your thoughts</p>
+            
+            <div class="form-group">
+              <label for="essayPrompt">Essay Prompt Type</label>
+              <select id="essayPrompt" class="form-control">
+                <option value="">Select a prompt...</option>
+                <option value="challenge">Overcoming a Challenge or Adversity</option>
+                <option value="major">Why This Major/Career Path?</option>
+                <option value="community">Giving Back to Your Community</option>
+                <option value="achievement">Significant Achievement or Experience</option>
+                <option value="leadership">Leadership Experience</option>
+                <option value="diversity">Contribution to Diversity</option>
+              </select>
+            </div>
+
+            <div id="essayGuide" style="display: none;">
+              <div class="notice">
+                <h4 id="essayGuideTitle"></h4>
+                <div id="essayGuideQuestions"></div>
+              </div>
+
+              <div class="essay-section">
+                <h4>Brainstorm Notes</h4>
+                <textarea id="essayBrainstorm" class="form-control" rows="4" placeholder="Free-form notes and ideas..."></textarea>
+              </div>
+
+              <div class="essay-section">
+                <h4>Outline</h4>
+                <div class="form-group">
+                  <label>Introduction</label>
+                  <textarea id="essayIntro" class="form-control" rows="2" placeholder="Hook and main idea..."></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Body/Main Points</label>
+                  <textarea id="essayBody" class="form-control" rows="4" placeholder="Key points and supporting details..."></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Conclusion</label>
+                  <textarea id="essayConclusion" class="form-control" rows="2" placeholder="Wrap up and future goals..."></textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Email Templates -->
+        <div id="emailTool" class="tool-content">
+          <section class="card">
+            <h3>Email Templates</h3>
+            <p class="muted">Pre-written templates for common scholarship communications</p>
+
+            <div class="template-list">
+              <div class="template-item">
+                <h4>Request Recommendation Letter</h4>
+                <div class="template-content">
+                  <p><strong>Subject:</strong> Recommendation Letter Request for [Scholarship Name]</p>
+                  <p>Dear [Teacher/Counselor Name],</p>
+                  <p>I hope this email finds you well. I am applying for [Scholarship Name] with a deadline of [Deadline Date], and I would be honored if you would write a letter of recommendation on my behalf.</p>
+                  <p>This scholarship focuses on [brief description], and I believe your perspective on my [academic work/leadership/character] would strongly support my application.</p>
+                  <p>If you are able to write this letter, I would be happy to provide you with my résumé, the scholarship details, and any other information that would be helpful. The letter is due by [Date].</p>
+                  <p>Thank you so much for considering my request.</p>
+                  <p>Sincerely,<br>[Your Name]</p>
+                </div>
+                <button class="btn-secondary btn-sm copy-template" data-template="recommendation">Copy Template</button>
+              </div>
+
+              <div class="template-item">
+                <h4>Thank You Email (After Award)</h4>
+                <div class="template-content">
+                  <p><strong>Subject:</strong> Thank You for [Scholarship Name]</p>
+                  <p>Dear [Scholarship Committee/Donor Name],</p>
+                  <p>I am writing to express my sincere gratitude for being selected as a recipient of [Scholarship Name]. I am truly honored and humbled by your generosity.</p>
+                  <p>This scholarship will help me [achieve specific goal/reduce financial burden/focus on studies], and I am committed to making the most of this opportunity through [academic excellence/community service/etc.].</p>
+                  <p>Thank you again for your investment in my future. I hope to make you proud and one day give back to future students in the same way you have helped me.</p>
+                  <p>With deepest appreciation,<br>[Your Name]</p>
+                </div>
+                <button class="btn-secondary btn-sm copy-template" data-template="thankyou">Copy Template</button>
+              </div>
+
+              <div class="template-item">
+                <h4>Clarification Request</h4>
+                <div class="template-content">
+                  <p><strong>Subject:</strong> Question About [Scholarship Name] Application</p>
+                  <p>Dear [Scholarship Organization],</p>
+                  <p>I am interested in applying for [Scholarship Name] and had a question about [specific requirement/eligibility/deadline].</p>
+                  <p>[State your specific question clearly]</p>
+                  <p>I want to ensure my application is complete and follows all guidelines. Thank you for taking the time to clarify this for me.</p>
+                  <p>Best regards,<br>[Your Name]<br>[Your Contact Information]</p>
+                </div>
+                <button class="btn-secondary btn-sm copy-template" data-template="clarification">Copy Template</button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Interview Prep -->
+        <div id="interviewTool" class="tool-content">
+          <section class="card">
+            <h3>Interview Preparation</h3>
+            <p class="muted">Common scholarship interview questions and tips</p>
+
+            <div class="interview-questions">
+              <div class="question-item">
+                <h4>Tell us about yourself.</h4>
+                <p class="muted"><strong>Tip:</strong> Keep it brief (2-3 minutes). Focus on your academic interests, key activities, and what makes you unique. End with why you're excited about your future.</p>
+              </div>
+
+              <div class="question-item">
+                <h4>Why do you deserve this scholarship?</h4>
+                <p class="muted"><strong>Tip:</strong> Focus on alignment between the scholarship's mission and your goals. Mention specific achievements and how the scholarship will help you make an impact.</p>
+              </div>
+
+              <div class="question-item">
+                <h4>What are your career goals?</h4>
+                <p class="muted"><strong>Tip:</strong> Be specific but realistic. Connect your major to future impact. Show you've thought about your path but remain open to growth.</p>
+              </div>
+
+              <div class="question-item">
+                <h4>Describe a challenge you've overcome.</h4>
+                <p class="muted"><strong>Tip:</strong> Use the STAR method (Situation, Task, Action, Result). Focus more on what you learned and how you grew than on the struggle itself.</p>
+              </div>
+
+              <div class="question-item">
+                <h4>How will you give back to your community?</h4>
+                <p class="muted"><strong>Tip:</strong> Show genuine commitment to service. Reference past volunteer work or specific plans. Connect it to your field of study if possible.</p>
+              </div>
+
+              <div class="question-item">
+                <h4>What makes you different from other candidates?</h4>
+                <p class="muted"><strong>Tip:</strong> Highlight unique experiences, perspectives, or combinations of interests. Be authentic—don't try to be someone you're not.</p>
+              </div>
+
+              <div class="question-item">
+                <h4>Do you have any questions for us?</h4>
+                <p class="muted"><strong>Tip:</strong> Always have 1-2 thoughtful questions prepared. Ask about the scholarship's history, past recipients, or how you can stay connected with the organization.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scholarship Detail Modal -->
+    <div id="scholarshipModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modalTitle"></h2>
+          <button class="modal-close" id="closeModal">✕</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+      </div>
+    </div>
+
+    <footer>
+      <p class="disclaimer"><strong>Disclaimer:</strong> This tool is for <em>informational and planning purposes only</em>. Always verify scholarship details, eligibility, and deadlines on official scholarship websites. All data is stored locally in your browser.</p>
+      <p class="muted">© <span id="y"></span> Kitmodo. <a href="/legal/terms.html">Terms</a> • <a href="/legal/privacy.html">Privacy</a></p>
+    </footer>
+  </div>
+
+  <input type="file" id="importFileInput" accept=".json" style="display: none;" />
+
+  <script src="app.js"></script>
+</body>
+</html>
