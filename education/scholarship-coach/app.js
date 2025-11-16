@@ -41,7 +41,7 @@
   // ===========================
   async function loadScholarshipsData() {
     try {
-      const response = await fetch('scholarships.json');
+      const response = await fetch('/data/scholarships.json');
       allScholarships = await response.json();
       filteredScholarships = [...allScholarships];
     } catch (error) {
@@ -214,9 +214,14 @@
     };
     
     filteredScholarships = allScholarships.filter(scholarship => {
-      // Level filter
-      if (filters.level && !scholarship.levels.includes(filters.level)) {
-        return false;
+      // Level filter - normalize comparison
+      if (filters.level) {
+        const normalizedLevel = filters.level.replace('_', ' ').toLowerCase();
+        const hasMatch = scholarship.levelOfStudy.some(level => 
+          level.toLowerCase().includes(normalizedLevel) || 
+          normalizedLevel.includes(level.toLowerCase())
+        );
+        if (!hasMatch) return false;
       }
       
       // Min amount filter
@@ -225,7 +230,7 @@
       }
       
       // Deadline filter
-      if (filters.deadline) {
+      if (filters.deadline && scholarship.deadline) {
         const deadlineDate = new Date(scholarship.deadline);
         const now = new Date();
         const daysDiff = Math.ceil((deadlineDate - now) / (1000 * 60 * 60 * 24));
@@ -266,14 +271,14 @@
     if (!profile) return 0;
     
     // GPA match
-    if (profile.gpa && scholarship.minGpa) {
-      if (profile.gpa >= scholarship.minGpa) score += 20;
+    if (profile.gpa && scholarship.minGPA) {
+      if (profile.gpa >= scholarship.minGPA) score += 20;
     }
     
     // Major match
-    if (scholarship.majors.length > 0 && profile.intendedMajors.length > 0) {
+    if (scholarship.eligibleMajors.length > 0 && profile.intendedMajors.length > 0) {
       const majorMatch = profile.intendedMajors.some(m => 
-        scholarship.majors.some(sm => 
+        scholarship.eligibleMajors.some(sm => 
           m.toLowerCase().includes(sm.toLowerCase()) || 
           sm.toLowerCase().includes(m.toLowerCase())
         )
@@ -281,10 +286,11 @@
       if (majorMatch) score += 25;
     }
     
-    // Activities match
-    if (scholarship.activities.length > 0) {
+    // Activities match - extract from tags
+    const activityTags = ['athletics', 'robotics', 'band', 'volunteering', 'stem_club', 'arts', 'ffa'];
+    if (scholarship.tags.length > 0) {
       const activityMatches = profile.activities.filter(a => 
-        scholarship.activities.includes(a)
+        scholarship.tags.some(tag => tag.toLowerCase().includes(a.toLowerCase()))
       ).length;
       score += activityMatches * 10;
     }
@@ -295,24 +301,24 @@
     }
     
     // State match
-    if (scholarship.statesEligible.length > 0) {
-      if (scholarship.statesEligible.includes(profile.state)) {
+    if (scholarship.states.length > 0) {
+      if (scholarship.states.includes(profile.state)) {
         score += 10;
       }
     }
     
     // First-gen match
-    if (scholarship.demographics.includes('first_gen') && profile.financial.firstGen) {
+    if (scholarship.eligibility.firstGenCollege && profile.financial.firstGen) {
       score += 15;
     }
     
     // Special demographics
     if (profile.specialFlags.militaryFamily && 
-        scholarship.demographics.includes('military_family')) {
+        scholarship.eligibility.specialGroups.includes('Veteran')) {
       score += 15;
     }
     if (profile.specialFlags.ruralBackground && 
-        scholarship.demographics.includes('rural')) {
+        scholarship.eligibility.specialGroups.includes('Rural')) {
       score += 15;
     }
     
@@ -340,8 +346,8 @@
     
     container.innerHTML = filteredScholarships.map(scholarship => {
       const isSaved = workspace.savedScholarships.some(s => s.scholarshipId === scholarship.id);
-      const deadline = new Date(scholarship.deadline);
-      const daysUntil = Math.ceil((deadline - new Date()) / (1000 * 60 * 60 * 24));
+      const deadline = scholarship.deadline ? new Date(scholarship.deadline) : null;
+      const daysUntil = deadline ? Math.ceil((deadline - new Date()) / (1000 * 60 * 60 * 24)) : null;
       
       let fitBadge = '';
       if (scholarship.fitScore !== undefined) {
@@ -358,31 +364,37 @@
       const effortText = scholarship.requiresEssay === 'none' ? 'No Essay' :
                         scholarship.requiresEssay === 'short' ? 'Short Essay' : 'Essay Required';
       
+      // Generate eligibility summary from new schema
+      const eligibilitySummary = [];
+      if (scholarship.minGPA) eligibilitySummary.push(`${scholarship.minGPA}+ GPA required`);
+      if (scholarship.eligibleMajors.length > 0) eligibilitySummary.push(`Major: ${scholarship.eligibleMajors.slice(0, 2).join(', ')}`);
+      if (scholarship.states.length > 0) eligibilitySummary.push(`States: ${scholarship.states.slice(0, 3).join(', ')}`);
+      if (eligibilitySummary.length === 0) eligibilitySummary.push('See details for eligibility requirements');
+      
       return `
         <div class="scholarship-card">
           <div class="scholarship-header">
             <div>
-              <h3 class="scholarship-title">${scholarship.name}</h3>
+              <h3 class="scholarship-title">${scholarship.title}</h3>
               ${fitBadge}
             </div>
             <div class="scholarship-amount">$${scholarship.amountMin.toLocaleString()}${scholarship.amountMin !== scholarship.amountMax ? ` - $${scholarship.amountMax.toLocaleString()}` : ''}</div>
           </div>
           
           <div class="scholarship-meta">
-            <span>📅 ${deadline.toLocaleDateString()} ${daysUntil > 0 ? `(${daysUntil} days)` : '(Past due)'}</span>
-            <span>🎓 ${scholarship.levels.map(l => l.replace('_', ' ')).join(', ')}</span>
-            ${scholarship.renewable ? '<span>🔄 Renewable</span>' : ''}
+            ${deadline ? `<span>📅 ${deadline.toLocaleDateString()} ${daysUntil > 0 ? `(${daysUntil} days)` : '(Past due)'}</span>` : '<span>📅 Rolling deadline</span>'}
+            <span>🎓 ${scholarship.levelOfStudy.join(', ')}</span>
           </div>
           
           <div class="scholarship-tags">
             <span class="tag ${effortTag}">${effortText}</span>
             ${scholarship.requiresRecommendation ? '<span class="tag">Rec Letter</span>' : ''}
-            ${scholarship.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
+            ${scholarship.tags.slice(0, 3).map(tag => `<span class="tag">${tag.replace(/_/g, ' ')}</span>`).join('')}
           </div>
           
           <div class="scholarship-eligibility">
             <ul>
-              ${scholarship.eligibility.slice(0, 3).map(e => `<li>${e}</li>`).join('')}
+              ${eligibilitySummary.slice(0, 3).map(e => `<li>${e}</li>`).join('')}
             </ul>
           </div>
           
@@ -416,15 +428,26 @@
     const title = document.getElementById('modalTitle');
     const body = document.getElementById('modalBody');
     
-    title.textContent = scholarship.name;
+    title.textContent = scholarship.title;
     
-    const deadline = new Date(scholarship.deadline);
+    const deadline = scholarship.deadline ? new Date(scholarship.deadline) : null;
+    
+    // Build eligibility list from new schema
+    const eligibilityList = [];
+    if (scholarship.minGPA) eligibilityList.push(`Minimum ${scholarship.minGPA} GPA`);
+    if (scholarship.eligibleMajors.length > 0) eligibilityList.push(`Majors: ${scholarship.eligibleMajors.join(', ')}`);
+    if (scholarship.states.length > 0) eligibilityList.push(`States: ${scholarship.states.join(', ')}`);
+    if (scholarship.eligibility.citizenship.length > 0) eligibilityList.push(`Citizenship: ${scholarship.eligibility.citizenship.join(', ')}`);
+    if (scholarship.eligibility.incomeMaxUSD) eligibilityList.push(`Household income under $${scholarship.eligibility.incomeMaxUSD.toLocaleString()}`);
+    if (scholarship.eligibility.firstGenCollege) eligibilityList.push('First-generation college student');
+    if (scholarship.eligibility.specialGroups.length > 0) eligibilityList.push(scholarship.eligibility.specialGroups.join(', '));
+    if (eligibilityList.length === 0) eligibilityList.push('See official website for detailed eligibility requirements');
     
     body.innerHTML = `
       <div class="scholarship-meta">
         <span><strong>Award:</strong> $${scholarship.amountMin.toLocaleString()}${scholarship.amountMin !== scholarship.amountMax ? ` - $${scholarship.amountMax.toLocaleString()}` : ''}</span>
-        <span><strong>Deadline:</strong> ${deadline.toLocaleDateString()}</span>
-        <span><strong>Renewable:</strong> ${scholarship.renewable ? 'Yes' : 'No'}</span>
+        ${deadline ? `<span><strong>Deadline:</strong> ${deadline.toLocaleDateString()}</span>` : '<span><strong>Deadline:</strong> Rolling</span>'}
+        <span><strong>Provider:</strong> ${scholarship.provider}</span>
       </div>
       
       <h3>Description</h3>
@@ -432,18 +455,18 @@
       
       <h3>Eligibility Requirements</h3>
       <ul>
-        ${scholarship.eligibility.map(e => `<li>${e}</li>`).join('')}
+        ${eligibilityList.map(e => `<li>${e}</li>`).join('')}
       </ul>
       
       <h3>Application Requirements</h3>
       <ul>
         <li><strong>Essay:</strong> ${scholarship.requiresEssay === 'none' ? 'Not required' : scholarship.requiresEssay === 'short' ? 'Short essay (250-500 words)' : 'Essay required (500+ words)'}</li>
         <li><strong>Recommendation:</strong> ${scholarship.requiresRecommendation ? 'Required' : 'Not required'}</li>
-        <li><strong>Effort Level:</strong> ${scholarship.applicationEffortLevel}/4</li>
+        <li><strong>Effort Level:</strong> ${scholarship.applicationEffortLevel}/3</li>
       </ul>
       
       <h3>Official Website</h3>
-      <p><a href="${scholarship.url}" target="_blank" rel="noopener noreferrer">${scholarship.url}</a></p>
+      <p><a href="${scholarship.officialUrl}" target="_blank" rel="noopener noreferrer">${scholarship.officialUrl}</a></p>
       
       <div class="action-buttons">
         <button class="btn-secondary" onclick="scholarshipCoach.closeModal()">Close</button>
@@ -488,7 +511,7 @@
     closeModal();
     showExportReminder();
     
-    alert(`✅ Saved "${scholarship.name}" to My Scholarships!`);
+    alert(`✅ Saved "${scholarship.title}" to My Scholarships!`);
   }
   
   // ===========================
@@ -513,7 +536,7 @@
     
     const upcoming = workspace.savedScholarships.filter(saved => {
       const scholarship = allScholarships.find(s => s.id === saved.scholarshipId);
-      if (!scholarship) return false;
+      if (!scholarship || !scholarship.deadline) return false;
       const daysUntil = Math.ceil((new Date(scholarship.deadline) - new Date()) / (1000 * 60 * 60 * 24));
       return daysUntil > 0 && daysUntil <= 14;
     }).length;
@@ -550,17 +573,17 @@
       const scholarship = allScholarships.find(s => s.id === saved.scholarshipId);
       if (!scholarship) return '';
       
-      const deadline = new Date(scholarship.deadline);
-      const daysUntil = Math.ceil((deadline - new Date()) / (1000 * 60 * 60 * 24));
+      const deadline = scholarship.deadline ? new Date(scholarship.deadline) : null;
+      const daysUntil = deadline ? Math.ceil((deadline - new Date()) / (1000 * 60 * 60 * 24)) : null;
       
       return `
         <div class="saved-item">
           <div class="saved-header">
             <div>
-              <h3 class="scholarship-title">${scholarship.name}</h3>
+              <h3 class="scholarship-title">${scholarship.title}</h3>
               <div class="scholarship-meta">
                 <span>💰 $${scholarship.amountMin.toLocaleString()}${scholarship.amountMin !== scholarship.amountMax ? ` - $${scholarship.amountMax.toLocaleString()}` : ''}</span>
-                <span>📅 ${deadline.toLocaleDateString()} ${daysUntil > 0 ? `(${daysUntil} days)` : '(Past due)'}</span>
+                ${deadline ? `<span>📅 ${deadline.toLocaleDateString()} ${daysUntil > 0 ? `(${daysUntil} days)` : '(Past due)'}</span>` : '<span>📅 Rolling deadline</span>'}
               </div>
             </div>
             <span class="status-badge status-${saved.status}">
@@ -609,7 +632,7 @@
           </div>
           
           <div class="action-buttons">
-            <a href="${scholarship.url}" target="_blank" class="btn-secondary btn-sm">🔗 View Official Page</a>
+            <a href="${scholarship.officialUrl}" target="_blank" class="btn-secondary btn-sm">🔗 View Official Page</a>
             <button class="btn-secondary btn-sm" onclick="scholarshipCoach.removeSaved('${saved.scholarshipId}')">
               🗑️ Remove
             </button>
