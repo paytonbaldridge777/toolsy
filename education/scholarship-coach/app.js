@@ -385,7 +385,7 @@
           
           <div class="scholarship-meta">
             ${deadline ? `<span>📅 ${deadline.toLocaleDateString()} ${daysUntil > 0 ? `(${daysUntil} days)` : '(Past due)'}</span>` : '<span>📅 Rolling deadline</span>'}
-            <span>🎓 ${scholarship.levelOfStudy.join(', ')}</span>
+            <span>🎓 ${scholarship.levelOfStudy.length > 0 ? scholarship.levelOfStudy.join(', ') : 'All levels'}</span>
           </div>
           
           <div class="scholarship-tags">
