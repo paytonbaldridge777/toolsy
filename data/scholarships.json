@@ -1,411 +1,16 @@
 [
   {
-    "id": "COS-001",
-    "title": "STEM Excellence Scholarship",
-    "provider": "National Science Foundation",
-    "source": "CareerOneStop",
-    "amountMin": 2000,
-    "amountMax": 5000,
-    "currency": "USD",
-    "deadline": "2026-03-15",
-    "levelOfStudy": [
-      "Undergraduate",
-      "Graduate"
-    ],
+    "id": "WD-Q1425428",
+    "title": "Fulbright Program",
+    "provider": "United States - Fulbright Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
     "countries": [
-      "US"
-    ],
-    "states": [],
-    "needsBased": false,
-    "meritBased": true,
-    "minGPA": 3.5,
-    "eligibleMajors": [
-      "STEM"
-    ],
-    "eligibility": {
-      "citizenship": [
-        "US Citizen"
-      ],
-      "incomeMaxUSD": null,
-      "firstGenCollege": false,
-      "specialGroups": []
-    },
-    "requiresEssay": "none",
-    "requiresRecommendation": false,
-    "applicationEffortLevel": 1,
-    "tags": [
-      "merit_based",
-      "no_essay",
-      "national",
-      "stem",
-      "merit-based",
-      "research"
-    ],
-    "officialUrl": "https://example.com/stem-scholarship",
-    "description": "Supporting outstanding students pursuing STEM degrees with demonstrated academic excellence and research potential.",
-    "lastVerified": "2025-11-18",
-    "rawSource": {
-      "careerOneStopId": "COS-001"
-    }
-  },
-  {
-    "id": "COS-002",
-    "title": "First Generation College Student Grant",
-    "provider": "Educational Opportunity Foundation",
-    "source": "CareerOneStop",
-    "amountMin": 3000,
-    "amountMax": 7500,
-    "currency": "USD",
-    "deadline": "2026-02-01",
-    "levelOfStudy": [
-      "High School",
-      "Undergraduate"
-    ],
-    "countries": [
-      "US"
-    ],
-    "states": [],
-    "needsBased": true,
-    "meritBased": false,
-    "minGPA": 2.5,
-    "eligibleMajors": [],
-    "eligibility": {
-      "citizenship": [
-        "US Citizen"
-      ],
-      "incomeMaxUSD": 60000,
-      "firstGenCollege": true,
-      "specialGroups": []
-    },
-    "requiresEssay": "none",
-    "requiresRecommendation": false,
-    "applicationEffortLevel": 1,
-    "tags": [
-      "need_based",
-      "no_essay",
-      "national",
-      "first-generation",
-      "need-based",
-      "diversity"
-    ],
-    "officialUrl": "https://example.com/firstgen-grant",
-    "description": "Empowering first-generation college students from underserved communities to achieve their educational goals.",
-    "lastVerified": "2025-11-18",
-    "rawSource": {
-      "careerOneStopId": "COS-002"
-    }
-  },
-  {
-    "id": "COS-003",
-    "title": "Women in Technology Scholarship",
-    "provider": "Tech Women United",
-    "source": "CareerOneStop",
-    "amountMin": 2500,
-    "amountMax": 6000,
-    "currency": "USD",
-    "deadline": "2026-04-30",
-    "levelOfStudy": [
-      "Undergraduate",
-      "Graduate"
-    ],
-    "countries": [
-      "US"
-    ],
-    "states": [],
-    "needsBased": false,
-    "meritBased": true,
-    "minGPA": 3,
-    "eligibleMajors": [
-      "Engineering",
-      "STEM"
-    ],
-    "eligibility": {
-      "citizenship": [
-        "US Citizen"
-      ],
-      "incomeMaxUSD": null,
-      "firstGenCollege": false,
-      "specialGroups": [
-        "Women"
-      ]
-    },
-    "requiresEssay": "none",
-    "requiresRecommendation": false,
-    "applicationEffortLevel": 1,
-    "tags": [
-      "merit_based",
-      "no_essay",
-      "national",
-      "women",
-      "technology",
-      "stem",
-      "diversity"
-    ],
-    "officialUrl": "https://example.com/women-tech",
-    "description": "Supporting women pursuing careers in technology, computer science, and engineering fields.",
-    "lastVerified": "2025-11-18",
-    "rawSource": {
-      "careerOneStopId": "COS-003"
-    }
-  },
-  {
-    "id": "COS-004",
-    "title": "Community Service Leader Award",
-    "provider": "Volunteers of America",
-    "source": "CareerOneStop",
-    "amountMin": 1000,
-    "amountMax": 3000,
-    "currency": "USD",
-    "deadline": "2026-05-15",
-    "levelOfStudy": [
-      "High School",
-      "Undergraduate"
-    ],
-    "countries": [
-      "US"
-    ],
-    "states": [],
-    "needsBased": false,
-    "meritBased": false,
-    "minGPA": 2.8,
-    "eligibleMajors": [],
-    "eligibility": {
-      "citizenship": [
-        "US Citizen"
-      ],
-      "incomeMaxUSD": null,
-      "firstGenCollege": false,
-      "specialGroups": []
-    },
-    "requiresEssay": "none",
-    "requiresRecommendation": false,
-    "applicationEffortLevel": 1,
-    "tags": [
-      "no_essay",
-      "national",
-      "community_service",
-      "leadership",
-      "merit-based"
-    ],
-    "officialUrl": "https://example.com/community-award",
-    "description": "Recognizing students who have demonstrated exceptional commitment to community service and leadership.",
-    "lastVerified": "2025-11-18",
-    "rawSource": {
-      "careerOneStopId": "COS-004"
-    }
-  },
-  {
-    "id": "COS-005",
-    "title": "Rural Student Success Scholarship",
-    "provider": "Rural Education Alliance",
-    "source": "CareerOneStop",
-    "amountMin": 2000,
-    "amountMax": 5000,
-    "currency": "USD",
-    "deadline": "2026-03-01",
-    "levelOfStudy": [
-      "High School",
-      "Undergraduate"
-    ],
-    "countries": [
-      "US"
-    ],
-    "states": [],
-    "needsBased": true,
-    "meritBased": true,
-    "minGPA": 3,
-    "eligibleMajors": [],
-    "eligibility": {
-      "citizenship": [
-        "US Citizen"
-      ],
-      "incomeMaxUSD": null,
-      "firstGenCollege": false,
-      "specialGroups": [
-        "Rural"
-      ]
-    },
-    "requiresEssay": "none",
-    "requiresRecommendation": false,
-    "applicationEffortLevel": 1,
-    "tags": [
-      "need_based",
-      "merit_based",
-      "no_essay",
-      "national",
-      "rural",
-      "need-based",
-      "access"
-    ],
-    "officialUrl": "https://example.com/rural-scholarship",
-    "description": "Supporting talented students from rural communities in accessing higher education opportunities.",
-    "lastVerified": "2025-11-18",
-    "rawSource": {
-      "careerOneStopId": "COS-005"
-    }
-  },
-  {
-    "id": "COS-006",
-    "title": "Military Family Education Grant",
-    "provider": "Armed Forces Foundation",
-    "source": "CareerOneStop",
-    "amountMin": 2500,
-    "amountMax": 8000,
-    "currency": "USD",
-    "deadline": "2026-06-01",
-    "levelOfStudy": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "countries": [
-      "US"
-    ],
-    "states": [],
-    "needsBased": false,
-    "meritBased": false,
-    "minGPA": 2.5,
-    "eligibleMajors": [],
-    "eligibility": {
-      "citizenship": [
-        "US Citizen"
-      ],
-      "incomeMaxUSD": null,
-      "firstGenCollege": false,
-      "specialGroups": [
-        "Veteran"
-      ]
-    },
-    "requiresEssay": "none",
-    "requiresRecommendation": false,
-    "applicationEffortLevel": 1,
-    "tags": [
-      "no_essay",
-      "national",
-      "military",
-      "veterans",
-      "family"
-    ],
-    "officialUrl": "https://example.com/military-grant",
-    "description": "Supporting the education of children and spouses of active duty and veteran military members.",
-    "lastVerified": "2025-11-18",
-    "rawSource": {
-      "careerOneStopId": "COS-006"
-    }
-  },
-  {
-    "id": "COS-007",
-    "title": "Healthcare Professional Scholarship",
-    "provider": "Medical Education Fund",
-    "source": "CareerOneStop",
-    "amountMin": 3000,
-    "amountMax": 10000,
-    "currency": "USD",
-    "deadline": "2026-02-28",
-    "levelOfStudy": [
-      "Undergraduate",
-      "Graduate"
-    ],
-    "countries": [
-      "US"
-    ],
-    "states": [],
-    "needsBased": false,
-    "meritBased": true,
-    "minGPA": 3.2,
-    "eligibleMajors": [
-      "Healthcare"
-    ],
-    "eligibility": {
-      "citizenship": [
-        "US Citizen"
-      ],
-      "incomeMaxUSD": null,
-      "firstGenCollege": false,
-      "specialGroups": []
-    },
-    "requiresEssay": "none",
-    "requiresRecommendation": false,
-    "applicationEffortLevel": 1,
-    "tags": [
-      "merit_based",
-      "no_essay",
-      "national",
-      "healthcare",
-      "professional",
-      "merit-based"
-    ],
-    "officialUrl": "https://example.com/healthcare-scholarship",
-    "description": "Funding future healthcare professionals including nurses, doctors, therapists, and allied health workers.",
-    "lastVerified": "2025-11-18",
-    "rawSource": {
-      "careerOneStopId": "COS-007"
-    }
-  },
-  {
-    "id": "COS-008",
-    "title": "Arts & Creativity Scholarship",
-    "provider": "National Arts Foundation",
-    "source": "CareerOneStop",
-    "amountMin": 1500,
-    "amountMax": 4000,
-    "currency": "USD",
-    "deadline": "2026-04-15",
-    "levelOfStudy": [
-      "High School",
-      "Undergraduate"
-    ],
-    "countries": [
-      "US"
-    ],
-    "states": [],
-    "needsBased": false,
-    "meritBased": false,
-    "minGPA": 2.5,
-    "eligibleMajors": [
-      "Arts"
-    ],
-    "eligibility": {
-      "citizenship": [
-        "US Citizen"
-      ],
-      "incomeMaxUSD": null,
-      "firstGenCollege": false,
-      "specialGroups": []
-    },
-    "requiresEssay": "none",
-    "requiresRecommendation": false,
-    "applicationEffortLevel": 1,
-    "tags": [
-      "no_essay",
-      "national",
-      "arts",
-      "creative",
-      "talent-based"
-    ],
-    "officialUrl": "https://example.com/arts-scholarship",
-    "description": "Celebrating and supporting talented students pursuing careers in visual arts, performing arts, and creative fields.",
-    "lastVerified": "2025-11-18",
-    "rawSource": {
-      "careerOneStopId": "COS-008"
-    }
-  },
-  {
-    "id": "COS-009",
-    "title": "Quick Apply No-Essay Scholarship",
-    "provider": "Education Access Fund",
-    "source": "CareerOneStop",
-    "amountMin": 500,
-    "amountMax": 1000,
-    "currency": "USD",
-    "deadline": "2026-07-31",
-    "levelOfStudy": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "countries": [
-      "US"
+      "United States"
     ],
     "states": [],
     "needsBased": false,
@@ -413,9 +18,7 @@
     "minGPA": null,
     "eligibleMajors": [],
     "eligibility": {
-      "citizenship": [
-        "US Citizen"
-      ],
+      "citizenship": [],
       "incomeMaxUSD": null,
       "firstGenCollege": false,
       "specialGroups": []
@@ -424,45 +27,35 @@
     "requiresRecommendation": false,
     "applicationEffortLevel": 1,
     "tags": [
-      "no_essay",
-      "national",
-      "quick_apply",
-      "general"
+      "seed_wikidata"
     ],
-    "officialUrl": "https://example.com/quick-apply",
-    "description": "Simple, fast application scholarship requiring no essay - just basic information.",
+    "officialUrl": "https://fulbrightprogram.org",
+    "description": "educational scholarship program sponsored by the United States government",
     "lastVerified": "2025-11-18",
     "rawSource": {
-      "careerOneStopId": "COS-009"
+      "wikidataId": "Q1425428"
     }
   },
   {
-    "id": "COS-010",
-    "title": "Business & Entrepreneurship Scholarship",
-    "provider": "Future Business Leaders Foundation",
-    "source": "CareerOneStop",
-    "amountMin": 2000,
-    "amountMax": 6000,
-    "currency": "USD",
-    "deadline": "2026-03-30",
-    "levelOfStudy": [
-      "Undergraduate",
-      "Graduate"
-    ],
+    "id": "WD-Q1373342",
+    "title": "Rhodes Scholarship",
+    "provider": "United Kingdom - Rhodes Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
     "countries": [
-      "US"
+      "United Kingdom"
     ],
     "states": [],
     "needsBased": false,
-    "meritBased": true,
-    "minGPA": 3,
-    "eligibleMajors": [
-      "Business"
-    ],
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
     "eligibility": {
-      "citizenship": [
-        "US Citizen"
-      ],
+      "citizenship": [],
       "incomeMaxUSD": null,
       "firstGenCollege": false,
       "specialGroups": []
@@ -471,18 +64,679 @@
     "requiresRecommendation": false,
     "applicationEffortLevel": 1,
     "tags": [
-      "merit_based",
-      "no_essay",
-      "national",
-      "business",
-      "entrepreneurship",
-      "leadership"
+      "seed_wikidata"
     ],
-    "officialUrl": "https://example.com/business-scholarship",
-    "description": "Supporting future entrepreneurs and business leaders with innovative ideas and leadership potential.",
+    "officialUrl": "https://www.rhodeshouse.ox.ac.uk",
+    "description": "international postgraduate award for students to study at the University of Oxford",
     "lastVerified": "2025-11-18",
     "rawSource": {
-      "careerOneStopId": "COS-010"
+      "wikidataId": "Q1373342"
+    }
+  },
+  {
+    "id": "WD-Q1537654",
+    "title": "Chevening Scholarship",
+    "provider": "United Kingdom - Chevening Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United Kingdom"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.chevening.org",
+    "description": "scholarship for international students to study in the United Kingdom",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1537654"
+    }
+  },
+  {
+    "id": "WD-Q276464",
+    "title": "Erasmus Programme",
+    "provider": "European Union - Erasmus Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "European Union"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://erasmus-plus.ec.europa.eu",
+    "description": "European Union student exchange programme",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q276464"
+    }
+  },
+  {
+    "id": "WD-Q1056422",
+    "title": "Gates Cambridge Scholarship",
+    "provider": "United Kingdom - Gates Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United Kingdom"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.gatescambridge.org",
+    "description": "international postgraduate award to study at University of Cambridge",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1056422"
+    }
+  },
+  {
+    "id": "WD-Q1373487",
+    "title": "Marshall Scholarship",
+    "provider": "United Kingdom - Marshall Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United Kingdom"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.marshallscholarship.org",
+    "description": "postgraduate scholarship for American students to study in the United Kingdom",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1373487"
+    }
+  },
+  {
+    "id": "WD-Q1418342",
+    "title": "DAAD",
+    "provider": "Germany - DAAD Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "Germany"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.daad.de",
+    "description": "German academic exchange service",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1418342"
+    }
+  },
+  {
+    "id": "WD-Q735134",
+    "title": "Commonwealth Scholarship",
+    "provider": "United Kingdom - Commonwealth Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United Kingdom"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://cscuk.fcdo.gov.uk",
+    "description": "scholarship program for Commonwealth citizens",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q735134"
+    }
+  },
+  {
+    "id": "WD-Q1191970",
+    "title": "Schwarzman Scholars",
+    "provider": "China - Schwarzman Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "China"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.schwarzmanscholars.org",
+    "description": "scholarship program at Tsinghua University in Beijing",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1191970"
+    }
+  },
+  {
+    "id": "WD-Q847459",
+    "title": "Monbukagakusho Scholarship",
+    "provider": "Japan - Monbukagakusho Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "Japan"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.mext.go.jp/en/policy/education/highered/title02",
+    "description": "scholarship program by the Japanese government",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q847459"
+    }
+  },
+  {
+    "id": "WD-Q4354785",
+    "title": "Vanier Canada Graduate Scholarships",
+    "provider": "Canada - Vanier Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "Canada"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://vanier.gc.ca",
+    "description": "doctoral scholarship program in Canada",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q4354785"
+    }
+  },
+  {
+    "id": "WD-Q30261674",
+    "title": "Knight-Hennessy Scholars",
+    "provider": "United States - Knight-Hennessy Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United States"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://knight-hennessy.stanford.edu",
+    "description": "graduate scholarship program at Stanford University",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q30261674"
+    }
+  },
+  {
+    "id": "WD-Q1373364",
+    "title": "Truman Scholarship",
+    "provider": "United States - Truman Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United States"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.truman.gov",
+    "description": "scholarship for American college students who plan to pursue graduate education in public service",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1373364"
+    }
+  },
+  {
+    "id": "WD-Q7313849",
+    "title": "Renfrew Scholarship",
+    "provider": "United Kingdom - Renfrew Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United Kingdom"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": null,
+    "description": "scholarship for students in higher education",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q7313849"
+    }
+  },
+  {
+    "id": "WD-Q4354825",
+    "title": "Australia Awards",
+    "provider": "Australia - Australia Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "Australia"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://australiaawards.gov.au",
+    "description": "scholarship program funded by the Australian Government",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q4354825"
+    }
+  },
+  {
+    "id": "WD-Q30263123",
+    "title": "Schwarzman Scholarship Program",
+    "provider": "China - Schwarzman Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "China"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.schwarzmanscholars.org",
+    "description": "fully-funded one year masters degree program at Tsinghua University",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q30263123"
+    }
+  },
+  {
+    "id": "WD-Q1141824",
+    "title": "Goldwater Scholarship",
+    "provider": "United States - Goldwater Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United States"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://goldwaterscholarship.gov",
+    "description": "scholarship for undergraduate students in STEM fields",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1141824"
+    }
+  },
+  {
+    "id": "WD-Q2043730",
+    "title": "Udall Scholarship",
+    "provider": "United States - Udall Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United States"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://udall.gov",
+    "description": "scholarship for Native American and Alaska Native students",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q2043730"
+    }
+  },
+  {
+    "id": "WD-Q17302837",
+    "title": "Mitchell Scholarship",
+    "provider": "Ireland - Mitchell Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "Ireland"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.us-irelandalliance.org/mitchell",
+    "description": "scholarship for American students to study in Ireland",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q17302837"
+    }
+  },
+  {
+    "id": "WD-Q1141745",
+    "title": "Beinecke Scholarship",
+    "provider": "United States - Beinecke Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United States"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": null,
+    "description": "scholarship for graduate study in arts, humanities, or social sciences",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1141745"
     }
   }
 ]

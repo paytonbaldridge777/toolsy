@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "update-scholarships": "tsx scripts/update-scholarships.ts",
+    "build:scholarships:wikidata": "tsx scripts/fetch-wikidata-scholarships.ts",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
