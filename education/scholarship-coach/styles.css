@@ -821,3 +821,85 @@ footer a:hover {
     align-items: stretch;
   }
 }
+
+/* Scholarships.com Search Styles */
+.scholarships-com-notice {
+  background: rgba(106, 163, 255, 0.1);
+  border: 1px solid rgba(106, 163, 255, 0.3);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.scholarships-com-notice ul {
+  margin: 8px 0 0;
+  padding-left: 24px;
+}
+
+.scholarships-com-notice li {
+  margin: 6px 0;
+  color: var(--text);
+}
+
+.scholarships-search-form {
+  display: grid;
+  gap: 16px;
+}
+
+.scholarship-links-container {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.scholarship-link-card {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: all .2s;
+}
+
+.scholarship-link-card:hover {
+  border-color: var(--accent);
+  background: rgba(106, 163, 255, 0.05);
+}
+
+.link-category {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 120px;
+}
+
+.link-label {
+  flex: 1;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.scholarship-link-card .btn-sm {
+  white-space: nowrap;
+  min-width: 200px;
+}
+
+@media (max-width: 768px) {
+  .scholarship-link-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .link-category {
+    min-width: auto;
+  }
+  
+  .scholarship-link-card .btn-sm {
+    width: 100%;
+  }
+}

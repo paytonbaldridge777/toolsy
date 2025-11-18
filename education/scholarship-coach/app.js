@@ -79,8 +79,8 @@
       });
     });
     
-    // Search filters
-    document.getElementById('applyFiltersBtn').addEventListener('click', applySearchFilters);
+    // Scholarships.com search
+    document.getElementById('generateLinksBtn').addEventListener('click', generateScholarshipComLinks);
     
     // Saved scholarships filter
     document.getElementById('statusFilter').addEventListener('change', updateSavedList);
@@ -139,7 +139,7 @@
     document.getElementById('mainApp').style.display = 'block';
     
     // Initialize main app
-    applySearchFilters();
+    prepopulateScholarshipSearch();
     updateSavedList();
   }
   
@@ -202,316 +202,110 @@
   }
   
   // ===========================
-  // Scholarship Search & Filtering
+  // Scholarships.com Search
   // ===========================
-  function applySearchFilters() {
-    const filters = {
-      level: document.getElementById('filterLevel').value,
-      minAmount: parseInt(document.getElementById('filterMinAmount').value) || 0,
-      deadline: document.getElementById('filterDeadline').value,
-      noEssay: document.getElementById('filterNoEssay').checked,
-      needBased: document.getElementById('filterNeedBased').checked
-    };
+  function prepopulateScholarshipSearch() {
+    if (!workspace.studentProfile) return;
     
-    filteredScholarships = allScholarships.filter(scholarship => {
-      // Level filter - normalize comparison
-      if (filters.level) {
-        const normalizedLevel = filters.level.replace('_', ' ').toLowerCase();
-        const hasMatch = scholarship.levelOfStudy.some(level => 
-          level.toLowerCase().includes(normalizedLevel) || 
-          normalizedLevel.includes(level.toLowerCase())
-        );
-        if (!hasMatch) return false;
-      }
-      
-      // Min amount filter
-      if (scholarship.amountMax < filters.minAmount) {
-        return false;
-      }
-      
-      // Deadline filter
-      if (filters.deadline && scholarship.deadline) {
-        const deadlineDate = new Date(scholarship.deadline);
-        const now = new Date();
-        const daysDiff = Math.ceil((deadlineDate - now) / (1000 * 60 * 60 * 24));
-        if (daysDiff > parseInt(filters.deadline) || daysDiff < 0) {
-          return false;
-        }
-      }
-      
-      // No essay filter
-      if (filters.noEssay && scholarship.requiresEssay !== 'none') {
-        return false;
-      }
-      
-      // Need-based filter
-      if (filters.needBased && !scholarship.needsBased) {
-        return false;
-      }
-      
-      return true;
-    });
-    
-    // Sort by fit score if profile exists
-    if (workspace.studentProfile) {
-      filteredScholarships = filteredScholarships.map(s => ({
-        ...s,
-        fitScore: calculateFitScore(s)
-      }));
-      filteredScholarships.sort((a, b) => b.fitScore - a.fitScore);
-    }
-    
-    displayScholarships();
-  }
-  
-  function calculateFitScore(scholarship) {
-    let score = 0;
     const profile = workspace.studentProfile;
     
-    if (!profile) return 0;
-    
-    // GPA match
-    if (profile.gpa && scholarship.minGPA) {
-      if (profile.gpa >= scholarship.minGPA) score += 20;
-    }
-    
-    // Major match
-    if (scholarship.eligibleMajors.length > 0 && profile.intendedMajors.length > 0) {
-      const majorMatch = profile.intendedMajors.some(m => 
-        scholarship.eligibleMajors.some(sm => 
-          m.toLowerCase().includes(sm.toLowerCase()) || 
-          sm.toLowerCase().includes(m.toLowerCase())
-        )
-      );
-      if (majorMatch) score += 25;
-    }
-    
-    // Activities match - extract from tags
-    const activityTags = ['athletics', 'robotics', 'band', 'volunteering', 'stem_club', 'arts', 'ffa'];
-    if (scholarship.tags.length > 0) {
-      const activityMatches = profile.activities.filter(a => 
-        scholarship.tags.some(tag => tag.toLowerCase().includes(a.toLowerCase()))
-      ).length;
-      score += activityMatches * 10;
-    }
-    
-    // Need-based match
-    if (scholarship.needsBased && profile.financial.needBased) {
-      score += 15;
-    }
-    
-    // State match
-    if (scholarship.states.length > 0) {
-      if (scholarship.states.includes(profile.state)) {
-        score += 10;
+    // Prepopulate residence state
+    if (profile.state) {
+      const stateSelect = document.getElementById('searchResidenceState');
+      const normalizedState = profile.state.toUpperCase();
+      if (stateSelect) {
+        stateSelect.value = normalizedState;
       }
     }
     
-    // First-gen match
-    if (scholarship.eligibility.firstGenCollege && profile.financial.firstGen) {
-      score += 15;
+    // Prepopulate school year based on grade level
+    if (profile.gradeLevel) {
+      const schoolYearSelect = document.getElementById('searchSchoolYear');
+      const schoolYearKey = SCHOLARSHIPS_COM_CONFIG.gradeLevelToSchoolYear[profile.gradeLevel];
+      if (schoolYearSelect && schoolYearKey) {
+        schoolYearSelect.value = schoolYearKey;
+      }
     }
     
-    // Special demographics
-    if (profile.specialFlags.militaryFamily && 
-        scholarship.eligibility.specialGroups.includes('Veteran')) {
-      score += 15;
-    }
-    if (profile.specialFlags.ruralBackground && 
-        scholarship.eligibility.specialGroups.includes('Rural')) {
-      score += 15;
+    // Prepopulate GPA band
+    if (profile.gpa) {
+      const gpaBand = getGPABand(profile.gpa);
+      if (gpaBand) {
+        document.getElementById('searchGPABand').value = gpaBand;
+      }
     }
     
-    return Math.min(score, 100);
+    // Prepopulate major (first one if multiple)
+    if (profile.intendedMajors && profile.intendedMajors.length > 0) {
+      const majorSelect = document.getElementById('searchMajor');
+      const firstMajor = profile.intendedMajors[0];
+      // Try to find matching option
+      for (let option of majorSelect.options) {
+        if (option.value.toLowerCase() === firstMajor.toLowerCase()) {
+          majorSelect.value = option.value;
+          break;
+        }
+      }
+    }
+    
+    // Prepopulate financial need
+    if (profile.financial && profile.financial.needBased) {
+      document.getElementById('searchFinancialNeed').checked = true;
+    }
   }
   
-  function displayScholarships() {
-    const container = document.getElementById('scholarshipResults');
-    const stats = document.getElementById('searchStats');
+  function generateScholarshipComLinks() {
+    // Collect search parameters from form
+    const searchParams = {
+      residenceState: document.getElementById('searchResidenceState').value,
+      schoolYear: document.getElementById('searchSchoolYear').value,
+      gpaBand: document.getElementById('searchGPABand').value,
+      major: document.getElementById('searchMajor').value,
+      financialNeed: document.getElementById('searchFinancialNeed').checked
+    };
     
-    if (filteredScholarships.length === 0) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-state-icon">🔍</div>
-          <p>No scholarships match your current filters.</p>
-          <p class="muted">Try adjusting your search criteria.</p>
-        </div>
-      `;
-      stats.textContent = '';
+    // Generate links using config
+    const links = generateScholarshipLinks(searchParams);
+    
+    // Display links
+    displayScholarshipComLinks(links);
+  }
+  
+  function displayScholarshipComLinks(links) {
+    const container = document.getElementById('scholarshipLinks');
+    const section = document.getElementById('scholarshipLinksSection');
+    
+    if (links.length === 0) {
+      section.style.display = 'none';
+      alert('Please select at least one search criterion to generate scholarship links.');
       return;
     }
     
-    const totalAmount = filteredScholarships.reduce((sum, s) => sum + s.amountMax, 0);
-    stats.textContent = `Found ${filteredScholarships.length} scholarship${filteredScholarships.length !== 1 ? 's' : ''} • Up to $${totalAmount.toLocaleString()} total`;
+    section.style.display = 'block';
     
-    container.innerHTML = filteredScholarships.map(scholarship => {
-      const isSaved = workspace.savedScholarships.some(s => s.scholarshipId === scholarship.id);
-      const deadline = scholarship.deadline ? new Date(scholarship.deadline) : null;
-      const daysUntil = deadline ? Math.ceil((deadline - new Date()) / (1000 * 60 * 60 * 24)) : null;
-      
-      let fitBadge = '';
-      if (scholarship.fitScore !== undefined) {
-        const fitLevel = scholarship.fitScore >= 70 ? 'high' : 
-                        scholarship.fitScore >= 40 ? 'medium' : 'low';
-        const fitText = scholarship.fitScore >= 70 ? 'Great Fit' : 
-                       scholarship.fitScore >= 40 ? 'Good Fit' : 'Possible Fit';
-        fitBadge = `<span class="fit-indicator fit-${fitLevel}">⭐ ${fitText}</span>`;
-      }
-      
-      const effortTag = scholarship.applicationEffortLevel === 1 ? 'effort-low' :
-                       scholarship.applicationEffortLevel === 2 ? 'effort-medium' : 
-                       'effort-high';
-      const effortText = scholarship.requiresEssay === 'none' ? 'No Essay' :
-                        scholarship.requiresEssay === 'short' ? 'Short Essay' : 'Essay Required';
-      
-      // Generate eligibility summary from new schema
-      const eligibilitySummary = [];
-      if (scholarship.minGPA) eligibilitySummary.push(`${scholarship.minGPA}+ GPA required`);
-      if (scholarship.eligibleMajors.length > 0) eligibilitySummary.push(`Major: ${scholarship.eligibleMajors.slice(0, 2).join(', ')}`);
-      if (scholarship.states.length > 0) eligibilitySummary.push(`States: ${scholarship.states.slice(0, 3).join(', ')}`);
-      if (eligibilitySummary.length === 0) eligibilitySummary.push('See details for eligibility requirements');
-      
-      return `
-        <div class="scholarship-card">
-          <div class="scholarship-header">
-            <div>
-              <h3 class="scholarship-title">${scholarship.title}</h3>
-              ${fitBadge}
-            </div>
-            <div class="scholarship-amount">$${scholarship.amountMin.toLocaleString()}${scholarship.amountMin !== scholarship.amountMax ? ` - $${scholarship.amountMax.toLocaleString()}` : ''}</div>
-          </div>
-          
-          <div class="scholarship-meta">
-            ${deadline ? `<span>📅 ${deadline.toLocaleDateString()} ${daysUntil > 0 ? `(${daysUntil} days)` : '(Past due)'}</span>` : '<span>📅 Rolling deadline</span>'}
-            <span>🎓 ${scholarship.levelOfStudy.join(', ')}</span>
-          </div>
-          
-          <div class="scholarship-tags">
-            <span class="tag ${effortTag}">${effortText}</span>
-            ${scholarship.requiresRecommendation ? '<span class="tag">Rec Letter</span>' : ''}
-            ${scholarship.tags.slice(0, 3).map(tag => `<span class="tag">${tag.replace(/_/g, ' ')}</span>`).join('')}
-          </div>
-          
-          <div class="scholarship-eligibility">
-            <ul>
-              ${eligibilitySummary.slice(0, 3).map(e => `<li>${e}</li>`).join('')}
-            </ul>
-          </div>
-          
-          <div class="scholarship-actions">
-            <button class="btn-secondary btn-sm" onclick="scholarshipCoach.viewScholarship('${scholarship.id}')">
-              👁️ View Details
-            </button>
-            ${!isSaved ? `
-              <button class="btn-primary btn-sm" onclick="scholarshipCoach.saveScholarship('${scholarship.id}')">
-                💾 Save to My Scholarships
-              </button>
-            ` : `
-              <button class="btn-secondary btn-sm" disabled>
-                ✅ Saved
-              </button>
-            `}
-          </div>
-        </div>
-      `;
-    }).join('');
+    container.innerHTML = links.map(link => `
+      <div class="scholarship-link-card">
+        <div class="link-category">${link.category}</div>
+        <div class="link-label">${link.label}</div>
+        <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="btn-primary btn-sm">
+          🔗 Search on Scholarships.com
+        </a>
+      </div>
+    `).join('');
+    
+    // Scroll to links section
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   
+  
   // ===========================
-  // Scholarship Actions
+  // Scholarship Actions (for manually added scholarships)
   // ===========================
-  function viewScholarship(scholarshipId) {
-    const scholarship = allScholarships.find(s => s.id === scholarshipId);
-    if (!scholarship) return;
-    
-    const modal = document.getElementById('scholarshipModal');
-    const title = document.getElementById('modalTitle');
-    const body = document.getElementById('modalBody');
-    
-    title.textContent = scholarship.title;
-    
-    const deadline = scholarship.deadline ? new Date(scholarship.deadline) : null;
-    
-    // Build eligibility list from new schema
-    const eligibilityList = [];
-    if (scholarship.minGPA) eligibilityList.push(`Minimum ${scholarship.minGPA} GPA`);
-    if (scholarship.eligibleMajors.length > 0) eligibilityList.push(`Majors: ${scholarship.eligibleMajors.join(', ')}`);
-    if (scholarship.states.length > 0) eligibilityList.push(`States: ${scholarship.states.join(', ')}`);
-    if (scholarship.eligibility.citizenship.length > 0) eligibilityList.push(`Citizenship: ${scholarship.eligibility.citizenship.join(', ')}`);
-    if (scholarship.eligibility.incomeMaxUSD) eligibilityList.push(`Household income under $${scholarship.eligibility.incomeMaxUSD.toLocaleString()}`);
-    if (scholarship.eligibility.firstGenCollege) eligibilityList.push('First-generation college student');
-    if (scholarship.eligibility.specialGroups.length > 0) eligibilityList.push(scholarship.eligibility.specialGroups.join(', '));
-    if (eligibilityList.length === 0) eligibilityList.push('See official website for detailed eligibility requirements');
-    
-    body.innerHTML = `
-      <div class="scholarship-meta">
-        <span><strong>Award:</strong> $${scholarship.amountMin.toLocaleString()}${scholarship.amountMin !== scholarship.amountMax ? ` - $${scholarship.amountMax.toLocaleString()}` : ''}</span>
-        ${deadline ? `<span><strong>Deadline:</strong> ${deadline.toLocaleDateString()}</span>` : '<span><strong>Deadline:</strong> Rolling</span>'}
-        <span><strong>Provider:</strong> ${scholarship.provider}</span>
-      </div>
-      
-      <h3>Description</h3>
-      <p>${scholarship.description}</p>
-      
-      <h3>Eligibility Requirements</h3>
-      <ul>
-        ${eligibilityList.map(e => `<li>${e}</li>`).join('')}
-      </ul>
-      
-      <h3>Application Requirements</h3>
-      <ul>
-        <li><strong>Essay:</strong> ${scholarship.requiresEssay === 'none' ? 'Not required' : scholarship.requiresEssay === 'short' ? 'Short essay (250-500 words)' : 'Essay required (500+ words)'}</li>
-        <li><strong>Recommendation:</strong> ${scholarship.requiresRecommendation ? 'Required' : 'Not required'}</li>
-        <li><strong>Effort Level:</strong> ${scholarship.applicationEffortLevel}/3</li>
-      </ul>
-      
-      <h3>Official Website</h3>
-      <p><a href="${scholarship.officialUrl}" target="_blank" rel="noopener noreferrer">${scholarship.officialUrl}</a></p>
-      
-      <div class="action-buttons">
-        <button class="btn-secondary" onclick="scholarshipCoach.closeModal()">Close</button>
-        <button class="btn-primary" onclick="scholarshipCoach.saveScholarship('${scholarship.id}')">
-          💾 Save to My Scholarships
-        </button>
-      </div>
-    `;
-    
-    modal.classList.add('active');
-  }
+  // Note: These functions are no longer used for search but kept for
+  // backward compatibility with manually added scholarships in saved lists
   
   function closeModal() {
     document.getElementById('scholarshipModal').classList.remove('active');
-  }
-  
-  function saveScholarship(scholarshipId) {
-    // Check if already saved
-    if (workspace.savedScholarships.some(s => s.scholarshipId === scholarshipId)) {
-      alert('This scholarship is already in your saved list.');
-      return;
-    }
-    
-    const scholarship = allScholarships.find(s => s.id === scholarshipId);
-    if (!scholarship) return;
-    
-    const savedItem = {
-      scholarshipId: scholarship.id,
-      status: 'not_started',
-      notes: '',
-      tasks: {
-        essayDrafted: false,
-        recommendationRequested: false,
-        transcriptRequested: false,
-        applicationSubmitted: false
-      }
-    };
-    
-    workspace.savedScholarships.push(savedItem);
-    updateSavedList();
-    displayScholarships(); // Refresh to show "Saved" button
-    closeModal();
-    showExportReminder();
-    
-    alert(`✅ Saved "${scholarship.title}" to My Scholarships!`);
   }
   
   // ===========================
@@ -563,7 +357,7 @@
         <div class="empty-state">
           <div class="empty-state-icon">📋</div>
           <p>No saved scholarships yet.</p>
-          <p class="muted">Go to the Search tab to find and save scholarships.</p>
+          <p class="muted">Find scholarships on Scholarships.com using the Search tab, then manually add them here to track your applications.</p>
         </div>
       `;
       return;
@@ -1006,9 +800,7 @@
   // Public API (for inline onclick handlers)
   // ===========================
   window.scholarshipCoach = {
-    viewScholarship,
     closeModal,
-    saveScholarship,
     updateStatus,
     updateTask,
     updateNotes,
