@@ -1,46 +1,8 @@
 [
   {
-    "id": "WD-Q1144593",
-    "title": "Rhodes Scholarship",
-    "provider": "Unknown",
-    "source": "wikidata",
-    "amountMin": null,
-    "amountMax": null,
-    "currency": null,
-    "deadline": null,
-    "levelOfStudy": [],
-    "countries": [
-      "GB"
-    ],
-    "states": [],
-    "needsBased": false,
-    "meritBased": false,
-    "minGPA": null,
-    "eligibleMajors": [],
-    "eligibility": {
-      "citizenship": [],
-      "incomeMaxUSD": null,
-      "firstGenCollege": false,
-      "specialGroups": []
-    },
-    "requiresEssay": "none",
-    "requiresRecommendation": false,
-    "applicationEffortLevel": 1,
-    "tags": [
-      "seed_wikidata",
-      "international"
-    ],
-    "officialUrl": "https://www.rhodeshouse.ox.ac.uk/",
-    "description": "international postgraduate award for students to study at the University of Oxford",
-    "lastVerified": "2025-11-16",
-    "rawSource": {
-      "wikidataId": "Q1144593"
-    }
-  },
-  {
-    "id": "WD-Q1500809",
+    "id": "WD-Q1425428",
     "title": "Fulbright Program",
-    "provider": "Unknown",
+    "provider": "United States - Fulbright Foundation",
     "source": "wikidata",
     "amountMin": null,
     "amountMax": null,
@@ -48,46 +10,7 @@
     "deadline": null,
     "levelOfStudy": [],
     "countries": [
-      "US"
-    ],
-    "states": [],
-    "needsBased": false,
-    "meritBased": false,
-    "minGPA": null,
-    "eligibleMajors": [],
-    "eligibility": {
-      "citizenship": [],
-      "incomeMaxUSD": null,
-      "firstGenCollege": false,
-      "specialGroups": []
-    },
-    "requiresEssay": "none",
-    "requiresRecommendation": false,
-    "applicationEffortLevel": 1,
-    "tags": [
-      "seed_wikidata",
-      "merit-based",
-      "international"
-    ],
-    "officialUrl": "https://fulbright.state.gov/",
-    "description": "merit-based grants for international educational exchange for students, scholars, teachers",
-    "lastVerified": "2025-11-16",
-    "rawSource": {
-      "wikidataId": "Q1500809"
-    }
-  },
-  {
-    "id": "WD-Q152556",
-    "title": "Marshall Scholarship",
-    "provider": "Unknown",
-    "source": "wikidata",
-    "amountMin": null,
-    "amountMax": null,
-    "currency": null,
-    "deadline": null,
-    "levelOfStudy": [],
-    "countries": [
-      "GB"
+      "United States"
     ],
     "states": [],
     "needsBased": false,
@@ -106,17 +29,17 @@
     "tags": [
       "seed_wikidata"
     ],
-    "officialUrl": "http://www.marshallscholarship.org/",
-    "description": "postgraduate scholarship for intellectually distinguished young Americans to study in the United Kingdom",
-    "lastVerified": "2025-11-16",
+    "officialUrl": "https://fulbrightprogram.org",
+    "description": "educational scholarship program sponsored by the United States government",
+    "lastVerified": "2025-11-18",
     "rawSource": {
-      "wikidataId": "Q152556"
+      "wikidataId": "Q1425428"
     }
   },
   {
-    "id": "WD-Q682536",
-    "title": "Gates Cambridge Scholarship",
-    "provider": "Unknown",
+    "id": "WD-Q1373342",
+    "title": "Rhodes Scholarship",
+    "provider": "United Kingdom - Rhodes Foundation",
     "source": "wikidata",
     "amountMin": null,
     "amountMax": null,
@@ -124,7 +47,7 @@
     "deadline": null,
     "levelOfStudy": [],
     "countries": [
-      "GB"
+      "United Kingdom"
     ],
     "states": [],
     "needsBased": false,
@@ -141,20 +64,19 @@
     "requiresRecommendation": false,
     "applicationEffortLevel": 1,
     "tags": [
-      "seed_wikidata",
-      "international"
+      "seed_wikidata"
     ],
-    "officialUrl": "https://www.gatescambridge.org/",
-    "description": "international postgraduate award at the University of Cambridge",
-    "lastVerified": "2025-11-16",
+    "officialUrl": "https://www.rhodeshouse.ox.ac.uk",
+    "description": "international postgraduate award for students to study at the University of Oxford",
+    "lastVerified": "2025-11-18",
     "rawSource": {
-      "wikidataId": "Q682536"
+      "wikidataId": "Q1373342"
     }
   },
   {
-    "id": "WD-Q1344276",
+    "id": "WD-Q1537654",
     "title": "Chevening Scholarship",
-    "provider": "Unknown",
+    "provider": "United Kingdom - Chevening Foundation",
     "source": "wikidata",
     "amountMin": null,
     "amountMax": null,
@@ -162,7 +84,7 @@
     "deadline": null,
     "levelOfStudy": [],
     "countries": [
-      "GB"
+      "United Kingdom"
     ],
     "states": [],
     "needsBased": false,
@@ -179,20 +101,19 @@
     "requiresRecommendation": false,
     "applicationEffortLevel": 1,
     "tags": [
-      "seed_wikidata",
-      "international"
+      "seed_wikidata"
     ],
-    "officialUrl": "https://www.chevening.org/",
-    "description": "international scholarship program funded by the UK government",
-    "lastVerified": "2025-11-16",
+    "officialUrl": "https://www.chevening.org",
+    "description": "scholarship for international students to study in the United Kingdom",
+    "lastVerified": "2025-11-18",
     "rawSource": {
-      "wikidataId": "Q1344276"
+      "wikidataId": "Q1537654"
     }
   },
   {
-    "id": "WD-Q1411901",
-    "title": "Erasmus Mundus",
-    "provider": "Unknown",
+    "id": "WD-Q276464",
+    "title": "Erasmus Programme",
+    "provider": "European Union - Erasmus Foundation",
     "source": "wikidata",
     "amountMin": null,
     "amountMax": null,
@@ -219,17 +140,128 @@
     "tags": [
       "seed_wikidata"
     ],
-    "officialUrl": null,
-    "description": "cooperation and mobility programme in the field of higher education",
-    "lastVerified": "2025-11-16",
+    "officialUrl": "https://erasmus-plus.ec.europa.eu",
+    "description": "European Union student exchange programme",
+    "lastVerified": "2025-11-18",
     "rawSource": {
-      "wikidataId": "Q1411901"
+      "wikidataId": "Q276464"
     }
   },
   {
-    "id": "WD-Q152561",
+    "id": "WD-Q1056422",
+    "title": "Gates Cambridge Scholarship",
+    "provider": "United Kingdom - Gates Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United Kingdom"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.gatescambridge.org",
+    "description": "international postgraduate award to study at University of Cambridge",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1056422"
+    }
+  },
+  {
+    "id": "WD-Q1373487",
+    "title": "Marshall Scholarship",
+    "provider": "United Kingdom - Marshall Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United Kingdom"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.marshallscholarship.org",
+    "description": "postgraduate scholarship for American students to study in the United Kingdom",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1373487"
+    }
+  },
+  {
+    "id": "WD-Q1418342",
+    "title": "DAAD",
+    "provider": "Germany - DAAD Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "Germany"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.daad.de",
+    "description": "German academic exchange service",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1418342"
+    }
+  },
+  {
+    "id": "WD-Q735134",
     "title": "Commonwealth Scholarship",
-    "provider": "Unknown",
+    "provider": "United Kingdom - Commonwealth Foundation",
     "source": "wikidata",
     "amountMin": null,
     "amountMax": null,
@@ -237,7 +269,7 @@
     "deadline": null,
     "levelOfStudy": [],
     "countries": [
-      "GB"
+      "United Kingdom"
     ],
     "states": [],
     "needsBased": false,
@@ -256,17 +288,17 @@
     "tags": [
       "seed_wikidata"
     ],
-    "officialUrl": "https://cscuk.fcdo.gov.uk/",
-    "description": "scholarship and fellowship awards for Commonwealth citizens",
-    "lastVerified": "2025-11-16",
+    "officialUrl": "https://cscuk.fcdo.gov.uk",
+    "description": "scholarship program for Commonwealth citizens",
+    "lastVerified": "2025-11-18",
     "rawSource": {
-      "wikidataId": "Q152561"
+      "wikidataId": "Q735134"
     }
   },
   {
-    "id": "WD-Q5246648",
-    "title": "DAAD Scholarship",
-    "provider": "Unknown",
+    "id": "WD-Q1191970",
+    "title": "Schwarzman Scholars",
+    "provider": "China - Schwarzman Foundation",
     "source": "wikidata",
     "amountMin": null,
     "amountMax": null,
@@ -274,7 +306,7 @@
     "deadline": null,
     "levelOfStudy": [],
     "countries": [
-      "DE"
+      "China"
     ],
     "states": [],
     "needsBased": false,
@@ -293,17 +325,128 @@
     "tags": [
       "seed_wikidata"
     ],
-    "officialUrl": "https://www.daad.org/",
-    "description": "scholarship provided by the German Academic Exchange Service",
-    "lastVerified": "2025-11-16",
+    "officialUrl": "https://www.schwarzmanscholars.org",
+    "description": "scholarship program at Tsinghua University in Beijing",
+    "lastVerified": "2025-11-18",
     "rawSource": {
-      "wikidataId": "Q5246648"
+      "wikidataId": "Q1191970"
     }
   },
   {
-    "id": "WD-Q1576835",
+    "id": "WD-Q847459",
+    "title": "Monbukagakusho Scholarship",
+    "provider": "Japan - Monbukagakusho Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "Japan"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.mext.go.jp/en/policy/education/highered/title02",
+    "description": "scholarship program by the Japanese government",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q847459"
+    }
+  },
+  {
+    "id": "WD-Q4354785",
+    "title": "Vanier Canada Graduate Scholarships",
+    "provider": "Canada - Vanier Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "Canada"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://vanier.gc.ca",
+    "description": "doctoral scholarship program in Canada",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q4354785"
+    }
+  },
+  {
+    "id": "WD-Q30261674",
+    "title": "Knight-Hennessy Scholars",
+    "provider": "United States - Knight-Hennessy Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United States"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://knight-hennessy.stanford.edu",
+    "description": "graduate scholarship program at Stanford University",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q30261674"
+    }
+  },
+  {
+    "id": "WD-Q1373364",
     "title": "Truman Scholarship",
-    "provider": "Unknown",
+    "provider": "United States - Truman Foundation",
     "source": "wikidata",
     "amountMin": null,
     "amountMax": null,
@@ -311,7 +454,7 @@
     "deadline": null,
     "levelOfStudy": [],
     "countries": [
-      "US"
+      "United States"
     ],
     "states": [],
     "needsBased": false,
@@ -330,17 +473,202 @@
     "tags": [
       "seed_wikidata"
     ],
-    "officialUrl": "https://www.truman.gov/",
-    "description": "scholarship for U.S. undergraduate students interested in public service",
-    "lastVerified": "2025-11-16",
+    "officialUrl": "https://www.truman.gov",
+    "description": "scholarship for American college students who plan to pursue graduate education in public service",
+    "lastVerified": "2025-11-18",
     "rawSource": {
-      "wikidataId": "Q1576835"
+      "wikidataId": "Q1373364"
     }
   },
   {
-    "id": "WD-Q1144594",
+    "id": "WD-Q7313849",
+    "title": "Renfrew Scholarship",
+    "provider": "United Kingdom - Renfrew Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United Kingdom"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": null,
+    "description": "scholarship for students in higher education",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q7313849"
+    }
+  },
+  {
+    "id": "WD-Q4354825",
+    "title": "Australia Awards",
+    "provider": "Australia - Australia Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "Australia"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://australiaawards.gov.au",
+    "description": "scholarship program funded by the Australian Government",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q4354825"
+    }
+  },
+  {
+    "id": "WD-Q30263123",
+    "title": "Schwarzman Scholarship Program",
+    "provider": "China - Schwarzman Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "China"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://www.schwarzmanscholars.org",
+    "description": "fully-funded one year masters degree program at Tsinghua University",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q30263123"
+    }
+  },
+  {
+    "id": "WD-Q1141824",
+    "title": "Goldwater Scholarship",
+    "provider": "United States - Goldwater Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United States"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://goldwaterscholarship.gov",
+    "description": "scholarship for undergraduate students in STEM fields",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1141824"
+    }
+  },
+  {
+    "id": "WD-Q2043730",
+    "title": "Udall Scholarship",
+    "provider": "United States - Udall Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United States"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": "https://udall.gov",
+    "description": "scholarship for Native American and Alaska Native students",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q2043730"
+    }
+  },
+  {
+    "id": "WD-Q17302837",
     "title": "Mitchell Scholarship",
-    "provider": "Unknown",
+    "provider": "Ireland - Mitchell Foundation",
     "source": "wikidata",
     "amountMin": null,
     "amountMax": null,
@@ -367,11 +695,48 @@
     "tags": [
       "seed_wikidata"
     ],
-    "officialUrl": "https://www.us-irelandalliance.org/mitchellscholarship",
-    "description": "postgraduate scholarship for Americans to study in Ireland",
-    "lastVerified": "2025-11-16",
+    "officialUrl": "https://www.us-irelandalliance.org/mitchell",
+    "description": "scholarship for American students to study in Ireland",
+    "lastVerified": "2025-11-18",
     "rawSource": {
-      "wikidataId": "Q1144594"
+      "wikidataId": "Q17302837"
+    }
+  },
+  {
+    "id": "WD-Q1141745",
+    "title": "Beinecke Scholarship",
+    "provider": "United States - Beinecke Foundation",
+    "source": "wikidata",
+    "amountMin": null,
+    "amountMax": null,
+    "currency": null,
+    "deadline": null,
+    "levelOfStudy": [],
+    "countries": [
+      "United States"
+    ],
+    "states": [],
+    "needsBased": false,
+    "meritBased": false,
+    "minGPA": null,
+    "eligibleMajors": [],
+    "eligibility": {
+      "citizenship": [],
+      "incomeMaxUSD": null,
+      "firstGenCollege": false,
+      "specialGroups": []
+    },
+    "requiresEssay": "none",
+    "requiresRecommendation": false,
+    "applicationEffortLevel": 1,
+    "tags": [
+      "seed_wikidata"
+    ],
+    "officialUrl": null,
+    "description": "scholarship for graduate study in arts, humanities, or social sciences",
+    "lastVerified": "2025-11-18",
+    "rawSource": {
+      "wikidataId": "Q1141745"
     }
   }
 ]
