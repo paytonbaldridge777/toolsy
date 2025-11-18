@@ -225,7 +225,7 @@
       }
       
       // Min amount filter
-      if (scholarship.amountMax < filters.minAmount) {
+      if (filters.minAmount > 0 && scholarship.amountMax && scholarship.amountMax < filters.minAmount) {
         return false;
       }
       
@@ -341,8 +341,10 @@
       return;
     }
     
-    const totalAmount = filteredScholarships.reduce((sum, s) => sum + s.amountMax, 0);
-    stats.textContent = `Found ${filteredScholarships.length} scholarship${filteredScholarships.length !== 1 ? 's' : ''} • Up to $${totalAmount.toLocaleString()} total`;
+    const totalAmount = filteredScholarships.reduce((sum, s) => sum + (s.amountMax || 0), 0);
+    const scholarshipCountText = `Found ${filteredScholarships.length} scholarship${filteredScholarships.length !== 1 ? 's' : ''}`;
+    const totalText = totalAmount > 0 ? ` • Up to $${totalAmount.toLocaleString()} total` : '';
+    stats.textContent = scholarshipCountText + totalText;
     
     container.innerHTML = filteredScholarships.map(scholarship => {
       const isSaved = workspace.savedScholarships.some(s => s.scholarshipId === scholarship.id);
@@ -378,7 +380,7 @@
               <h3 class="scholarship-title">${scholarship.title}</h3>
               ${fitBadge}
             </div>
-            <div class="scholarship-amount">$${scholarship.amountMin.toLocaleString()}${scholarship.amountMin !== scholarship.amountMax ? ` - $${scholarship.amountMax.toLocaleString()}` : ''}</div>
+            <div class="scholarship-amount">${scholarship.amountMin && scholarship.amountMax ? `$${scholarship.amountMin.toLocaleString()}${scholarship.amountMin !== scholarship.amountMax ? ` - $${scholarship.amountMax.toLocaleString()}` : ''}` : 'Amount varies'}</div>
           </div>
           
           <div class="scholarship-meta">
@@ -445,7 +447,7 @@
     
     body.innerHTML = `
       <div class="scholarship-meta">
-        <span><strong>Award:</strong> $${scholarship.amountMin.toLocaleString()}${scholarship.amountMin !== scholarship.amountMax ? ` - $${scholarship.amountMax.toLocaleString()}` : ''}</span>
+        <span><strong>Award:</strong> ${scholarship.amountMin && scholarship.amountMax ? `$${scholarship.amountMin.toLocaleString()}${scholarship.amountMin !== scholarship.amountMax ? ` - $${scholarship.amountMax.toLocaleString()}` : ''}` : 'Amount varies'}</span>
         ${deadline ? `<span><strong>Deadline:</strong> ${deadline.toLocaleDateString()}</span>` : '<span><strong>Deadline:</strong> Rolling</span>'}
         <span><strong>Provider:</strong> ${scholarship.provider}</span>
       </div>
@@ -531,7 +533,7 @@
     const totalSaved = workspace.savedScholarships.length;
     const totalPotential = workspace.savedScholarships.reduce((sum, saved) => {
       const scholarship = allScholarships.find(s => s.id === saved.scholarshipId);
-      return sum + (scholarship ? scholarship.amountMax : 0);
+      return sum + (scholarship ? (scholarship.amountMax || 0) : 0);
     }, 0);
     
     const upcoming = workspace.savedScholarships.filter(saved => {
@@ -582,7 +584,7 @@
             <div>
               <h3 class="scholarship-title">${scholarship.title}</h3>
               <div class="scholarship-meta">
-                <span>💰 $${scholarship.amountMin.toLocaleString()}${scholarship.amountMin !== scholarship.amountMax ? ` - $${scholarship.amountMax.toLocaleString()}` : ''}</span>
+                <span>💰 ${scholarship.amountMin && scholarship.amountMax ? `$${scholarship.amountMin.toLocaleString()}${scholarship.amountMin !== scholarship.amountMax ? ` - $${scholarship.amountMax.toLocaleString()}` : ''}` : 'Amount varies'}</span>
                 ${deadline ? `<span>📅 ${deadline.toLocaleDateString()} ${daysUntil > 0 ? `(${daysUntil} days)` : '(Past due)'}</span>` : '<span>📅 Rolling deadline</span>'}
               </div>
             </div>
