@@ -6,34 +6,89 @@ const SCHOLARSHIPS_COM_CONFIG = {
   
   // Academic Major mappings
   majors: {
-    'computer science': 'computer-science',
-    'engineering': 'engineering',
-    'education': 'education',
-    'business': 'business',
-    'nursing': 'nursing',
-    'psychology': 'psychology',
-    'biology': 'biology',
-    'mathematics': 'mathematics',
-    'english': 'english',
-    'history': 'history',
-    'art': 'art',
-    'music': 'music',
-    'communications': 'communications',
-    'criminal justice': 'criminal-justice',
+    'accounting': 'accounting',
+    'actuarial science': 'actuarial-science',
+    'advertising': 'advertising',
+    'aerospace engineering': 'aerospace-engineering',
+    'agriculture': 'agriculture',
+    'animal science': 'animal-science',
+    'anthropology': 'anthropology',
     'architecture': 'architecture',
-    'environmental science': 'environmental-science',
+    'art': 'art',
+    'art history': 'art-history',
+    'astronomy': 'astronomy',
+    'athletic training': 'athletic-training',
+    'biochemistry': 'biochemistry',
+    'biology': 'biology',
+    'business': 'business',
+    'chemical engineering': 'chemical-engineering',
     'chemistry': 'chemistry',
+    'civil engineering': 'civil-engineering',
+    'communications': 'communications',
+    'computer engineering': 'computer-engineering',
+    'computer science': 'computer-science',
+    'construction management': 'construction-management',
+    'criminal justice': 'criminal-justice',
+    'culinary arts': 'culinary-arts',
+    'cybersecurity': 'cybersecurity',
+    'dance': 'dance',
+    'dental hygiene': 'dental-hygiene',
+    'dentistry': 'dentistry',
+    'economics': 'economics',
+    'education': 'education',
+    'electrical engineering': 'electrical-engineering',
+    'english': 'english',
+    'environmental science': 'environmental-science',
+    'fashion design': 'fashion-design',
+    'film studies': 'film-studies',
+    'finance': 'finance',
+    'fine arts': 'fine-arts',
+    'forensic science': 'forensic-science',
+    'graphic design': 'graphic-design',
+    'health sciences': 'health-sciences',
+    'history': 'history',
+    'hospitality management': 'hospitality-management',
+    'human resources': 'human-resources',
+    'industrial engineering': 'industrial-engineering',
+    'information technology': 'information-technology',
+    'interior design': 'interior-design',
+    'international relations': 'international-relations',
+    'journalism': 'journalism',
+    'kinesiology': 'kinesiology',
+    'landscape architecture': 'landscape-architecture',
+    'law': 'law',
+    'liberal arts': 'liberal-arts',
+    'linguistics': 'linguistics',
+    'marine biology': 'marine-biology',
+    'marketing': 'marketing',
+    'mathematics': 'mathematics',
+    'mechanical engineering': 'mechanical-engineering',
+    'medicine': 'medicine',
+    'microbiology': 'microbiology',
+    'music': 'music',
+    'neuroscience': 'neuroscience',
+    'nursing': 'nursing',
+    'nutrition': 'nutrition',
+    'occupational therapy': 'occupational-therapy',
+    'pharmacy': 'pharmacy',
+    'philosophy': 'philosophy',
+    'physical therapy': 'physical-therapy',
     'physics': 'physics',
     'political science': 'political-science',
-    'sociology': 'sociology',
-    'accounting': 'accounting',
-    'finance': 'finance',
-    'marketing': 'marketing',
-    'economics': 'economics',
-    'pre-med': 'pre-med',
-    'pre-law': 'pre-law',
+    'psychology': 'psychology',
+    'public health': 'public-health',
+    'public relations': 'public-relations',
+    'real estate': 'real-estate',
+    'religious studies': 'religious-studies',
     'social work': 'social-work',
-    'journalism': 'journalism'
+    'sociology': 'sociology',
+    'software engineering': 'software-engineering',
+    'speech pathology': 'speech-pathology',
+    'sports management': 'sports-management',
+    'supply chain management': 'supply-chain-management',
+    'theater': 'theater',
+    'veterinary medicine': 'veterinary-medicine',
+    'web development': 'web-development'
   },
   
   // GPA Band mappings
@@ -177,6 +232,75 @@ const SCHOLARSHIPS_COM_CONFIG = {
     'WI': { name: 'Wisconsin', slug: 'wisconsin' },
     'WY': { name: 'Wyoming', slug: 'wyoming' },
     'DC': { name: 'District of Columbia', slug: 'district-of-columbia' }
+  },
+  
+  // Ethnicity/Race mappings
+  ethnicity: {
+    'african-american': { label: 'African American', slug: 'african-american' },
+    'asian': { label: 'Asian/Pacific Islander', slug: 'asian-pacific-islander' },
+    'hispanic': { label: 'Hispanic/Latino', slug: 'hispanic' },
+    'native-american': { label: 'Native American', slug: 'native-american' },
+    'caucasian': { label: 'Caucasian', slug: 'caucasian' }
+  },
+  
+  // Gender mappings
+  gender: {
+    'female': { label: 'Female', slug: 'female' },
+    'male': { label: 'Male', slug: 'male' }
+  },
+  
+  // Religion mappings
+  religion: {
+    'christian': { label: 'Christian', slug: 'christian' },
+    'catholic': { label: 'Catholic', slug: 'catholic' },
+    'jewish': { label: 'Jewish', slug: 'jewish' },
+    'muslim': { label: 'Muslim', slug: 'muslim' },
+    'buddhist': { label: 'Buddhist', slug: 'buddhist' },
+    'hindu': { label: 'Hindu', slug: 'hindu' }
+  },
+  
+  // Military affiliation mappings
+  military: {
+    'military-child': { label: 'Military Child/Dependent', slug: 'military-child' },
+    'veteran': { label: 'Veteran', slug: 'veteran' },
+    'active-duty': { label: 'Active Duty', slug: 'active-duty' },
+    'rotc': { label: 'ROTC', slug: 'rotc' }
+  },
+  
+  // SAT score mappings
+  sat: {
+    '1400-1600': { label: '1400-1600', slug: '1400-1600' },
+    '1200-1399': { label: '1200-1399', slug: '1200-1399' },
+    '1000-1199': { label: '1000-1199', slug: '1000-1199' },
+    '800-999': { label: '800-999', slug: '800-999' }
+  },
+  
+  // ACT score mappings
+  act: {
+    '32-36': { label: '32-36', slug: '32-36' },
+    '28-31': { label: '28-31', slug: '28-31' },
+    '24-27': { label: '24-27', slug: '24-27' },
+    '20-23': { label: '20-23', slug: '20-23' }
+  },
+  
+  // Athletic ability mappings
+  athletic: {
+    'football': { label: 'Football', slug: 'football' },
+    'basketball': { label: 'Basketball', slug: 'basketball' },
+    'baseball': { label: 'Baseball', slug: 'baseball' },
+    'soccer': { label: 'Soccer', slug: 'soccer' },
+    'track-and-field': { label: 'Track and Field', slug: 'track-and-field' },
+    'swimming': { label: 'Swimming', slug: 'swimming' },
+    'volleyball': { label: 'Volleyball', slug: 'volleyball' },
+    'tennis': { label: 'Tennis', slug: 'tennis' },
+    'golf': { label: 'Golf', slug: 'golf' },
+    'wrestling': { label: 'Wrestling', slug: 'wrestling' }
+  },
+  
+  // Disability mappings
+  disability: {
+    'disability': { label: 'Student with Disability', slug: 'disability' },
+    'learning-disability': { label: 'Learning Disability', slug: 'learning-disability' }
   }
 };
 
@@ -274,6 +398,111 @@ function generateScholarshipLinks(searchParams) {
       label: 'Need-Based Scholarships',
       url: `${baseUrl}/financial-aid/college-scholarships/scholarship-directory/financial-need`,
       category: 'Financial Need'
+    });
+  }
+  
+  // By Ethnicity/Race
+  if (searchParams.ethnicity) {
+    const ethnicityData = SCHOLARSHIPS_COM_CONFIG.ethnicity[searchParams.ethnicity];
+    if (ethnicityData) {
+      links.push({
+        label: `${ethnicityData.label} Scholarships`,
+        url: `${baseUrl}/financial-aid/college-scholarships/scholarship-directory/race/${ethnicityData.slug}`,
+        category: 'Ethnicity'
+      });
+    }
+  }
+  
+  // By Gender
+  if (searchParams.gender) {
+    const genderData = SCHOLARSHIPS_COM_CONFIG.gender[searchParams.gender];
+    if (genderData) {
+      links.push({
+        label: `${genderData.label} Scholarships`,
+        url: `${baseUrl}/financial-aid/college-scholarships/scholarship-directory/gender/${genderData.slug}`,
+        category: 'Gender'
+      });
+    }
+  }
+  
+  // By Religion
+  if (searchParams.religion) {
+    const religionData = SCHOLARSHIPS_COM_CONFIG.religion[searchParams.religion];
+    if (religionData) {
+      links.push({
+        label: `${religionData.label} Scholarships`,
+        url: `${baseUrl}/financial-aid/college-scholarships/scholarship-directory/religion/${religionData.slug}`,
+        category: 'Religion'
+      });
+    }
+  }
+  
+  // By Military Affiliation
+  if (searchParams.military) {
+    const militaryData = SCHOLARSHIPS_COM_CONFIG.military[searchParams.military];
+    if (militaryData) {
+      links.push({
+        label: `${militaryData.label} Scholarships`,
+        url: `${baseUrl}/financial-aid/college-scholarships/scholarship-directory/military-affiliation/${militaryData.slug}`,
+        category: 'Military'
+      });
+    }
+  }
+  
+  // By SAT Score
+  if (searchParams.sat) {
+    const satData = SCHOLARSHIPS_COM_CONFIG.sat[searchParams.sat];
+    if (satData) {
+      links.push({
+        label: `SAT ${satData.label} Scholarships`,
+        url: `${baseUrl}/financial-aid/college-scholarships/scholarship-directory/sat-score/${satData.slug}`,
+        category: 'SAT Score'
+      });
+    }
+  }
+  
+  // By ACT Score
+  if (searchParams.act) {
+    const actData = SCHOLARSHIPS_COM_CONFIG.act[searchParams.act];
+    if (actData) {
+      links.push({
+        label: `ACT ${actData.label} Scholarships`,
+        url: `${baseUrl}/financial-aid/college-scholarships/scholarship-directory/act-score/${actData.slug}`,
+        category: 'ACT Score'
+      });
+    }
+  }
+  
+  // By Athletic Ability
+  if (searchParams.athletic) {
+    const athleticData = SCHOLARSHIPS_COM_CONFIG.athletic[searchParams.athletic];
+    if (athleticData) {
+      links.push({
+        label: `${athleticData.label} Scholarships`,
+        url: `${baseUrl}/financial-aid/college-scholarships/scholarship-directory/athletic-ability/${athleticData.slug}`,
+        category: 'Athletic'
+      });
+    }
+  }
+  
+  // By Disability
+  if (searchParams.disability) {
+    const disabilityData = SCHOLARSHIPS_COM_CONFIG.disability[searchParams.disability];
+    if (disabilityData) {
+      links.push({
+        label: `${disabilityData.label} Scholarships`,
+        url: `${baseUrl}/financial-aid/college-scholarships/scholarship-directory/disability/${disabilityData.slug}`,
+        category: 'Disability'
+      });
+    }
+  }
+  
+  // By First Generation
+  if (searchParams.firstGen) {
+    links.push({
+      label: 'First-Generation College Student Scholarships',
+      url: `${baseUrl}/financial-aid/college-scholarships/scholarship-directory/special-attributes/first-generation`,
+      category: 'First Generation'
     });
   }
   

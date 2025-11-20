@@ -261,7 +261,16 @@
       schoolYear: document.getElementById('searchSchoolYear').value,
       gpaBand: document.getElementById('searchGPABand').value,
       major: document.getElementById('searchMajor').value,
-      financialNeed: document.getElementById('searchFinancialNeed').checked
+      financialNeed: document.getElementById('searchFinancialNeed').checked,
+      ethnicity: document.getElementById('searchEthnicity').value,
+      gender: document.getElementById('searchGender').value,
+      religion: document.getElementById('searchReligion').value,
+      military: document.getElementById('searchMilitary').value,
+      sat: document.getElementById('searchSAT').value,
+      act: document.getElementById('searchACT').value,
+      athletic: document.getElementById('searchAthletic').value,
+      disability: document.getElementById('searchDisability').value,
+      firstGen: document.getElementById('searchFirstGen').checked
     };
     
     // Generate links using config
