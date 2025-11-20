@@ -269,18 +269,19 @@ const SCHOLARSHIPS_COM_CONFIG = {
   
   // SAT score mappings
   sat: {
-    '1400-1600': { label: '1400-1600', slug: '1400-1600' },
-    '1200-1399': { label: '1200-1399', slug: '1200-1399' },
-    '1000-1199': { label: '1000-1199', slug: '1000-1199' },
-    '800-999': { label: '800-999', slug: '800-999' }
+    '1401-1600': { label: 'sat-scores-from-1401-to-1600', slug: 'sat-scores-from-1401-to-1600' },
+    '1201-1400': { label: 'sat-scores-from-1201-to-1400', slug: 'sat-scores-from-1201-to-1400' },
+    '1001-1200': { label: 'sat-scores-from-1001-to-1200', slug: 'sat-scores-from-1001-to-1200' },
+    '400-1000': { label: 'sat-scores-from-400-to-1000', slug: 'sat-scores-from-400-to-1000' }
   },
   
   // ACT score mappings
   act: {
-    '32-36': { label: '32-36', slug: '32-36' },
-    '28-31': { label: '28-31', slug: '28-31' },
-    '24-27': { label: '24-27', slug: '24-27' },
-    '20-23': { label: '20-23', slug: '20-23' }
+    '>30': { label: 'act-scores-greater-than-31', slug: 'act-scores-greater-than-31' },
+    '26-30': { label: 'act-scores-from-26-to-30', slug: 'act-scores-from-26-to-30' },
+    '21-25': { label: 'act-scores-from-21-to-25', slug: 'act-scores-from-21-to-25' },
+    '16-20': { label: 'act-scores-from-16-to-20', slug: 'act-scores-from-16-to-20' },
+    '10-15': { label: 'act-scores-from-10-to-15', slug: 'act-scores-from-10-to-15' }
   },
   
   // Athletic ability mappings
