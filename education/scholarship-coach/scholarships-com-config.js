@@ -94,32 +94,32 @@ const SCHOLARSHIPS_COM_CONFIG = {
   // GPA Band mappings
   gpaBands: {
     '1.0-2.0': {
-      label: '1.0 - 2.0',
-      slug: '1-0-2-0',
+      label: 'minimum-grade-point-average-from-1-0-to-2-0',
+      slug: 'minimum-grade-point-average-from-1-0-to-2-0',
       min: 0,
       max: 2.0
     },
     '2.1-2.5': {
-      label: '2.1 - 2.5',
-      slug: '2-1-2-5',
+      label: 'minimum-grade-point-average-from-2-1-to-2-5',
+      slug: 'minimum-grade-point-average-from-2-1-to-2-5',
       min: 2.1,
       max: 2.5
     },
     '2.6-3.0': {
-      label: '2.6 - 3.0',
-      slug: '2-6-3-0',
+      label: 'minimum-grade-point-average-from-2-6-to-3-0',
+      slug: 'minimum-grade-point-average-from-2-6-to-3-0',
       min: 2.6,
       max: 3.0
     },
     '3.1-3.5': {
-      label: '3.1 - 3.5',
-      slug: '3-1-3-5',
+      label: 'minimum-grade-point-average-from-3-1-to-3-5',
+      slug: 'minimum-grade-point-average-from-3-1-to-3-5',
       min: 3.1,
       max: 3.5
     },
     '3.6-4.0': {
-      label: '3.6 - 4.0',
-      slug: '3-6-4-0',
+      label: 'minimum-grade-point-average-from-3-6-to-4-0',
+      slug: 'minimum-grade-point-average-from-3-6-to-4-0',
       min: 3.6,
       max: 5.0
     }
