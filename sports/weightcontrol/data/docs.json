@@ -1,0 +1,102 @@
+[
+  {
+    "id": "acsm_nutrition_performance",
+    "title": "Nutrition and Athletic Performance (ACSM/AND/DC Joint Position Stand)",
+    "sport_tags": ["general", "combat", "strength", "endurance", "aesthetic"],
+    "summary": "Baseline evidence for athlete energy needs, macros, hydration, and timing.",
+    "type": "pdf",
+    "file": "/sports/weightcontrol/documents/acsm_nutrition_athletic_performance.pdf",
+    "external_url": null,
+    "attribution": "ACSM / Academy of Nutrition and Dietetics / Dietitians of Canada"
+  },
+  {
+    "id": "issn_combat_cut_2025",
+    "title": "ISSN Position Stand: Weight-Cutting in Combat Sports (2025)",
+    "sport_tags": ["combat", "wrestling", "mma_boxing_generic", "bodybuilding"],
+    "summary": "Consensus safety rules on rapid loss, water manipulation, and refeed timing.",
+    "type": "pdf",
+    "file": "/sports/weightcontrol/documents/issn_combat_weight_cut_2025.pdf",
+    "external_url": null,
+    "attribution": "International Society of Sports Nutrition"
+  },
+  {
+    "id": "nata_safe_weight_loss",
+    "title": "NATA Position Statement: Safe Weight Loss and Maintenance Practices for Athletes",
+    "sport_tags": ["general", "combat", "strength", "endurance", "aesthetic", "youth"],
+    "summary": "Safe loss rates, red flags, and hydration risk guidance.",
+    "type": "pdf",
+    "file": "/sports/weightcontrol/documents/nata_safe_weight_loss.pdf",
+    "external_url": null,
+    "attribution": "National Athletic Trainers' Association"
+  },
+  {
+    "id": "ioc_reds_2023",
+    "title": "IOC Consensus Statement on Relative Energy Deficiency in Sport (RED-S) (2023)",
+    "sport_tags": ["endurance", "general", "youth"],
+    "summary": "Low energy availability risks; informs endurance calorie floors.",
+    "type": "pdf",
+    "file": "/sports/weightcontrol/documents/ioc_reds_2023.pdf",
+    "external_url": null,
+    "attribution": "International Olympic Committee"
+  },
+  {
+    "id": "usopc_athletes_plates",
+    "title": "USOPC Athlete's Plates and Nutrition Resources",
+    "sport_tags": ["general", "endurance", "combat", "youth"],
+    "summary": "Plain-language fueling templates by training load.",
+    "type": "pdf",
+    "file": "/sports/weightcontrol/documents/usopc_athletes_plates.pdf",
+    "external_url": null,
+    "attribution": "U.S. Olympic & Paralympic Committee"
+  },
+  {
+    "id": "ncaa_wmp_2025",
+    "title": "NCAA Wrestling Weight Management Program (Latest Packet)",
+    "sport_tags": ["wrestling"],
+    "summary": "Hydration testing, minimum wrestling weight, and 1.5% weekly loss cap.",
+    "type": "pdf",
+    "file": "/sports/weightcontrol/documents/ncaa_wmp_2025.pdf",
+    "external_url": null,
+    "attribution": "NCAA"
+  },
+  {
+    "id": "state_hs_wmp_example",
+    "title": "State High School Wrestling Weight Management Handbook (Example)",
+    "sport_tags": ["wrestling", "youth"],
+    "summary": "Scholastic-level hydration and safe-loss rules mirroring NCAA formats.",
+    "type": "pdf",
+    "file": "/sports/weightcontrol/documents/state_hs_wmp_example.pdf",
+    "external_url": null,
+    "attribution": "State Athletics Association"
+  },
+  {
+    "id": "powerlifting_weighin_guidance",
+    "title": "Powerlifting Weigh-In Windows & Conservative Cut Guidance",
+    "sport_tags": ["powerlifting", "strength"],
+    "summary": "Differences between 2h and 24h weigh-ins and safe adjustments.",
+    "type": "pdf",
+    "file": "/sports/weightcontrol/documents/powerlifting_weighin_guidance.pdf",
+    "external_url": null,
+    "attribution": "Public powerlifting guidance"
+  },
+  {
+    "id": "strength_nutrition_primer",
+    "title": "Nutrition for Strength & Power Athletes (Primer)",
+    "sport_tags": ["strength", "powerlifting"],
+    "summary": "Macro priorities to preserve strength during a cut.",
+    "type": "pdf",
+    "file": "/sports/weightcontrol/documents/strength_nutrition_primer.pdf",
+    "external_url": null,
+    "attribution": "Sports nutrition primer"
+  },
+  {
+    "id": "endurance_fueling_recovery",
+    "title": "Endurance Athlete Fueling & Recovery Guidance",
+    "sport_tags": ["endurance"],
+    "summary": "Periodized carbohydrate and recovery guidance during weight cuts.",
+    "type": "pdf",
+    "file": "/sports/weightcontrol/documents/endurance_fueling_recovery.pdf",
+    "external_url": null,
+    "attribution": "Public endurance nutrition guidance"
+  }
+]

@@ -1,0 +1,195 @@
+{
+  "meta": {
+    "version": "v1.0",
+    "last_updated": "2025-11-23",
+    "default_units": "imperial",
+    "notes": [
+      "Rules are conservative defaults derived from the PDFs in /documents/. Validate and adjust if your review differs.",
+      "Youth overrides apply to all sports whenever age < 18."
+    ]
+  },
+
+  "general": {
+    "tdee_formula_default": "mifflin_st_jeor",
+    "tdee_formula_alt_if_bf_known": "cunningham",
+    "max_deficit_kcal_day": 800,
+    "min_calories_male": 1500,
+    "min_calories_female": 1200,
+    "min_protein_g_lb": 1.0,
+    "max_weekly_loss_pct_default": 1.0,
+    "doc_refs": [
+      "acsm_nutrition_performance",
+      "nata_safe_weight_loss"
+    ]
+  },
+
+  "youth_overrides": {
+    "applies_if_age_under": 18,
+    "max_weekly_loss_pct": 1.0,
+    "dehydration_allowed": false,
+    "sauna_suits_allowed": false,
+    "diuretics_allowed": false,
+    "min_calories_multiplier_of_tdee": 0.8,
+    "notes": [
+      "Youth plans prioritize growth, performance, and hydration. No rapid water cuts."
+    ],
+    "doc_refs": [
+      "nata_safe_weight_loss",
+      "state_hs_wmp_example"
+    ]
+  },
+
+  "sports": {
+    "wrestling": {
+      "label": "Wrestling (Scholastic/Collegiate)",
+      "category": "combat",
+      "max_weekly_loss_pct": 1.5,
+      "dehydration_allowed_adult": false,
+      "dehydration_allowed_youth": false,
+      "hydration_specific_gravity_max": 1.025,
+      "protein_g_lb": 1.2,
+      "carb_strategy": "timed_around_training",
+      "fat_floor_pct_calories": 20,
+      "weigh_in_windows_supported": ["same_day", "24h"],
+      "water_cut_max_pct_bw": 0.0,
+      "refeed_protocol": {
+        "enabled_if_weigh_in_window": ["24h"],
+        "carb_g_lb_day0": 2.0,
+        "sodium_normalize_hours_before_comp": 12,
+        "hydration_focus": true
+      },
+      "warnings": [
+        "No dehydration-based cutting. Hydration tests may disqualify weigh-in.",
+        "If timeline requires >1.5% BW/week loss, auto-adjust to safe max."
+      ],
+      "doc_refs": [
+        "ncaa_wmp_2025",
+        "acsm_nutrition_performance",
+        "issn_combat_cut_2025",
+        "nata_safe_weight_loss"
+      ]
+    },
+
+    "mma_boxing_generic": {
+      "label": "Combat Sports (MMA/Boxing/Other)",
+      "category": "combat",
+      "max_weekly_loss_pct": 1.5,
+      "dehydration_allowed_adult": true,
+      "dehydration_allowed_youth": false,
+      "protein_g_lb": 1.1,
+      "carb_strategy": "taper_last_3_5_days",
+      "fat_floor_pct_calories": 20,
+      "weigh_in_windows_supported": ["same_day", "2h", "24h"],
+      "water_cut_max_pct_bw": 2.0,
+      "refeed_protocol": {
+        "enabled_if_weigh_in_window": ["24h"],
+        "carb_g_lb_day0": 2.0,
+        "sodium_normalize_hours_before_comp": 12,
+        "hydration_focus": true
+      },
+      "warnings": [
+        "Adult-only: water cut must stay small and include rehydration plan.",
+        "Disable or strongly discourage water cut for same-day / 2h weigh-ins."
+      ],
+      "doc_refs": [
+        "issn_combat_cut_2025",
+        "acsm_nutrition_performance",
+        "nata_safe_weight_loss"
+      ]
+    },
+
+    "powerlifting": {
+      "label": "Powerlifting / Strength Sports",
+      "category": "strength",
+      "max_weekly_loss_pct": 1.0,
+      "dehydration_allowed_adult": true,
+      "dehydration_allowed_youth": false,
+      "protein_g_lb": 1.0,
+      "carb_strategy": "maintain_training_availability",
+      "fat_floor_pct_calories": 25,
+      "weigh_in_windows_supported": ["2h", "24h"],
+      "water_cut_max_pct_bw": 1.5,
+      "strength_preservation": {
+        "intensity_priority": true,
+        "volume_reduce_pct_if_deficit": 15
+      },
+      "warnings": [
+        "If 2h weigh-in, water cut should be disabled or heavily discouraged.",
+        "Calories should not drop so low that strength crashes."
+      ],
+      "doc_refs": [
+        "powerlifting_weighin_guidance",
+        "strength_nutrition_primer",
+        "acsm_nutrition_performance",
+        "nata_safe_weight_loss"
+      ]
+    },
+
+    "endurance": {
+      "label": "Endurance (Swimming/Running/Cycling)",
+      "category": "endurance",
+      "max_weekly_loss_pct": 1.0,
+      "dehydration_allowed_adult": false,
+      "dehydration_allowed_youth": false,
+      "protein_g_lb": 0.9,
+      "carb_strategy": "high_carb_periodized",
+      "fat_floor_pct_calories": 20,
+      "reds_protection": true,
+      "warnings": [
+        "RED-S risk: calories cannot go below safety floors even if deadline is tight.",
+        "Do not cut carbs below training availability needs."
+      ],
+      "doc_refs": [
+        "ioc_reds_2023",
+        "endurance_fueling_recovery",
+        "acsm_nutrition_performance",
+        "usopc_athletes_plates"
+      ]
+    },
+
+    "bodybuilding": {
+      "label": "Bodybuilding / Aesthetic Sports",
+      "category": "aesthetic",
+      "max_weekly_loss_pct": 1.0,
+      "dehydration_allowed_adult": true,
+      "dehydration_allowed_youth": false,
+      "protein_g_lb": 1.2,
+      "carb_strategy": "carb_cycling",
+      "fat_floor_pct_calories": 20,
+      "peak_week": {
+        "enabled": true,
+        "start_days_before_show": 7,
+        "notes": [
+          "Keep peak-week advice conservative unless user is advanced.",
+          "No aggressive diuretic guidance."
+        ]
+      },
+      "warnings": [
+        "If timeline requires >1.0% BW/week loss, auto-adjust to protect lean mass."
+      ],
+      "doc_refs": [
+        "acsm_nutrition_performance",
+        "issn_combat_cut_2025",
+        "nata_safe_weight_loss"
+      ]
+    },
+
+    "general_fitness": {
+      "label": "General Fitness Cut",
+      "category": "general",
+      "max_weekly_loss_pct": 1.0,
+      "dehydration_allowed_adult": false,
+      "dehydration_allowed_youth": false,
+      "protein_g_lb": 1.0,
+      "carb_strategy": "balanced",
+      "fat_floor_pct_calories": 25,
+      "warnings": [
+        "Sustainable deficit prioritized over deadline-driven cutting."
+      ],
+      "doc_refs": [
+        "acsm_nutrition_performance",
+        "nata_safe_weight_loss"
+      ]
+    }
+  }
+}
