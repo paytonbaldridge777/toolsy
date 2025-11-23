@@ -2,6 +2,15 @@
 // Handles all calculations, API calls, and UI interactions
 
 // ============================================================================
+// CONSTANTS
+// ============================================================================
+const CALORIES_PER_LB = 3500; // Calories per pound of body fat
+const LBS_TO_KG = 0.453592;   // Pounds to kilograms conversion
+const INCHES_TO_CM = 2.54;    // Inches to centimeters conversion
+const CUNNINGHAM_BASE = 500;  // Cunningham formula base constant
+const CUNNINGHAM_MULTIPLIER = 22; // Cunningham formula LBM multiplier
+
+// ============================================================================
 // GLOBAL STATE
 // ============================================================================
 let rulesData = null;
@@ -29,6 +38,10 @@ async function loadData() {
       fetch('/sports/weightcontrol/data/rules.json'),
       fetch('/sports/weightcontrol/data/docs.json')
     ]);
+    
+    if (!rulesResponse.ok || !docsResponse.ok) {
+      throw new Error('Failed to load configuration files');
+    }
     
     rulesData = await rulesResponse.json();
     docsData = await docsResponse.json();
@@ -130,7 +143,8 @@ function validateStep(stepNumber) {
   for (const field of requiredFields) {
     if (!field.value) {
       field.focus();
-      alert(`Please fill in all required fields before continuing.`);
+      const fieldLabel = field.closest('.form-group')?.querySelector('label')?.textContent || 'this field';
+      alert(`Please fill in ${fieldLabel} before continuing.`);
       return false;
     }
   }
@@ -259,7 +273,7 @@ async function calculatePlan(formData) {
   const adjustedTimeline = weightToLose / actualWeeklyLoss;
   
   // 4. Calculate daily calorie target
-  const weeklyDeficit = actualWeeklyLoss * 3500; // 3500 cal per lb
+  const weeklyDeficit = actualWeeklyLoss * CALORIES_PER_LB;
   const dailyDeficit = weeklyDeficit / 7;
   let targetCalories = tdee - dailyDeficit;
   
@@ -304,8 +318,8 @@ async function calculatePlan(formData) {
 }
 
 function calculateMifflinStJeorTDEE(formData) {
-  const weight_kg = formData.currentWeight * 0.453592;
-  const height_cm = formData.height * 2.54;
+  const weight_kg = formData.currentWeight * LBS_TO_KG;
+  const height_cm = formData.height * INCHES_TO_CM;
   
   if (formData.sex === 'male') {
     return (10 * weight_kg) + (6.25 * height_cm) - (5 * formData.age) + 5;
@@ -315,9 +329,9 @@ function calculateMifflinStJeorTDEE(formData) {
 }
 
 function calculateCunninghamTDEE(formData) {
-  const weight_kg = formData.currentWeight * 0.453592;
+  const weight_kg = formData.currentWeight * LBS_TO_KG;
   const lbm_kg = weight_kg * (1 - formData.bodyFatPct / 100);
-  return 500 + (22 * lbm_kg);
+  return CUNNINGHAM_BASE + (CUNNINGHAM_MULTIPLIER * lbm_kg);
 }
 
 function getActivityMultiplier(trainingDays, intensity) {
