@@ -1,293 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Our site is launching soon. Stay tuned!" />
-  <title>Coming Soon</title>
-
+  <title>Sports & Performance Tools — Kitmodo</title>
+  <meta name="description" content="Athletic performance tools: weight control planning, training calculators, nutrition guides. Evidence-based, sport-specific, runs locally." />
+  <link rel="canonical" href="https://toolsy-kwy.pages.dev/sports/" />
+  <link rel="stylesheet" href="/components/header.css" />
+  <script src="/components/header.js"></script>
   <style>
-    :root {
-      --bg: #0b0d12;
-      --card: rgba(255,255,255,0.06);
-      --text: #e6e9ef;
-      --muted: #a7adbb;
-      --accent: #7c5cff;
-      --accent-2: #22d3ee;
-      --ring: rgba(124,92,255,0.45);
-    }
-
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100svh;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(1200px 800px at 10% -10%, #1b2140 0%, transparent 60%),
-        radial-gradient(1000px 700px at 110% 10%, #1a3a3f 0%, transparent 55%),
-        radial-gradient(900px 600px at 50% 120%, #2b1b46 0%, transparent 60%),
-        var(--bg);
-      display: grid;
-      place-items: center;
-      padding: 24px;
-    }
-
-    .wrap {
-      width: min(980px, 100%);
-      display: grid;
-      gap: 18px;
-      text-align: center;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: var(--card);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin: 0 auto;
-      backdrop-filter: blur(8px);
-    }
-    .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: conic-gradient(from 0deg, var(--accent), var(--accent-2), var(--accent));
-      box-shadow: 0 0 12px var(--ring);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(34px, 6vw, 58px);
-      letter-spacing: -0.02em;
-      line-height: 1.05;
-    }
-    p.lead {
-      margin: 0 auto;
-      max-width: 60ch;
-      color: var(--muted);
-      font-size: clamp(15px, 2.2vw, 18px);
-    }
-
-    .card {
-      margin: 10px auto 0;
-      background: var(--card);
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 18px;
-      padding: clamp(14px, 3vw, 20px);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.45);
-    }
-
-    .countdown {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(70px, 1fr));
-      gap: 10px;
-    }
-    .timebox {
-      padding: 12px 10px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.25);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .num {
-      font-variant-numeric: tabular-nums;
-      font-size: clamp(22px, 4vw, 32px);
-      font-weight: 700;
-    }
-    .label {
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    form {
-      margin-top: 12px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    input[type="email"]{
-      width: min(360px, 100%);
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.35);
-      color: var(--text);
-      outline: none;
-      transition: border-color .15s, box-shadow .15s;
-    }
-    input[type="email"]::placeholder { color: #8e95a3; }
-    input[type="email"]:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px var(--ring);
-    }
-
-    button {
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 0;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 8px 24px rgba(34,211,238,0.25);
-      transition: transform .08s ease, filter .2s ease;
-    }
-    button:hover { filter: brightness(1.05); transform: translateY(-1px); }
-    button:active { transform: translateY(0); }
-
-    .fine {
-      margin-top: 6px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .links {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin-top: 6px;
-      flex-wrap: wrap;
-    }
-    .links a {
-      color: var(--muted);
-      text-decoration: none;
-      padding: 8px 10px;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: color .2s, border-color .2s, background .2s;
-    }
-    .links a:hover {
-      color: var(--text);
-      border-color: rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.07);
-    }
-
-    footer {
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    @media (max-width: 520px){
-      .countdown { grid-template-columns: repeat(2, 1fr); }
-    }
+    :root{--bg:#0b0d10;--card:#121720;--text:#e7eef6;--muted:#8fa3b8;--accent:#6aa3ff;--border:#233042;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35);--input-bg:#0f131a}
+    :root[data-theme="light"]{--bg:#f5f7fa;--card:#ffffff;--text:#1a1d23;--muted:#5a6b7f;--accent:#2b7de9;--border:#d1d9e3;--shadow:0 10px 30px rgba(0,0,0,.08);--input-bg:#f8f9fb}
+    *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg));color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto;transition:background .3s,color .3s}
+    .wrap{max-width:1000px;margin:0 auto;padding:24px}
+    a{color:#7bd389;text-underline-offset:3px}
+    header{display:grid;gap:6px;margin:6px 0 20px}
+    h1{margin:0;font-size:clamp(1.6rem,3vw,2.2rem)}
+    p.sub{margin:0;color:var(--muted)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    .list{display:grid;gap:12px}
+    .tool{display:flex;justify-content:space-between;gap:10px;padding:12px;background:var(--input-bg);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text)}
+    .tool:hover{outline:2px solid var(--accent)}
+    footer{margin:28px 0 8px;color:var(--muted);font-size:.9rem}
   </style>
 </head>
-
 <body>
-  <main class="wrap" aria-live="polite">
-    <div class="badge"><span class="dot" aria-hidden="true"></span> Coming Soon</div>
+  <div class="wrap">
+    <div id="header-placeholder"></div>
+    <header>
+      <a href="/">← Back to Kitmodo</a>
+      <h1>Sports & Performance Tools</h1>
+      <p class="sub">Evidence-based tools for athletes and coaches. All calculations run locally in your browser.</p>
+    </header>
 
-    <h1>Your Site Is Launching Soon</h1>
-    <p class="lead">
-      We’re putting the finishing touches on something new.
-      Drop your email to get a heads-up when we go live.
-    </p>
-
-    <section class="card">
-      <!-- COUNTDOWN -->
-      <div class="countdown" id="countdown" role="timer" aria-label="Countdown to launch">
-        <div class="timebox"><div class="num" id="days">--</div><div class="label">Days</div></div>
-        <div class="timebox"><div class="num" id="hours">--</div><div class="label">Hours</div></div>
-        <div class="timebox"><div class="num" id="minutes">--</div><div class="label">Minutes</div></div>
-        <div class="timebox"><div class="num" id="seconds">--</div><div class="label">Seconds</div></div>
+    <main class="card">
+      <h2>Available Tools</h2>
+      <div class="list">
+        <a class="tool" href="/sports/weightcontrol/"><span>Weight Control Planner</span><span class="muted">Safe, sport-specific weight cuts</span></a>
+        <!-- Future tools (placeholders you can add later): -->
+        <a class="tool" href="#"><span>Training Load Calculator</span><span class="muted">Manage volume & intensity</span></a>
+        <a class="tool" href="#"><span>Recovery Tracker</span><span class="muted">Monitor readiness</span></a>
       </div>
+    </main>
 
-      <!-- NOTIFY FORM (front-end only) -->
-      <form id="notifyForm" novalidate>
-        <label class="sr-only" for="email">Email address</label>
-        <input id="email" name="email" type="email" placeholder="you@example.com" required />
-        <button type="submit">Notify me</button>
-      </form>
-      <div class="fine" id="formMsg" role="status"></div>
+    <section class="card" style="margin-top:16px">
+      <h2>Disclaimer</h2>
+      <p class="sub"><strong>Educational use only.</strong> These tools support training and nutrition planning but are not substitutes for professional coaching, medical, or nutritional advice. Always consult qualified professionals.</p>
     </section>
 
-    <nav class="links" aria-label="Social links">
-      <!-- Replace # with your links -->
-      <a href="#" rel="noopener">Twitter/X</a>
-      <a href="#" rel="noopener">Instagram</a>
-      <a href="#" rel="noopener">LinkedIn</a>
-      <a href="mailto:hello@example.com">Contact</a>
-    </nav>
-
     <footer>
-      © <span id="year"></span> Kitmodo. All rights reserved.
+      <p>© <span id="y"></span> Kitmodo. <a href="/legal/terms.html">Terms</a> • <a href="/legal/privacy.html">Privacy</a></p>
     </footer>
-  </main>
-
+  </div>
   <script>
-    // ====== EDIT THIS DATE ======
-    // Set your launch time here (local time of viewer).
-    const LAUNCH_DATE = new Date("2026-02-01T10:00:00"); // YYYY-MM-DDTHH:mm:ss
-
-    const $ = (id) => document.getElementById(id);
-    const parts = ["days","hours","minutes","seconds"].reduce((acc,k)=> (acc[k]=$(k), acc), {});
-
-    function tick() {
-      const now = new Date();
-      const diff = LAUNCH_DATE - now;
-
-      if (diff <= 0) {
-        parts.days.textContent = "00";
-        parts.hours.textContent = "00";
-        parts.minutes.textContent = "00";
-        parts.seconds.textContent = "00";
-        $("countdown").setAttribute("aria-label", "We are live!");
-        return;
-      }
-
-      const s = Math.floor(diff / 1000);
-      const days = Math.floor(s / 86400);
-      const hours = Math.floor((s % 86400) / 3600);
-      const minutes = Math.floor((s % 3600) / 60);
-      const seconds = s % 60;
-
-      parts.days.textContent = String(days).padStart(2, "0");
-      parts.hours.textContent = String(hours).padStart(2, "0");
-      parts.minutes.textContent = String(minutes).padStart(2, "0");
-      parts.seconds.textContent = String(seconds).padStart(2, "0");
-    }
-    tick();
-    setInterval(tick, 1000);
-
-    // Footer year
-    $("year").textContent = new Date().getFullYear();
-
-    // Fake notify form (no backend). Replace with your integration later.
-    $("notifyForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const email = $("email").value.trim();
-      const msg = $("formMsg");
-
-      if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-        msg.textContent = "Please enter a valid email.";
-        msg.style.color = "#fca5a5";
-        return;
-      }
-      msg.textContent = "Thanks! We’ll let you know when we launch.";
-      msg.style.color = "#a7f3d0";
-      $("notifyForm").reset();
-    });
+    document.getElementById('y').textContent = new Date().getFullYear();
   </script>
-
-  <style>
-    /* Tiny accessibility helper */
-    .sr-only {
-      position: absolute !important;
-      height: 1px; width: 1px;
-      overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
-      white-space: nowrap;
-    }
-  </style>
 </body>
 </html>

@@ -1,1 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weight Control Planner — Sports & Performance</title>
+  <meta name="description" content="Safe, sport-specific weight-cut planning tool for athletes. Get personalized meal plans and workout guidance based on evidence-based nutrition research." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://toolsy-kwy.pages.dev/sports/weightcontrol/" />
+  
+  <link rel="stylesheet" href="/components/header.css" />
+  <link rel="stylesheet" href="planner.css" />
+  <script src="/components/header.js"></script>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Weight Control Planner",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "description": "Safe, sport-specific weight-cut planning tool with personalized meal plans and workout guidance.",
+    "offers": { "@type": "Offer", "price": "0" }
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <div id="header-placeholder"></div>
+    
+    <!-- Landing Screen -->
+    <div id="landingScreen">
+      <header>
+        <div class="badge" aria-hidden="true">🏋️ Evidence-Based • Sport-Specific</div>
+        <h1>Weight Control Planner</h1>
+        <p class="sub">Safe, science-backed weight management for athletes. Get personalized meal plans and training guidance tailored to your sport.</p>
+      </header>
+
+      <section class="card">
+        <h2>How It Works</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-icon">⚖️</div>
+            <h3>Sport-Specific Safety</h3>
+            <p class="muted">Rules derived from ACSM, ISSN, NATA, IOC, and NCAA guidelines ensure safe weight loss for your sport.</p>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">🍽️</div>
+            <h3>Personalized Meals</h3>
+            <p class="muted">7-day meal plans with real recipes matched to your calorie needs, dietary preferences, and allergies.</p>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">💪</div>
+            <h3>Training Guidance</h3>
+            <p class="muted">Sport-aligned workout structure that maintains performance while safely achieving your weight goals.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card notice-card">
+        <h2>⚠️ Important Disclaimer</h2>
+        <p><strong>This tool is for educational and planning purposes only.</strong></p>
+        <p>It is not a substitute for professional medical, nutritional, or coaching advice. Always consult with:</p>
+        <ul>
+          <li>Your physician before starting any weight loss program</li>
+          <li>A registered dietitian for personalized nutrition guidance</li>
+          <li>Your coach to ensure compatibility with your training program</li>
+        </ul>
+        <p class="muted">💡 Youth athletes (under 18) have additional safety restrictions to protect growth and development.</p>
+      </section>
+
+      <section class="card">
+        <div class="action-buttons">
+          <button class="btn-primary btn-large" id="startPlanBtn">
+            <span class="btn-icon">🚀</span>
+            Create Your Plan
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Multi-Step Form -->
+    <div id="formScreen" style="display: none;">
+      <header>
+        <h1>Build Your Weight Control Plan</h1>
+        <p class="sub">Complete all steps to generate your personalized plan. All data stays in your browser.</p>
+      </header>
+
+      <!-- Progress Indicator -->
+      <div class="progress-bar">
+        <div class="progress-step active" data-step="1">
+          <div class="step-number">1</div>
+          <div class="step-label">Profile</div>
+        </div>
+        <div class="progress-step" data-step="2">
+          <div class="step-number">2</div>
+          <div class="step-label">Training</div>
+        </div>
+        <div class="progress-step" data-step="3">
+          <div class="step-number">3</div>
+          <div class="step-label">Safety & Diet</div>
+        </div>
+      </div>
+
+      <!-- Step 1: Athlete Profile -->
+      <section class="card form-step" id="step1" style="display: block;">
+        <h2>Step 1: Athlete Profile</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sport">Sport/Category *</label>
+            <select id="sport" class="form-control" required>
+              <option value="">Select your sport...</option>
+              <option value="wrestling">Wrestling (Scholastic/Collegiate)</option>
+              <option value="mma_boxing_generic">Combat Sports (MMA/Boxing/Other)</option>
+              <option value="powerlifting">Powerlifting / Strength Sports</option>
+              <option value="endurance">Endurance (Swimming/Running/Cycling)</option>
+              <option value="bodybuilding">Bodybuilding / Aesthetic Sports</option>
+              <option value="general_fitness">General Fitness Cut</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="age">Age *</label>
+            <input type="number" id="age" class="form-control" min="13" max="100" required placeholder="e.g., 18" />
+            <small class="form-text">Youth (under 18) have additional safety protections</small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sex">Sex *</label>
+            <select id="sex" class="form-control" required>
+              <option value="">Select...</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="height">Height (inches) *</label>
+            <input type="number" id="height" class="form-control" min="48" max="96" required placeholder="e.g., 70" />
+            <small class="form-text">5'10" = 70 inches</small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="currentWeight">Current Weight (lbs) *</label>
+            <input type="number" id="currentWeight" class="form-control" min="80" max="500" step="0.1" required placeholder="e.g., 185.5" />
+          </div>
+          <div class="form-group">
+            <label for="targetWeight">Target Weight (lbs) *</label>
+            <input type="number" id="targetWeight" class="form-control" min="80" max="500" step="0.1" required placeholder="e.g., 177.0" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="deadlineDate">Target Date *</label>
+            <input type="date" id="deadlineDate" class="form-control" required />
+            <small class="form-text">When do you need to reach target weight?</small>
+          </div>
+          <div class="form-group">
+            <label for="bodyFatPct">Body Fat % (optional)</label>
+            <input type="number" id="bodyFatPct" class="form-control" min="3" max="50" step="0.1" placeholder="e.g., 15.0" />
+            <small class="form-text">If known, enables more accurate TDEE calculation</small>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="backToLandingBtn">Cancel</button>
+          <button type="button" class="btn-primary" id="nextStep1Btn">Next: Training →</button>
+        </div>
+      </section>
+
+      <!-- Step 2: Training -->
+      <section class="card form-step" id="step2" style="display: none;">
+        <h2>Step 2: Training Information</h2>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="trainingDays">Training Days Per Week *</label>
+            <input type="number" id="trainingDays" class="form-control" min="0" max="7" required placeholder="e.g., 5" />
+            <small class="form-text">How many days do you train per week?</small>
+          </div>
+          <div class="form-group">
+            <label for="trainingIntensity">Training Intensity *</label>
+            <select id="trainingIntensity" class="form-control" required>
+              <option value="">Select...</option>
+              <option value="light">Light - Easy sessions, mostly skill work</option>
+              <option value="moderate">Moderate - Mix of hard and easy sessions</option>
+              <option value="high">High - Multiple hard sessions per week</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="weighInWindow">Weigh-In Window *</label>
+          <select id="weighInWindow" class="form-control" required>
+            <option value="">Select...</option>
+            <option value="none">No weigh-in / General weight loss</option>
+            <option value="same_day">Same-day weigh-in (competition starts immediately)</option>
+            <option value="2h">2-hour recovery window</option>
+            <option value="24h">24-hour recovery window</option>
+          </select>
+          <small class="form-text">Time between weigh-in and competition affects hydration strategy</small>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="backStep2Btn">← Back</button>
+          <button type="button" class="btn-primary" id="nextStep2Btn">Next: Safety & Diet →</button>
+        </div>
+      </section>
+
+      <!-- Step 3: Safety & Diet -->
+      <section class="card form-step" id="step3" style="display: none;">
+        <h2>Step 3: Safety & Dietary Preferences</h2>
+        
+        <div class="form-group">
+          <label for="medicalConditions">Do you have any medical conditions?</label>
+          <select id="medicalConditions" class="form-control">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="medicalDetailsGroup" style="display: none;">
+          <label for="medicalDetails">Please specify (optional)</label>
+          <textarea id="medicalDetails" class="form-control" rows="2" placeholder="e.g., diabetes, thyroid condition..."></textarea>
+          <small class="form-text">This helps tailor safety warnings. Consult your doctor before starting.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="injuries">Current injuries or limitations (optional)</label>
+          <textarea id="injuries" class="form-control" rows="2" placeholder="e.g., knee injury, lower back pain..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="cutHistory">Previous weight-cutting experience</label>
+          <select id="cutHistory" class="form-control">
+            <option value="none">None - This is my first time</option>
+            <option value="mild">Mild - Lost 5-10 lbs for competition before</option>
+            <option value="severe">Severe - Multiple aggressive cuts, felt very drained</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="dietaryStyle">Dietary Preference</label>
+          <select id="dietaryStyle" class="form-control">
+            <option value="none">No restrictions</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+            <option value="paleo">Paleo</option>
+            <option value="keto">Ketogenic</option>
+            <option value="gluten_free">Gluten-Free</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="allergies">Food Allergies/Intolerances</label>
+          <input type="text" id="allergies" class="form-control" placeholder="e.g., dairy, nuts, shellfish (comma-separated)" />
+        </div>
+
+        <div class="form-group">
+          <label for="dislikedFoods">Disliked Foods</label>
+          <input type="text" id="dislikedFoods" class="form-control" placeholder="e.g., broccoli, tofu, salmon (comma-separated)" />
+        </div>
+
+        <div class="form-group">
+          <label for="mealsPerDay">Preferred Meals Per Day</label>
+          <select id="mealsPerDay" class="form-control">
+            <option value="3">3 meals</option>
+            <option value="4">4 meals</option>
+            <option value="5">5-6 meals (meal prep style)</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="backStep3Btn">← Back</button>
+          <button type="button" class="btn-primary" id="generatePlanBtn">Generate Plan 🎯</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="resultsScreen" style="display: none;">
+      <header>
+        <h1>Your Weight Control Plan</h1>
+        <p class="sub">Review your personalized plan below. Remember to consult with healthcare professionals.</p>
+      </header>
+
+      <!-- Summary Card -->
+      <section class="card">
+        <h2>Plan Summary</h2>
+        <div id="planSummary"></div>
+      </section>
+
+      <!-- Warnings Card -->
+      <section class="card warning-card" id="warningsCard" style="display: none;">
+        <h2>⚠️ Important Warnings</h2>
+        <div id="warningsList"></div>
+      </section>
+
+      <!-- Nutrition Plan -->
+      <section class="card">
+        <h2>Daily Nutrition Targets</h2>
+        <div id="nutritionTargets"></div>
+      </section>
+
+      <!-- Meal Plan -->
+      <section class="card">
+        <h2>7-Day Meal Plan</h2>
+        <p class="muted">Sample meal ideas based on your targets. Adjust portions and swap recipes as needed.</p>
+        <div id="mealPlan"></div>
+      </section>
+
+      <!-- Workout Guidance -->
+      <section class="card">
+        <h2>Training Guidance</h2>
+        <div id="workoutGuidance"></div>
+      </section>
+
+      <!-- Reference Library -->
+      <section class="card">
+        <h2>📚 Reference Library</h2>
+        <p class="muted">This plan is based on evidence from these scientific sources:</p>
+        <div id="referenceLibrary"></div>
+      </section>
+
+      <!-- Export Actions -->
+      <section class="card">
+        <h2>Export Your Plan</h2>
+        <div class="action-buttons">
+          <button class="btn-secondary" id="printPlanBtn">
+            <span class="btn-icon">🖨️</span>
+            Print Plan
+          </button>
+          <button class="btn-secondary" id="exportJsonBtn">
+            <span class="btn-icon">💾</span>
+            Export JSON
+          </button>
+          <button class="btn-primary" id="startOverBtn">
+            <span class="btn-icon">🔄</span>
+            Create New Plan
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <footer style="margin-top: 32px; text-align: center; color: var(--muted); font-size: 0.9rem;">
+      <p>© <span id="year"></span> Kitmodo. <a href="/legal/terms.html">Terms</a> • <a href="/legal/privacy.html">Privacy</a></p>
+      <p class="muted" style="font-size: 0.85rem;">Not medical advice. Consult healthcare professionals before starting any weight loss program.</p>
+    </footer>
+  </div>
+
+  <script src="planner.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
