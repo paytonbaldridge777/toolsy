@@ -68,6 +68,18 @@ function setupEventListeners() {
   // Generate plan
   document.getElementById('generatePlanBtn').addEventListener('click', generatePlan);
   
+  // Age change - show/hide youth override
+  document.getElementById('age').addEventListener('input', (e) => {
+    const age = parseInt(e.target.value);
+    const youthOverrideSection = document.getElementById('youthOverrideSection');
+    if (age && age < 18) {
+      youthOverrideSection.style.display = 'block';
+    } else {
+      youthOverrideSection.style.display = 'none';
+      document.getElementById('youthSafetyOverride').checked = false;
+    }
+  });
+  
   // Medical conditions toggle
   document.getElementById('medicalConditions').addEventListener('change', (e) => {
     const detailsGroup = document.getElementById('medicalDetailsGroup');
@@ -214,6 +226,7 @@ function collectFormData() {
     targetWeight: parseFloat(document.getElementById('targetWeight').value),
     deadlineDate: document.getElementById('deadlineDate').value,
     bodyFatPct: document.getElementById('bodyFatPct').value ? parseFloat(document.getElementById('bodyFatPct').value) : null,
+    youthSafetyOverride: document.getElementById('youthSafetyOverride').checked,
     
     // Step 2
     trainingDays: parseInt(document.getElementById('trainingDays').value),
@@ -228,6 +241,7 @@ function collectFormData() {
     dietaryStyle: document.getElementById('dietaryStyle').value,
     allergies: document.getElementById('allergies').value.split(',').map(s => s.trim()).filter(s => s),
     dislikedFoods: document.getElementById('dislikedFoods').value.split(',').map(s => s.trim()).filter(s => s),
+    preferredFoods: document.getElementById('preferredFoods').value.split(',').map(s => s.trim()).filter(s => s),
     mealsPerDay: parseInt(document.getElementById('mealsPerDay').value)
   };
 }
@@ -241,6 +255,7 @@ async function calculatePlan(formData) {
   const youthRules = rulesData.youth_overrides;
   
   const isYouth = formData.age < youthRules.applies_if_age_under;
+  const applyYouthRules = isYouth && !formData.youthSafetyOverride;
   
   // 1. Calculate TDEE
   let tdee;
@@ -264,7 +279,7 @@ async function calculatePlan(formData) {
   
   // 3. Determine safe weekly loss cap
   let maxWeeklyLossPct = sportRules.max_weekly_loss_pct;
-  if (isYouth) {
+  if (applyYouthRules) {
     maxWeeklyLossPct = Math.min(maxWeeklyLossPct, youthRules.max_weekly_loss_pct);
   }
   
@@ -279,7 +294,7 @@ async function calculatePlan(formData) {
   
   // Apply calorie floors
   const minCalories = formData.sex === 'male' ? generalRules.min_calories_male : generalRules.min_calories_female;
-  if (isYouth) {
+  if (applyYouthRules) {
     const youthMinCalories = tdee * youthRules.min_calories_multiplier_of_tdee;
     targetCalories = Math.max(targetCalories, youthMinCalories, minCalories);
   } else {
@@ -290,7 +305,7 @@ async function calculatePlan(formData) {
   const macros = calculateMacros(formData, sportRules, targetCalories);
   
   // 6. Generate warnings
-  const warnings = generateWarnings(formData, sportRules, youthRules, isYouth, requiredWeeklyLossPct, maxWeeklyLossPct);
+  const warnings = generateWarnings(formData, sportRules, youthRules, isYouth, applyYouthRules, requiredWeeklyLossPct, maxWeeklyLossPct);
   
   // 7. Collect relevant doc refs
   const docRefs = [...new Set([
@@ -379,7 +394,7 @@ function calculateMacros(formData, sportRules, targetCalories) {
   };
 }
 
-function generateWarnings(formData, sportRules, youthRules, isYouth, requiredPct, maxPct) {
+function generateWarnings(formData, sportRules, youthRules, isYouth, applyYouthRules, requiredPct, maxPct) {
   const warnings = [];
   
   // Timeline warning
@@ -388,8 +403,10 @@ function generateWarnings(formData, sportRules, youthRules, isYouth, requiredPct
   }
   
   // Youth warnings
-  if (isYouth) {
+  if (isYouth && applyYouthRules) {
     warnings.push('Youth athlete safety protocols are in effect. No dehydration strategies, higher calorie floors, and limited weekly weight loss.');
+  } else if (isYouth && !applyYouthRules) {
+    warnings.push('⚠️ YOUTH SAFETY OVERRIDE ACTIVE: You have chosen to override youth safety restrictions. Please consult with your physician, parents/guardians, and coach before proceeding. Aggressive weight cutting can negatively impact growth, development, and long-term health.');
   }
   
   // Sport-specific warnings
@@ -420,142 +437,217 @@ function generateWarnings(formData, sportRules, youthRules, isYouth, requiredPct
 // ============================================================================
 // MEAL PLAN GENERATION
 // ============================================================================
+
+// Fetch meal options from Spoonacular API
+async function fetchMealOptions(mealType, targetCalories, dietaryRestrictions) {
+  try {
+    const params = new URLSearchParams({
+      type: mealType,
+      targetCalories: Math.round(targetCalories),
+      number: 5, // Get 5 options
+      diet: dietaryRestrictions.dietaryStyle !== 'none' ? dietaryRestrictions.dietaryStyle : '',
+      intolerances: dietaryRestrictions.allergies.join(','),
+      excludeIngredients: dietaryRestrictions.dislikedFoods.join(','),
+      includeIngredients: dietaryRestrictions.preferredFoods.join(','),
+      addRecipeInformation: true,
+      fillIngredients: true,
+      addRecipeNutrition: true
+    });
+
+    // Call Cloudflare worker proxy endpoint (assumed to exist)
+    const response = await fetch(`/api/spoonacular/recipes/complexSearch?${params}`);
+    
+    if (!response.ok) {
+      throw new Error(`Spoonacular API failed with status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data.results || [];
+  } catch (error) {
+    console.error('Error fetching meal options from Spoonacular:', error);
+    throw error;
+  }
+}
+
 async function renderMealPlan(plan) {
   const mealPlanDiv = document.getElementById('mealPlan');
   
-  // For now, generate a simple template-based meal plan
-  // In a full implementation, this would call Spoonacular API via proxy
-  const mealPlan = generateTemplateMealPlan(plan);
-  
-  let html = '';
-  mealPlan.forEach((day, index) => {
-    html += `
-      <div class="meal-day">
-        <div class="day-header">Day ${index + 1}</div>
-        <div class="meal-grid">
-    `;
+  try {
+    // Attempt to fetch real meal data from API
+    mealPlanDiv.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Fetching personalized meal options from nutrition database...</p></div>';
     
-    day.meals.forEach(meal => {
+    const mealPlan = await generateApiMealPlan(plan);
+    
+    let html = '';
+    mealPlan.forEach((day, index) => {
       html += `
-        <div class="meal-card">
-          <div class="meal-type">${meal.type}</div>
-          <div class="meal-name">${meal.name}</div>
-          <div class="meal-macros">
-            <span class="meal-macro">🔥 ${meal.calories} cal</span>
-            <span class="meal-macro">💪 ${meal.protein}g protein</span>
-            <span class="meal-macro">🍞 ${meal.carbs}g carbs</span>
-            <span class="meal-macro">🥑 ${meal.fat}g fat</span>
+        <div class="meal-day">
+          <div class="day-header">Day ${index + 1}</div>
+          <div class="meal-grid">
+      `;
+      
+      day.meals.forEach((meal, mealIndex) => {
+        const uniqueId = `day${index}_meal${mealIndex}`;
+        html += `
+          <div class="meal-card">
+            <div class="meal-type">${meal.type}</div>
+            <div class="meal-selector">
+              <label for="${uniqueId}">Select Meal:</label>
+              <select id="${uniqueId}" class="meal-dropdown" data-day="${index}" data-meal="${mealIndex}">
+                ${meal.options.map((option, optIndex) => `
+                  <option value="${optIndex}" ${optIndex === meal.selectedIndex ? 'selected' : ''}>
+                    ${option.name}
+                  </option>
+                `).join('')}
+              </select>
+            </div>
+            <div id="${uniqueId}_details" class="meal-details">
+              ${renderMealDetails(meal.options[meal.selectedIndex])}
+            </div>
+          </div>
+        `;
+      });
+      
+      html += `
           </div>
         </div>
       `;
     });
     
-    html += `
-        </div>
+    mealPlanDiv.innerHTML = html;
+    
+    // Add event listeners for meal dropdowns
+    document.querySelectorAll('.meal-dropdown').forEach(dropdown => {
+      dropdown.addEventListener('change', (e) => {
+        const day = parseInt(e.target.dataset.day);
+        const mealIdx = parseInt(e.target.dataset.meal);
+        const optionIdx = parseInt(e.target.value);
+        const detailsDiv = document.getElementById(`${e.target.id}_details`);
+        
+        // Update the displayed meal details
+        const selectedMeal = currentPlan.mealPlanData[day].meals[mealIdx].options[optionIdx];
+        detailsDiv.innerHTML = renderMealDetails(selectedMeal);
+        
+        // Update selection in plan
+        currentPlan.mealPlanData[day].meals[mealIdx].selectedIndex = optionIdx;
+      });
+    });
+    
+  } catch (error) {
+    console.error('Failed to fetch meal plan from API:', error);
+    // Show error to user - no fallback to demo data
+    mealPlanDiv.innerHTML = `
+      <div class="error-card" style="padding: 24px; background: #fee; border: 1px solid #fcc; border-radius: 8px;">
+        <h3 style="color: #c00; margin-top: 0;">⚠️ Unable to Generate Meal Plan</h3>
+        <p><strong>The nutrition API service is currently unavailable.</strong></p>
+        <p>This could be due to:</p>
+        <ul style="margin-left: 20px;">
+          <li>API service maintenance or downtime</li>
+          <li>Network connectivity issues</li>
+          <li>API rate limits exceeded</li>
+        </ul>
+        <p style="margin-bottom: 0;">Please try again later or contact support if the problem persists.</p>
       </div>
     `;
-  });
-  
-  mealPlanDiv.innerHTML = html;
+  }
 }
 
-function generateTemplateMealPlan(plan) {
+function renderMealDetails(meal) {
+  return `
+    <div class="meal-name">${meal.name}</div>
+    <div class="meal-macros">
+      <span class="meal-macro">🔥 ${meal.calories} cal</span>
+      <span class="meal-macro">💪 ${meal.protein}g protein</span>
+      <span class="meal-macro">🍞 ${meal.carbs}g carbs</span>
+      <span class="meal-macro">🥑 ${meal.fat}g fat</span>
+    </div>
+    ${meal.sourceUrl ? `<div class="meal-link"><a href="${meal.sourceUrl}" target="_blank" rel="noopener">View Recipe →</a></div>` : ''}
+  `;
+}
+
+async function generateApiMealPlan(plan) {
   const { targetCalories, macros, formData } = plan;
   const mealsPerDay = formData.mealsPerDay;
   
   // Distribute calories across meals
   const caloriesPerMeal = Math.round(targetCalories / mealsPerDay);
-  const proteinPerMeal = Math.round(macros.protein / mealsPerDay);
-  const carbsPerMeal = Math.round(macros.carbs / mealsPerDay);
-  const fatPerMeal = Math.round(macros.fat / mealsPerDay);
   
-  const mealTemplates = {
-    breakfast: [
-      { name: 'Oatmeal with Berries and Protein Powder', modifier: 1.0 },
-      { name: 'Egg White Omelet with Vegetables', modifier: 1.0 },
-      { name: 'Greek Yogurt Parfait with Granola', modifier: 1.0 },
-      { name: 'Whole Grain Toast with Peanut Butter', modifier: 1.0 },
-      { name: 'Protein Pancakes with Fruit', modifier: 1.0 }
-    ],
-    lunch: [
-      { name: 'Grilled Chicken Salad with Quinoa', modifier: 1.0 },
-      { name: 'Turkey and Avocado Wrap', modifier: 1.0 },
-      { name: 'Salmon with Brown Rice and Broccoli', modifier: 1.0 },
-      { name: 'Lean Beef Stir-Fry with Vegetables', modifier: 1.0 },
-      { name: 'Tuna Poke Bowl', modifier: 1.0 }
-    ],
-    dinner: [
-      { name: 'Grilled Chicken Breast with Sweet Potato', modifier: 1.0 },
-      { name: 'Baked Fish with Roasted Vegetables', modifier: 1.0 },
-      { name: 'Turkey Meatballs with Pasta', modifier: 1.0 },
-      { name: 'Lean Steak with Asparagus', modifier: 1.0 },
-      { name: 'Shrimp and Vegetable Skewers', modifier: 1.0 }
-    ],
-    snack: [
-      { name: 'Protein Shake', modifier: 0.5 },
-      { name: 'Apple with Almond Butter', modifier: 0.5 },
-      { name: 'Cottage Cheese with Berries', modifier: 0.5 },
-      { name: 'Rice Cakes with Hummus', modifier: 0.5 },
-      { name: 'Trail Mix (portion controlled)', modifier: 0.5 }
-    ]
+  const dietaryRestrictions = {
+    dietaryStyle: formData.dietaryStyle,
+    allergies: formData.allergies,
+    dislikedFoods: formData.dislikedFoods,
+    preferredFoods: formData.preferredFoods
   };
   
-  // Adjust for dietary preferences
-  if (formData.dietaryStyle === 'vegan' || formData.dietaryStyle === 'vegetarian') {
-    // Replace meat-based options with plant-based
-    mealTemplates.lunch = [
-      { name: 'Tofu and Vegetable Buddha Bowl', modifier: 1.0 },
-      { name: 'Lentil Curry with Brown Rice', modifier: 1.0 },
-      { name: 'Black Bean and Sweet Potato Burrito Bowl', modifier: 1.0 },
-      { name: 'Chickpea Salad Sandwich', modifier: 1.0 },
-      { name: 'Quinoa and Roasted Vegetable Bowl', modifier: 1.0 }
-    ];
-    mealTemplates.dinner = [
-      { name: 'Tempeh Stir-Fry with Vegetables', modifier: 1.0 },
-      { name: 'Lentil Pasta with Marinara', modifier: 1.0 },
-      { name: 'Black Bean Burger with Sweet Potato Fries', modifier: 1.0 },
-      { name: 'Tofu Scramble with Vegetables', modifier: 1.0 },
-      { name: 'Veggie and Bean Chili', modifier: 1.0 }
-    ];
+  // Determine meal types based on meals per day
+  let mealTypes = [];
+  if (mealsPerDay === 3) {
+    mealTypes = ['breakfast', 'lunch', 'dinner'];
+  } else if (mealsPerDay === 4) {
+    mealTypes = ['breakfast', 'lunch', 'snack', 'dinner'];
+  } else {
+    mealTypes = ['breakfast', 'snack', 'lunch', 'snack', 'dinner'];
   }
   
   // Generate 7-day plan
   const weekPlan = [];
+  
   for (let day = 0; day < 7; day++) {
     const dayMeals = [];
     
-    if (mealsPerDay === 3) {
-      dayMeals.push(createMeal('Breakfast', mealTemplates.breakfast[day % 5], caloriesPerMeal, proteinPerMeal, carbsPerMeal, fatPerMeal));
-      dayMeals.push(createMeal('Lunch', mealTemplates.lunch[day % 5], caloriesPerMeal, proteinPerMeal, carbsPerMeal, fatPerMeal));
-      dayMeals.push(createMeal('Dinner', mealTemplates.dinner[day % 5], caloriesPerMeal, proteinPerMeal, carbsPerMeal, fatPerMeal));
-    } else if (mealsPerDay === 4) {
-      dayMeals.push(createMeal('Breakfast', mealTemplates.breakfast[day % 5], caloriesPerMeal, proteinPerMeal, carbsPerMeal, fatPerMeal));
-      dayMeals.push(createMeal('Lunch', mealTemplates.lunch[day % 5], caloriesPerMeal, proteinPerMeal, carbsPerMeal, fatPerMeal));
-      dayMeals.push(createMeal('Snack', mealTemplates.snack[day % 5], caloriesPerMeal * 0.5, proteinPerMeal * 0.5, carbsPerMeal * 0.5, fatPerMeal * 0.5));
-      dayMeals.push(createMeal('Dinner', mealTemplates.dinner[day % 5], caloriesPerMeal, proteinPerMeal, carbsPerMeal, fatPerMeal));
-    } else {
-      dayMeals.push(createMeal('Breakfast', mealTemplates.breakfast[day % 5], caloriesPerMeal, proteinPerMeal, carbsPerMeal, fatPerMeal));
-      dayMeals.push(createMeal('Snack 1', mealTemplates.snack[day % 5], caloriesPerMeal * 0.5, proteinPerMeal * 0.5, carbsPerMeal * 0.5, fatPerMeal * 0.5));
-      dayMeals.push(createMeal('Lunch', mealTemplates.lunch[day % 5], caloriesPerMeal, proteinPerMeal, carbsPerMeal, fatPerMeal));
-      dayMeals.push(createMeal('Snack 2', mealTemplates.snack[(day + 2) % 5], caloriesPerMeal * 0.5, proteinPerMeal * 0.5, carbsPerMeal * 0.5, fatPerMeal * 0.5));
-      dayMeals.push(createMeal('Dinner', mealTemplates.dinner[day % 5], caloriesPerMeal, proteinPerMeal, carbsPerMeal, fatPerMeal));
+    for (let mealIdx = 0; mealIdx < mealTypes.length; mealIdx++) {
+      const mealType = mealTypes[mealIdx];
+      const mealCals = mealType === 'snack' ? caloriesPerMeal * 0.5 : caloriesPerMeal;
+      
+      // Fetch 5 options for this meal
+      const options = await fetchMealOptions(mealType, mealCals, dietaryRestrictions);
+      
+      // Transform API results to our format
+      const mealOptions = options.slice(0, 5).map(recipe => {
+        const nutrition = recipe.nutrition?.nutrients || [];
+        const calories = nutrition.find(n => n.name === 'Calories')?.amount || mealCals;
+        const protein = nutrition.find(n => n.name === 'Protein')?.amount || 0;
+        const carbs = nutrition.find(n => n.name === 'Carbohydrates')?.amount || 0;
+        const fat = nutrition.find(n => n.name === 'Fat')?.amount || 0;
+        
+        return {
+          name: recipe.title,
+          calories: Math.round(calories),
+          protein: Math.round(protein),
+          carbs: Math.round(carbs),
+          fat: Math.round(fat),
+          sourceUrl: recipe.sourceUrl || recipe.spoonacularSourceUrl
+        };
+      });
+      
+      // Ensure we have at least 5 options (fill with generated if API didn't return enough)
+      while (mealOptions.length < 5) {
+        mealOptions.push({
+          name: `${mealType.charAt(0).toUpperCase() + mealType.slice(1)} Option ${mealOptions.length + 1}`,
+          calories: Math.round(mealCals),
+          protein: Math.round((macros.protein / mealsPerDay) * (mealType === 'snack' ? 0.5 : 1)),
+          carbs: Math.round((macros.carbs / mealsPerDay) * (mealType === 'snack' ? 0.5 : 1)),
+          fat: Math.round((macros.fat / mealsPerDay) * (mealType === 'snack' ? 0.5 : 1)),
+          sourceUrl: null
+        });
+      }
+      
+      dayMeals.push({
+        type: mealType.charAt(0).toUpperCase() + mealType.slice(1),
+        options: mealOptions,
+        selectedIndex: 0 // Default to first option
+      });
     }
     
     weekPlan.push({ meals: dayMeals });
   }
   
+  // Store meal plan data in current plan for later access
+  if (currentPlan) {
+    currentPlan.mealPlanData = weekPlan;
+  }
+  
   return weekPlan;
-}
-
-function createMeal(type, template, calories, protein, carbs, fat) {
-  return {
-    type,
-    name: template.name,
-    calories: Math.round(calories * template.modifier),
-    protein: Math.round(protein * template.modifier),
-    carbs: Math.round(carbs * template.modifier),
-    fat: Math.round(fat * template.modifier)
-  };
 }
 
 // ============================================================================
