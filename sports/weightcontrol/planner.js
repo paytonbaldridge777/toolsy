@@ -142,17 +142,6 @@ function navigateToStep(stepNumber) {
 // VALIDATION LOGIC
 // ============================================================================
 function validateStep(stepNumber) {
-  if (userConfirmed) {
-    adjustedDeadlineInput.value = newDeadline.toISOString().split('T')[0];
-    useAdjustedDeadline = true;
-    ignoreSafetyCaps = false;
-  } 
-  else {
-    alert(`Acknowledged risks. Proceeding with your original timeline.`);
-    useAdjustedDeadline = false;
-    ignoreSafetyCaps = true;   // <-- new
-  }
-
   const step = document.getElementById(`step${stepNumber}`);
   const requiredFields = step.querySelectorAll("[required]");
 
@@ -167,6 +156,10 @@ function validateStep(stepNumber) {
   }
 
   if (stepNumber === 1) {
+    // reset flags every time step 1 is validated
+    useAdjustedDeadline = false;
+    ignoreSafetyCaps = false;
+
     const currentWeight = parseFloat(document.getElementById("currentWeight").value);
     const targetWeight = parseFloat(document.getElementById("targetWeight").value);
     const deadlineDateInput = document.getElementById("deadlineDate");
@@ -184,19 +177,27 @@ function validateStep(stepNumber) {
       alert("Target date must be in the future.");
       return false;
     }
+
     // Timeline safety check for youth athletes
     if (age < 18 && rulesData && sport && rulesData.sports[sport] && rulesData.youth_overrides) {
       const weightToLose = currentWeight - targetWeight;
-      const daysAvailable = Math.round((deadlineDate - today) / (24 * 60 * 60 * 1000)); // Days until deadline
+      const daysAvailable = Math.round((deadlineDate - today) / (24 * 60 * 60 * 1000));
       const requiredDailyLoss = weightToLose / Math.max(daysAvailable, 1);
       const requiredDailyLossPercent = (requiredDailyLoss / currentWeight) * 100;
 
-      const youthSafeDailyLossPercent = rulesData.youth_overrides.max_weekly_loss_pct / 7; // Convert weekly limit to daily
+      const youthSafeDailyLossPercent = rulesData.youth_overrides.max_weekly_loss_pct / 7;
 
-      const newDeadline = new Date(today.getTime() + (weightToLose / (youthSafeDailyLossPercent * currentWeight)) * 7 * 24 * 60 * 60 * 1000);
+      const newDeadline = new Date(
+        today.getTime() +
+          (weightToLose / (youthSafeDailyLossPercent * currentWeight)) *
+            7 *
+            24 *
+            60 *
+            60 *
+            1000
+      );
 
       if (requiredDailyLossPercent > youthSafeDailyLossPercent) {
-        // Safety Warning and User Choice
         const userConfirmed = confirm(
           `Warning: Your entered timeline requires a weight cut exceeding safe daily limits (${requiredDailyLossPercent.toFixed(
             2
@@ -206,14 +207,13 @@ function validateStep(stepNumber) {
         );
 
         if (userConfirmed) {
-          // Adjust timeline
-          const adjustedDeadlineInput = document.getElementById('deadlineDate');
-          adjustedDeadlineInput.value = newDeadline.toISOString().split('T')[0];
+          deadlineDateInput.value = newDeadline.toISOString().split("T")[0];
           useAdjustedDeadline = true;
+          ignoreSafetyCaps = false;
         } else {
-          alert(
-            `Acknowledged risks. Proceeding with your original timeline.`
-          );
+          alert("Acknowledged risks. Proceeding with your original timeline.");
+          useAdjustedDeadline = false;
+          ignoreSafetyCaps = true;
         }
       }
     }
