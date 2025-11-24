@@ -68,17 +68,8 @@ function setupEventListeners() {
   // Generate plan
   document.getElementById('generatePlanBtn').addEventListener('click', generatePlan);
   
-  // Age change - show/hide youth override
-  document.getElementById('age').addEventListener('input', (e) => {
-    const age = parseInt(e.target.value);
-    const youthOverrideSection = document.getElementById('youthOverrideSection');
-    if (age && age < 18) {
-      youthOverrideSection.style.display = 'block';
-    } else {
-      youthOverrideSection.style.display = 'none';
-      document.getElementById('youthSafetyOverride').checked = false;
-    }
-  });
+  // Youth override will be shown dynamically during validation if needed
+  // (removed automatic display on age < 18)
   
   // Medical conditions toggle
   document.getElementById('medicalConditions').addEventListener('change', (e) => {
@@ -167,6 +158,8 @@ function validateStep(stepNumber) {
     const targetWeight = parseFloat(document.getElementById('targetWeight').value);
     const deadlineDate = new Date(document.getElementById('deadlineDate').value);
     const today = new Date();
+    const age = parseInt(document.getElementById('age').value);
+    const sport = document.getElementById('sport').value;
     
     if (targetWeight >= currentWeight) {
       alert('Target weight must be less than current weight for a weight loss plan.');
@@ -176,6 +169,33 @@ function validateStep(stepNumber) {
     if (deadlineDate <= today) {
       alert('Target date must be in the future.');
       return false;
+    }
+    
+    // Check if youth athlete's weight cut rate is unsafe
+    if (age && age < 18 && sport && rulesData && rulesData.sports[sport] && rulesData.youth_overrides) {
+      const weightToLose = currentWeight - targetWeight;
+      const weeksAvailable = Math.max(1, (deadlineDate - today) / (7 * 24 * 60 * 60 * 1000));
+      const requiredWeeklyLoss = weightToLose / weeksAvailable;
+      const requiredWeeklyLossPct = (requiredWeeklyLoss / currentWeight) * 100;
+      
+      const youthRules = rulesData.youth_overrides;
+      const sportRules = rulesData.sports[sport];
+      const maxWeeklyLossPct = Math.min(sportRules.max_weekly_loss_pct, youthRules.max_weekly_loss_pct);
+      
+      const youthOverrideSection = document.getElementById('youthOverrideSection');
+      
+      // Only show override if the requested cut exceeds youth safety limits
+      if (requiredWeeklyLossPct > maxWeeklyLossPct) {
+        youthOverrideSection.style.display = 'block';
+      } else {
+        youthOverrideSection.style.display = 'none';
+        document.getElementById('youthSafetyOverride').checked = false;
+      }
+    } else {
+      // Hide override section for adults
+      const youthOverrideSection = document.getElementById('youthOverrideSection');
+      youthOverrideSection.style.display = 'none';
+      document.getElementById('youthSafetyOverride').checked = false;
     }
   }
   
@@ -441,9 +461,12 @@ function generateWarnings(formData, sportRules, youthRules, isYouth, applyYouthR
 // Fetch meal options from Spoonacular API
 async function fetchMealOptions(mealType, targetCalories, dietaryRestrictions) {
   try {
+    // Spoonacular API uses minCalories/maxCalories range, not targetCalories
+    const calorieRange = Math.round(targetCalories * 0.15); // ±15% range
     const params = new URLSearchParams({
       type: mealType,
-      targetCalories: Math.round(targetCalories),
+      minCalories: Math.round(targetCalories - calorieRange),
+      maxCalories: Math.round(targetCalories + calorieRange),
       number: 5, // Get 5 options
       diet: dietaryRestrictions.dietaryStyle !== 'none' ? dietaryRestrictions.dietaryStyle : '',
       intolerances: dietaryRestrictions.allergies.join(','),
@@ -454,7 +477,7 @@ async function fetchMealOptions(mealType, targetCalories, dietaryRestrictions) {
       addRecipeNutrition: true
     });
 
-    // Call Cloudflare worker proxy endpoint (assumed to exist)
+    // Call Cloudflare worker proxy endpoint
     const response = await fetch(`/api/spoonacular/recipes/complexSearch?${params}`);
     
     if (!response.ok) {
