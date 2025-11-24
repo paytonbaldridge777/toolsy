@@ -342,7 +342,7 @@ async function calculatePlan(formData) {
     maxWeeklyLossPct = Math.min(maxWeeklyLossPct, youthRules.max_weekly_loss_pct);
   }
   
-  const safeWeeklyLoss = (maxWeeklyLossPct / 100) * formData.currentWeight;
+  //const safeWeeklyLoss = (maxWeeklyLossPct / 100) * formData.currentWeight;
   const actualWeeklyLoss = Math.min(requiredWeeklyLoss, safeWeeklyLoss);
   const adjustedTimeline = weightToLose / actualWeeklyLoss;
   
