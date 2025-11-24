@@ -301,21 +301,13 @@ function collectFormData() {
 // CALCULATIONS
 // ============================================================================
 async function calculatePlan(formData) {
-  const safeWeeklyLoss = (maxWeeklyLossPct / 100) * formData.currentWeight;
-
-  const actualWeeklyLoss = formData.ignoreSafetyCaps
-    ? requiredWeeklyLoss
-    : Math.min(requiredWeeklyLoss, safeWeeklyLoss);
-  
-  const adjustedTimeline = weightToLose / actualWeeklyLoss;
-
   const sportRules = rulesData.sports[formData.sport];
   const generalRules = rulesData.general;
   const youthRules = rulesData.youth_overrides;
-  
+
   const isYouth = formData.age < youthRules.applies_if_age_under;
   const applyYouthRules = isYouth && !formData.youthSafetyOverride;
-  
+
   // 1. Calculate TDEE
   let tdee;
   if (formData.bodyFatPct && generalRules.tdee_formula_alt_if_bf_known === 'cunningham') {
@@ -323,56 +315,63 @@ async function calculatePlan(formData) {
   } else {
     tdee = calculateMifflinStJeorTDEE(formData);
   }
-  
-  // Apply activity multiplier
+
   const activityMultiplier = getActivityMultiplier(formData.trainingDays, formData.trainingIntensity);
   tdee *= activityMultiplier;
-  
-  // 2. Calculate required weekly loss
+
+  // 2. Required loss based on USER deadline
   const weightToLose = formData.currentWeight - formData.targetWeight;
   const deadline = new Date(formData.deadlineDate);
   const today = new Date();
   const weeksAvailable = Math.max(1, (deadline - today) / (7 * 24 * 60 * 60 * 1000));
   const requiredWeeklyLoss = weightToLose / weeksAvailable;
   const requiredWeeklyLossPct = (requiredWeeklyLoss / formData.currentWeight) * 100;
-  
-  // 3. Determine safe weekly loss cap
+
+  // 3. Safe cap %
   let maxWeeklyLossPct = sportRules.max_weekly_loss_pct;
   if (applyYouthRules) {
     maxWeeklyLossPct = Math.min(maxWeeklyLossPct, youthRules.max_weekly_loss_pct);
   }
-  
-  //const safeWeeklyLoss = (maxWeeklyLossPct / 100) * formData.currentWeight;
-  //const actualWeeklyLoss = Math.min(requiredWeeklyLoss, safeWeeklyLoss);
-  //const adjustedTimeline = weightToLose / actualWeeklyLoss;
-  
-  // 4. Calculate daily calorie target
+
+  // 4. Convert cap % to lbs/week
+  const safeWeeklyLoss = (maxWeeklyLossPct / 100) * formData.currentWeight;
+
+  // 5. Decide actual loss rate (Cancel bypasses cap)
+  const actualWeeklyLoss = formData.ignoreSafetyCaps
+    ? requiredWeeklyLoss
+    : Math.min(requiredWeeklyLoss, safeWeeklyLoss);
+
+  const adjustedTimeline = weightToLose / actualWeeklyLoss;
+
+  // 6. Calories & macros
   const weeklyDeficit = actualWeeklyLoss * CALORIES_PER_LB;
   const dailyDeficit = weeklyDeficit / 7;
   let targetCalories = tdee - dailyDeficit;
-  
-  // Apply calorie floors
-  const minCalories = formData.sex === 'male' ? generalRules.min_calories_male : generalRules.min_calories_female;
+
+  const minCalories = formData.sex === 'male'
+    ? generalRules.min_calories_male
+    : generalRules.min_calories_female;
+
   if (applyYouthRules) {
     const youthMinCalories = tdee * youthRules.min_calories_multiplier_of_tdee;
     targetCalories = Math.max(targetCalories, youthMinCalories, minCalories);
   } else {
     targetCalories = Math.max(targetCalories, minCalories);
   }
-  
-  // 5. Calculate macros
+
   const macros = calculateMacros(formData, sportRules, targetCalories);
-  
-  // 6. Generate warnings
-  const warnings = generateWarnings(formData, sportRules, youthRules, isYouth, applyYouthRules, requiredWeeklyLossPct, maxWeeklyLossPct);
-  
-  // 7. Collect relevant doc refs
+
+  const warnings = generateWarnings(
+    formData, sportRules, youthRules, isYouth, applyYouthRules,
+    requiredWeeklyLossPct, maxWeeklyLossPct
+  );
+
   const docRefs = [...new Set([
     ...generalRules.doc_refs,
     ...sportRules.doc_refs,
     ...(isYouth ? youthRules.doc_refs : [])
   ])];
-  
+
   return {
     formData,
     sportRules,
@@ -390,6 +389,7 @@ async function calculatePlan(formData) {
     docRefs
   };
 }
+
 
 function calculateMifflinStJeorTDEE(formData) {
   const weight_kg = formData.currentWeight * LBS_TO_KG;
