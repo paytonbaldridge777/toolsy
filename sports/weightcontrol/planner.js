@@ -289,9 +289,9 @@ function collectFormData() {
     injuries: document.getElementById('injuries').value,
     cutHistory: document.getElementById('cutHistory').value,
     //dietaryStyle: document.getElementById('dietaryStyle').value,
-    allergies: document.getElementById('allergies').value.split(',').map(s => s.trim()).filter(s => s),
-    dislikedFoods: document.getElementById('dislikedFoods').value.split(',').map(s => s.trim()).filter(s => s),
-    preferredFoods: document.getElementById('preferredFoods').value.split(',').map(s => s.trim()).filter(s => s),
+    //allergies: document.getElementById('allergies').value.split(',').map(s => s.trim()).filter(s => s),
+    //dislikedFoods: document.getElementById('dislikedFoods').value.split(',').map(s => s.trim()).filter(s => s),
+    //preferredFoods: document.getElementById('preferredFoods').value.split(',').map(s => s.trim()).filter(s => s),
     mealsPerDay: parseInt(document.getElementById('mealsPerDay').value).
     ignoreSafetyCaps,
   };
