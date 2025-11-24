@@ -459,40 +459,39 @@ function generateWarnings(formData, sportRules, youthRules, isYouth, applyYouthR
 // ============================================================================
 
 // Fetch meal options from Spoonacular API
+// Original `fetchMealOptions` function without Cloudflare integration
 async function fetchMealOptions(mealType, targetCalories, dietaryRestrictions) {
-  const calorieRange = Math.round(targetCalories * 0.15); // ±15% range
-
-  const params = new URLSearchParams({
-    type: mealType,
-    minCalories: Math.round(targetCalories - calorieRange),
-    maxCalories: Math.round(targetCalories + calorieRange),
-    number: 5,
-    diet: dietaryRestrictions.dietaryStyle !== 'none' ? dietaryRestrictions.dietaryStyle : '',
-    intolerances: dietaryRestrictions.allergies.join(','),
-    excludeIngredients: dietaryRestrictions.dislikedFoods.join(','),
-    includeIngredients: dietaryRestrictions.preferredFoods.join(','),
-    addRecipeInformation: true,
-    fillIngredients: true,
-    addRecipeNutrition: true
-  });
-
-  const url = `/api/spoonacular/recipes/complexSearch?${params.toString()}`;
-
   try {
-    const response = await fetch(url);
+    const calorieRange = Math.round(targetCalories * 0.15); // ±15% range
+    const params = new URLSearchParams({
+      type: mealType,
+      minCalories: Math.round(targetCalories - calorieRange),
+      maxCalories: Math.round(targetCalories + calorieRange),
+      number: 5, // Get 5 options
+      diet: dietaryRestrictions.dietaryStyle !== 'none' ? dietaryRestrictions.dietaryStyle : '',
+      intolerances: dietaryRestrictions.allergies.join(','),
+      excludeIngredients: dietaryRestrictions.dislikedFoods.join(','),
+      includeIngredients: dietaryRestrictions.preferredFoods.join(','),
+      addRecipeInformation: true,
+      fillIngredients: true,
+      addRecipeNutrition: true
+    });
+
+    // REST API directly communicating with Spoonacular
+    const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?${params}`);
 
     if (!response.ok) {
-      throw new Error(`Cloudflare worker error: ${response.statusText}`);
+      throw new Error(`Spoonacular API failed with status ${response.status}`);
     }
 
     const data = await response.json();
-    return data.results;
+    console.log("Meal options fetched successfully:", data);
+    return data.results || [];
   } catch (error) {
-    console.error("Error fetching meal options:", error);
+    console.error("Error fetching meal options from Spoonacular:", error);
     throw error;
   }
 }
-
 async function renderMealPlan(plan) {
   const mealPlanDiv = document.getElementById('mealPlan');
   
