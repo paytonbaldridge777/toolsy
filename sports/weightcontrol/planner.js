@@ -476,7 +476,7 @@ async function fetchMealOptions(mealType, targetCalories, dietaryRestrictions) {
     addRecipeNutrition: true
   });
 
-  const url = `/api/spoonacular/recipes/complexSearch?${params.toString()}`;
+  const url = `https://kitmodo.pages.dev/api/spoonacular/recipes/complexSearch?${params.toString()}`;
 
   try {
     const response = await fetch(url);
