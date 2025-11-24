@@ -142,17 +142,18 @@ function navigateToStep(stepNumber) {
 function validateStep(stepNumber) {
   const step = document.getElementById(`step${stepNumber}`);
   const requiredFields = step.querySelectorAll('[required]');
-  
+
   for (const field of requiredFields) {
     if (!field.value) {
       field.focus();
-      const fieldLabel = field.closest('.form-group')?.querySelector('label')?.textContent || 'this field';
+      const fieldLabel =
+        field.closest('.form-group')?.querySelector('label')?.textContent || 'this field';
       alert(`Please fill in ${fieldLabel} before continuing.`);
       return false;
     }
   }
-  
-  // Additional validation for step 1
+
+  // Additional validation for Step 1
   if (stepNumber === 1) {
     const currentWeight = parseFloat(document.getElementById('currentWeight').value);
     const targetWeight = parseFloat(document.getElementById('targetWeight').value);
@@ -160,45 +161,51 @@ function validateStep(stepNumber) {
     const today = new Date();
     const age = parseInt(document.getElementById('age').value);
     const sport = document.getElementById('sport').value;
-    
+
     if (targetWeight >= currentWeight) {
-      alert('Target weight must be less than current weight for a weight loss plan.');
+      alert('Target weight must be less than current weight for a weight-loss plan.');
       return false;
     }
-    
+
     if (deadlineDate <= today) {
       alert('Target date must be in the future.');
       return false;
     }
-    
-    // Check if youth athlete's weight cut rate is unsafe
+
+    // Timeline safety check for youth athletes
     if (age && age < 18 && sport && rulesData && rulesData.sports[sport] && rulesData.youth_overrides) {
       const weightToLose = currentWeight - targetWeight;
-      const weeksAvailable = Math.max(1, (deadlineDate - today) / (7 * 24 * 60 * 60 * 1000));
-      const requiredWeeklyLoss = weightToLose / weeksAvailable;
-      const requiredWeeklyLossPct = (requiredWeeklyLoss / currentWeight) * 100;
-      
-      const youthRules = rulesData.youth_overrides;
-      const sportRules = rulesData.sports[sport];
-      const maxWeeklyLossPct = Math.min(sportRules.max_weekly_loss_pct, youthRules.max_weekly_loss_pct);
-      
-      const youthOverrideSection = document.getElementById('youthOverrideSection');
-      
-      // Only show override if the requested cut exceeds youth safety limits
-      if (requiredWeeklyLossPct > maxWeeklyLossPct) {
-        youthOverrideSection.style.display = 'block';
-      } else {
-        youthOverrideSection.style.display = 'none';
-        document.getElementById('youthSafetyOverride').checked = false;
+      const daysAvailable = Math.round((deadlineDate - today) / (24 * 60 * 60 * 1000)); // Days until deadline
+      const requiredDailyLoss = weightToLose / Math.max(daysAvailable, 1);
+      const requiredDailyLossPercent = (requiredDailyLoss / currentWeight) * 100;
+
+      const youthSafeDailyLossPercent = rulesData.youth_overrides.max_weekly_loss_pct / 7; // Convert weekly limit to daily
+
+      const newDeadline = new Date(today.getTime() + (weightToLose / (youthSafeDailyLossPercent * currentWeight)) * 7 * 24 * 60 * 60 * 1000);
+
+      if (requiredDailyLossPercent > youthSafeDailyLossPercent) {
+        // Safety Warning and User Choice
+        const userConfirmed = confirm(
+          `Warning: Your entered timeline requires a weight cut exceeding safe daily limits (${requiredDailyLossPercent.toFixed(
+            2
+          )}% per day, safe limit: ${youthSafeDailyLossPercent.toFixed(
+            2
+          )}%).\n\nIt is recommended to adjust the timeline to ${newDeadline.toDateString()}. Do you accept the adjusted timeline (Recommended)?\n\nPress OK to accept the adjusted timeline or CANCEL to proceed with your current timeline after acknowledging risks.`
+        );
+
+        if (userConfirmed) {
+          // Adjust timeline
+          const adjustedDeadlineInput = document.getElementById('deadlineDate');
+          adjustedDeadlineInput.value = newDeadline.toISOString().split('T')[0];
+        } else {
+          alert(
+            `Acknowledged risks. Proceeding with your original timeline. Ensure proper consultation with professionals during the plan.`
+          );
+        }
       }
-    } else {
-      // Hide override section for adults
-      const youthOverrideSection = document.getElementById('youthOverrideSection');
-      youthOverrideSection.style.display = 'none';
-      document.getElementById('youthSafetyOverride').checked = false;
     }
   }
-  
+
   return true;
 }
 
