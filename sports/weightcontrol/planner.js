@@ -174,33 +174,42 @@ function validateStep(stepNumber) {
     }
 
     // Timeline safety check for youth athletes
-    if (age < 18 && rulesData && sport && rulesData.sports[sport] && rulesData.youth_overrides) {
+    if (
+      age < 18 &&
+      rulesData &&
+      sport &&
+      rulesData.sports[sport] &&
+      rulesData.youth_overrides
+    ) {
       const weightToLose = currentWeight - targetWeight;
       const daysAvailable = Math.round((deadlineDate - today) / (24 * 60 * 60 * 1000));
       const requiredDailyLoss = weightToLose / Math.max(daysAvailable, 1);
       const requiredDailyLossPercent = (requiredDailyLoss / currentWeight) * 100;
 
-      const youthSafeDailyLossPercent = rulesData.youth_overrides.max_weekly_loss_pct / 7;
+      const youthSafeDailyLossPercent =
+        rulesData.youth_overrides.max_weekly_loss_pct / 7;
 
-      const adjustedDays = Math.ceil(weightToLose / (youthSafeDailyLossPercent * currentWeight));
-      const newDeadline = new Date(today.getTime() + adjustedDays * 24 * 60 * 60 * 1000);
+      const adjustedDays = Math.ceil(
+        weightToLose / (youthSafeDailyLossPercent * currentWeight)
+      );
+      const newDeadline = new Date(
+        today.getTime() + adjustedDays * 24 * 60 * 60 * 1000
+      );
 
       if (requiredDailyLossPercent > youthSafeDailyLossPercent) {
         const userConfirmed = confirm(
-          `⚠️ Warning: Your timeline involves losing ${requiredDailyLossPercent.toFixed(
+          `⚠️ Warning: Your timeline exceeds safe limits (${requiredDailyLossPercent.toFixed(
             2
-          )}% of body weight per day, exceeding the safe limit of ${youthSafeDailyLossPercent.toFixed(
-            2
-          )}%.\n\nRecommended adjusted timeline: ${newDeadline.toDateString()}.\nPress OK to accept the adjusted timeline, or CANCEL to proceed with your original timeline while acknowledging the risks.`
+          )}% daily loss). Recommended adjusted timeline: ${newDeadline.toDateString()}. OK to accept or CANCEL to continue with original timeline.`
         );
 
         if (userConfirmed) {
           useAdjustedDeadline = true;
           deadlineDateInput.value = newDeadline.toISOString().split("T")[0];
         } else {
-          useAdjustedDeadline = false;
+          useAdjustedDeadline = false; // Ensure "Cancel" forces the original timeline
           alert(
-            `⚠️ You’ve chosen to proceed with your original timeline despite exceeding recommended safety limits.`
+            "⚠️ You’ve chosen to proceed manually. Please consult a professional if required."
           );
         }
       }
@@ -211,7 +220,7 @@ function validateStep(stepNumber) {
 }
 
 // ============================================================================
-// PLAN GENERATION (Updated to respect user timeline choice)
+// PLAN GENERATION FUNCTION
 // ============================================================================
 async function generatePlan() {
   if (!validateStep(3)) {
@@ -222,9 +231,10 @@ async function generatePlan() {
 
   // Respect user-selected timeline
   if (!useAdjustedDeadline) {
-    formData.deadlineDate = document.getElementById("deadlineDate").value;
+    formData.deadlineDate = document.getElementById("deadlineDate").value; // Ensure original timeline is respected
   }
 
+  // Proceed to render results
   showResultsScreen();
 
   document.getElementById("planSummary").innerHTML =
@@ -248,12 +258,8 @@ async function generatePlan() {
 }
 
 // ============================================================================
-// CALCULATIONS, RENDERING, OTHER COMPLEX LOGIC OMITTED BUT RETAINED HERE
-//
-// Ensure full functionality remains implemented, updated as needed.
-//
+// CALCULATIONS, RENDERING, OTHER COMPLEX LOGIC RETAINED
 // ============================================================================
-
 function collectFormData() {
   return {
     // Step 1
