@@ -154,10 +154,24 @@ function validateStep(stepNumber) {
     }
   }
 
-  "Target date must be in the future.");
+  if (stepNumber === 1) {
+    const currentWeight = parseFloat(document.getElementById("currentWeight").value);
+    const targetWeight = parseFloat(document.getElementById("targetWeight").value);
+    const deadlineDateInput = document.getElementById("deadlineDate");
+    const deadlineDate = new Date(deadlineDateInput.value);
+    const today = new Date();
+    const age = parseInt(document.getElementById("age").value);
+    const sport = document.getElementById("sport").value;
+
+    if (targetWeight >= currentWeight) {
+      alert("Target weight must be less than current weight for a weight-loss plan.");
       return false;
     }
 
+    if (deadlineDate <= today) {
+      alert("Target date must be in the future.");
+      return false;
+    }
     // Timeline safety check for youth athletes
     if (age < 18 && rulesData && sport && rulesData.sports[sport] && rulesData.youth_overrides) {
       const weightToLose = currentWeight - targetWeight;
