@@ -482,7 +482,7 @@ async function fetchMealOptions(mealType, targetCalories, dietaryRestrictions) {
     type: mealType,
     minCalories: Math.round(targetCalories - calorieRange),
     maxCalories: Math.round(targetCalories + calorieRange),
-    number: 5,
+    number: 10,
     diet: dietaryRestrictions.dietaryStyle !== 'none' ? dietaryRestrictions.dietaryStyle : '',
     intolerances: dietaryRestrictions.allergies.join(','),
     excludeIngredients: dietaryRestrictions.dislikedFoods.join(','),
