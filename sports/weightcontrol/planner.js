@@ -343,8 +343,8 @@ async function calculatePlan(formData) {
   }
   
   //const safeWeeklyLoss = (maxWeeklyLossPct / 100) * formData.currentWeight;
-  const actualWeeklyLoss = Math.min(requiredWeeklyLoss, safeWeeklyLoss);
-  const adjustedTimeline = weightToLose / actualWeeklyLoss;
+  //const actualWeeklyLoss = Math.min(requiredWeeklyLoss, safeWeeklyLoss);
+  //const adjustedTimeline = weightToLose / actualWeeklyLoss;
   
   // 4. Calculate daily calorie target
   const weeklyDeficit = actualWeeklyLoss * CALORIES_PER_LB;
