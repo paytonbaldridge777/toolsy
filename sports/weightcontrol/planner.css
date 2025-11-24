@@ -618,20 +618,24 @@ textarea.form-control {
 
 .error-card {
   padding: 24px;
-  background: #fee;
-  border: 1px solid #fcc;
   border-radius: 8px;
 }
 
-:root[data-theme="light"] .error-card {
+:root .error-card {
   background: #fee;
-  border-color: #fcc;
+  border: 1px solid #fcc;
+}
+
+:root[data-theme="light"] .error-card {
+  background: #ffebee;
+  border: 1px solid #ffcdd2;
 }
 
 .error-card h3 {
   color: #c00;
   margin-top: 0;
 }
+
 
 .error-card ul {
   margin-left: 20px;

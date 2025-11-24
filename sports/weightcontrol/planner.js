@@ -524,12 +524,16 @@ async function renderMealPlan(plan) {
         const optionIdx = parseInt(e.target.value);
         const detailsDiv = document.getElementById(`${e.target.id}_details`);
         
-        // Update the displayed meal details
-        const selectedMeal = currentPlan.mealPlanData[day].meals[mealIdx].options[optionIdx];
-        detailsDiv.innerHTML = renderMealDetails(selectedMeal);
-        
-        // Update selection in plan
-        currentPlan.mealPlanData[day].meals[mealIdx].selectedIndex = optionIdx;
+        // Update the displayed meal details with null checks
+        if (currentPlan && currentPlan.mealPlanData && 
+            currentPlan.mealPlanData[day] && 
+            currentPlan.mealPlanData[day].meals[mealIdx]) {
+          const selectedMeal = currentPlan.mealPlanData[day].meals[mealIdx].options[optionIdx];
+          detailsDiv.innerHTML = renderMealDetails(selectedMeal);
+          
+          // Update selection in plan
+          currentPlan.mealPlanData[day].meals[mealIdx].selectedIndex = optionIdx;
+        }
       });
     });
     
@@ -537,8 +541,8 @@ async function renderMealPlan(plan) {
     console.error('Failed to fetch meal plan from API:', error);
     // Show error to user - no fallback to demo data
     mealPlanDiv.innerHTML = `
-      <div class="error-card" style="padding: 24px; background: #fee; border: 1px solid #fcc; border-radius: 8px;">
-        <h3 style="color: #c00; margin-top: 0;">⚠️ Unable to Generate Meal Plan</h3>
+      <div class="error-card">
+        <h3>⚠️ Unable to Generate Meal Plan</h3>
         <p><strong>The nutrition API service is currently unavailable.</strong></p>
         <p>This could be due to:</p>
         <ul style="margin-left: 20px;">

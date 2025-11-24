@@ -41,8 +41,8 @@ export async function onRequestGet(context) {
     });
     
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Spoonacular API error:', response.status, errorText);
+      // Log only status code without sensitive error details
+      console.error('Spoonacular API error. Status:', response.status);
       
       return new Response(JSON.stringify({
         error: 'External API error',
