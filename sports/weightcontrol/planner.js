@@ -172,7 +172,7 @@ function validateStep(stepNumber) {
     }
     
     // Check if youth athlete's weight cut rate is unsafe
-    if (age && age < 18 && sport && rulesData) {
+    if (age && age < 18 && sport && rulesData && rulesData.sports[sport] && rulesData.youth_overrides) {
       const weightToLose = currentWeight - targetWeight;
       const weeksAvailable = Math.max(1, (deadlineDate - today) / (7 * 24 * 60 * 60 * 1000));
       const requiredWeeklyLoss = weightToLose / weeksAvailable;
