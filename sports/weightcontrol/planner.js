@@ -16,38 +16,39 @@ const CUNNINGHAM_MULTIPLIER = 22; // Cunningham formula LBM multiplier
 let rulesData = null;
 let docsData = null;
 let currentPlan = null;
+let useAdjustedDeadline = false; // Track user choice on timeline
 
 // ============================================================================
 // INITIALIZATION
 // ============================================================================
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // Load rules and docs
   await loadData();
-  
+
   // Set up event listeners
   setupEventListeners();
-  
+
   // Set minimum date to today
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('deadlineDate').setAttribute('min', today);
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("deadlineDate").setAttribute("min", today);
 });
 
 async function loadData() {
   try {
     const [rulesResponse, docsResponse] = await Promise.all([
-      fetch('/sports/weightcontrol/data/rules.json'),
-      fetch('/sports/weightcontrol/data/docs.json')
+      fetch("/sports/weightcontrol/data/rules.json"),
+      fetch("/sports/weightcontrol/data/docs.json"),
     ]);
-    
+
     if (!rulesResponse.ok || !docsResponse.ok) {
-      throw new Error('Failed to load configuration files');
+      throw new Error("Failed to load configuration files");
     }
-    
+
     rulesData = await rulesResponse.json();
     docsData = await docsResponse.json();
   } catch (error) {
-    console.error('Error loading data:', error);
-    alert('Error loading configuration data. Please refresh the page.');
+    console.error("Error loading data:", error);
+    alert("Error loading configuration data. Please refresh the page.");
   }
 }
 
@@ -56,55 +57,52 @@ async function loadData() {
 // ============================================================================
 function setupEventListeners() {
   // Navigation
-  document.getElementById('startPlanBtn').addEventListener('click', showFormScreen);
-  document.getElementById('backToLandingBtn').addEventListener('click', showLandingScreen);
-  
+  document.getElementById("startPlanBtn").addEventListener("click", showFormScreen);
+  document.getElementById("backToLandingBtn").addEventListener("click", showLandingScreen);
+
   // Step navigation
-  document.getElementById('nextStep1Btn').addEventListener('click', () => navigateToStep(2));
-  document.getElementById('nextStep2Btn').addEventListener('click', () => navigateToStep(3));
-  document.getElementById('backStep2Btn').addEventListener('click', () => navigateToStep(1));
-  document.getElementById('backStep3Btn').addEventListener('click', () => navigateToStep(2));
-  
+  document.getElementById("nextStep1Btn").addEventListener("click", () => navigateToStep(2));
+  document.getElementById("nextStep2Btn").addEventListener("click", () => navigateToStep(3));
+  document.getElementById("backStep2Btn").addEventListener("click", () => navigateToStep(1));
+  document.getElementById("backStep3Btn").addEventListener("click", () => navigateToStep(2));
+
   // Generate plan
-  document.getElementById('generatePlanBtn').addEventListener('click', generatePlan);
-  
-  // Youth override will be shown dynamically during validation if needed
-  // (removed automatic display on age < 18)
-  
+  document.getElementById("generatePlanBtn").addEventListener("click", generatePlan);
+
   // Medical conditions toggle
-  document.getElementById('medicalConditions').addEventListener('change', (e) => {
-    const detailsGroup = document.getElementById('medicalDetailsGroup');
-    detailsGroup.style.display = e.target.value === 'yes' ? 'block' : 'none';
+  document.getElementById("medicalConditions").addEventListener("change", (e) => {
+    const detailsGroup = document.getElementById("medicalDetailsGroup");
+    detailsGroup.style.display = e.target.value === "yes" ? "block" : "none";
   });
-  
+
   // Results actions
-  document.getElementById('startOverBtn').addEventListener('click', showLandingScreen);
-  document.getElementById('printPlanBtn').addEventListener('click', () => window.print());
-  document.getElementById('exportJsonBtn').addEventListener('click', exportPlanJson);
+  document.getElementById("startOverBtn").addEventListener("click", showLandingScreen);
+  document.getElementById("printPlanBtn").addEventListener("click", () => window.print());
+  document.getElementById("exportJsonBtn").addEventListener("click", exportPlanJson);
 }
 
 // ============================================================================
 // SCREEN NAVIGATION
 // ============================================================================
 function showLandingScreen() {
-  document.getElementById('landingScreen').style.display = 'block';
-  document.getElementById('formScreen').style.display = 'none';
-  document.getElementById('resultsScreen').style.display = 'none';
+  document.getElementById("landingScreen").style.display = "block";
+  document.getElementById("formScreen").style.display = "none";
+  document.getElementById("resultsScreen").style.display = "none";
   window.scrollTo(0, 0);
 }
 
 function showFormScreen() {
-  document.getElementById('landingScreen').style.display = 'none';
-  document.getElementById('formScreen').style.display = 'block';
-  document.getElementById('resultsScreen').style.display = 'none';
+  document.getElementById("landingScreen").style.display = "none";
+  document.getElementById("formScreen").style.display = "block";
+  document.getElementById("resultsScreen").style.display = "none";
   navigateToStep(1);
   window.scrollTo(0, 0);
 }
 
 function showResultsScreen() {
-  document.getElementById('landingScreen').style.display = 'none';
-  document.getElementById('formScreen').style.display = 'none';
-  document.getElementById('resultsScreen').style.display = 'block';
+  document.getElementById("landingScreen").style.display = "none";
+  document.getElementById("formScreen").style.display = "none";
+  document.getElementById("resultsScreen").style.display = "block";
   window.scrollTo(0, 0);
 }
 
@@ -113,93 +111,96 @@ function navigateToStep(stepNumber) {
   if (stepNumber > 1 && !validateStep(stepNumber - 1)) {
     return;
   }
-  
+
   // Hide all steps
-  document.querySelectorAll('.form-step').forEach(step => {
-    step.style.display = 'none';
+  document.querySelectorAll(".form-step").forEach((step) => {
+    step.style.display = "none";
   });
-  
+
   // Show target step
-  document.getElementById(`step${stepNumber}`).style.display = 'block';
-  
+  document.getElementById(`step${stepNumber}`).style.display = "block";
+
   // Update progress bar
-  document.querySelectorAll('.progress-step').forEach((step, index) => {
+  document.querySelectorAll(".progress-step").forEach((step, index) => {
     const num = index + 1;
     if (num < stepNumber) {
-      step.classList.add('completed');
-      step.classList.remove('active');
+      step.classList.add("completed");
+      step.classList.remove("active");
     } else if (num === stepNumber) {
-      step.classList.add('active');
-      step.classList.remove('completed');
+      step.classList.add("active");
+      step.classList.remove("completed");
     } else {
-      step.classList.remove('active', 'completed');
+      step.classList.remove("active", "completed");
     }
   });
-  
+
   window.scrollTo(0, 0);
 }
 
+// ============================================================================
+// VALIDATION LOGIC
+// ============================================================================
 function validateStep(stepNumber) {
   const step = document.getElementById(`step${stepNumber}`);
-  const requiredFields = step.querySelectorAll('[required]');
+  const requiredFields = step.querySelectorAll("[required]");
 
   for (const field of requiredFields) {
     if (!field.value) {
       field.focus();
       const fieldLabel =
-        field.closest('.form-group')?.querySelector('label')?.textContent || 'this field';
+        field.closest(".form-group")?.querySelector("label")?.textContent || "this field";
       alert(`Please fill in ${fieldLabel} before continuing.`);
       return false;
     }
   }
 
-  // Additional validation for Step 1
   if (stepNumber === 1) {
-    const currentWeight = parseFloat(document.getElementById('currentWeight').value);
-    const targetWeight = parseFloat(document.getElementById('targetWeight').value);
-    const deadlineDate = new Date(document.getElementById('deadlineDate').value);
+    const currentWeight = parseFloat(document.getElementById("currentWeight").value);
+    const targetWeight = parseFloat(document.getElementById("targetWeight").value);
+    const deadlineDateInput = document.getElementById("deadlineDate");
+    const deadlineDate = new Date(deadlineDateInput.value);
     const today = new Date();
-    const age = parseInt(document.getElementById('age').value);
-    const sport = document.getElementById('sport').value;
+    const age = parseInt(document.getElementById("age").value);
+    const sport = document.getElementById("sport").value;
 
     if (targetWeight >= currentWeight) {
-      alert('Target weight must be less than current weight for a weight-loss plan.');
+      alert("Target weight must be less than current weight for a weight-loss plan.");
       return false;
     }
 
     if (deadlineDate <= today) {
-      alert('Target date must be in the future.');
+      alert("Target date must be in the future.");
       return false;
     }
 
     // Timeline safety check for youth athletes
-    if (age && age < 18 && sport && rulesData && rulesData.sports[sport] && rulesData.youth_overrides) {
+    if (age < 18 && rulesData && sport && rulesData.sports[sport] && rulesData.youth_overrides) {
       const weightToLose = currentWeight - targetWeight;
-      const daysAvailable = Math.round((deadlineDate - today) / (24 * 60 * 60 * 1000)); // Days until deadline
+      const daysAvailable = Math.round((deadlineDate - today) / (24 * 60 * 60 * 1000));
       const requiredDailyLoss = weightToLose / Math.max(daysAvailable, 1);
       const requiredDailyLossPercent = (requiredDailyLoss / currentWeight) * 100;
 
-      const youthSafeDailyLossPercent = rulesData.youth_overrides.max_weekly_loss_pct / 7; // Convert weekly limit to daily
+      const youthSafeDailyLossPercent = rulesData.youth_overrides.max_weekly_loss_pct / 7;
 
-      const newDeadline = new Date(today.getTime() + (weightToLose / (youthSafeDailyLossPercent * currentWeight)) * 7 * 24 * 60 * 60 * 1000);
+      const adjustedDays = Math.ceil(weightToLose / (youthSafeDailyLossPercent * currentWeight));
+      const newDeadline = new Date(today.getTime() + adjustedDays * 24 * 60 * 60 * 1000);
 
       if (requiredDailyLossPercent > youthSafeDailyLossPercent) {
-        // Safety Warning and User Choice
         const userConfirmed = confirm(
-          `Warning: Your entered timeline requires a weight cut exceeding safe daily limits (${requiredDailyLossPercent.toFixed(
+          `⚠️ Warning: Your timeline involves losing ${requiredDailyLossPercent.toFixed(
             2
-          )}% per day, safe limit: ${youthSafeDailyLossPercent.toFixed(
+          )}% of body weight per day, exceeding the safe limit of ${youthSafeDailyLossPercent.toFixed(
             2
-          )}%).\n\nIt is recommended to adjust the timeline to ${newDeadline.toDateString()}. Do you accept the adjusted timeline (Recommended)?\n\nPress OK to accept the adjusted timeline or CANCEL to proceed with your current timeline after acknowledging risks.`
+          )}%.\n\nRecommended adjusted timeline: ${newDeadline.toDateString()}.\nPress OK to accept the adjusted timeline, or CANCEL to proceed with your original timeline while acknowledging the risks.`
         );
 
         if (userConfirmed) {
-          // Adjust timeline
-          const adjustedDeadlineInput = document.getElementById('deadlineDate');
-          adjustedDeadlineInput.value = newDeadline.toISOString().split('T')[0];
+          useAdjustedDeadline = true;
+          deadlineDateInput.value = newDeadline.toISOString().split("T")[0];
         } else {
+          useAdjustedDeadline = false;
           alert(
-            `Acknowledged risks. Proceeding with your original timeline. Ensure proper consultation with professionals during the plan.`
+            `⚠️ You’ve chosen to proceed with your original timeline despite exceeding recommended safety limits.`
           );
         }
       }
@@ -210,26 +211,29 @@ function validateStep(stepNumber) {
 }
 
 // ============================================================================
-// PLAN GENERATION
+// PLAN GENERATION (Updated to respect user timeline choice)
 // ============================================================================
 async function generatePlan() {
   if (!validateStep(3)) {
     return;
   }
-  
-  // Collect all form data
+
   const formData = collectFormData();
-  
-  // Show loading state
+
+  // Respect user-selected timeline
+  if (!useAdjustedDeadline) {
+    formData.deadlineDate = document.getElementById("deadlineDate").value;
+  }
+
   showResultsScreen();
-  document.getElementById('planSummary').innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Generating your personalized plan...</p></div>';
-  
+
+  document.getElementById("planSummary").innerHTML =
+    '<div class="loading"><div class="loading-spinner"></div><p>Generating your personalized plan...</p></div>';
+
   try {
-    // Calculate plan
     const plan = await calculatePlan(formData);
     currentPlan = plan;
-    
-    // Render results
+
     renderPlanSummary(plan);
     renderWarnings(plan);
     renderNutritionTargets(plan);
@@ -237,10 +241,18 @@ async function generatePlan() {
     renderWorkoutGuidance(plan);
     renderReferenceLibrary(plan);
   } catch (error) {
-    console.error('Error generating plan:', error);
-    document.getElementById('planSummary').innerHTML = '<p class="error">Error generating plan. Please try again.</p>';
+    console.error("Error generating plan:", error);
+    document.getElementById("planSummary").innerHTML =
+      '<p class="error">Error generating plan. Please try again.</p>';
   }
 }
+
+// ============================================================================
+// CALCULATIONS, RENDERING, OTHER COMPLEX LOGIC OMITTED BUT RETAINED HERE
+//
+// Ensure full functionality remains implemented, updated as needed.
+//
+// ============================================================================
 
 function collectFormData() {
   return {
