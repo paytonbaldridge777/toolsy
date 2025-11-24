@@ -288,7 +288,7 @@ function collectFormData() {
     medicalDetails: document.getElementById('medicalDetails').value,
     injuries: document.getElementById('injuries').value,
     cutHistory: document.getElementById('cutHistory').value,
-    dietaryStyle: document.getElementById('dietaryStyle').value,
+    //dietaryStyle: document.getElementById('dietaryStyle').value,
     allergies: document.getElementById('allergies').value.split(',').map(s => s.trim()).filter(s => s),
     dislikedFoods: document.getElementById('dislikedFoods').value.split(',').map(s => s.trim()).filter(s => s),
     preferredFoods: document.getElementById('preferredFoods').value.split(',').map(s => s.trim()).filter(s => s),
@@ -506,7 +506,7 @@ async function fetchMealOptions(mealType, targetCalories, dietaryRestrictions) {
     minCalories: Math.round(targetCalories - calorieRange),
     maxCalories: Math.round(targetCalories + calorieRange),
     number: 10,
-    diet: dietaryRestrictions.dietaryStyle !== 'none' ? dietaryRestrictions.dietaryStyle : '',
+    //diet: dietaryRestrictions.dietaryStyle !== 'none' ? dietaryRestrictions.dietaryStyle : '',
     intolerances: dietaryRestrictions.allergies.join(','),
     excludeIngredients: dietaryRestrictions.dislikedFoods.join(','),
     includeIngredients: dietaryRestrictions.preferredFoods.join(','),
@@ -639,7 +639,7 @@ async function generateApiMealPlan(plan) {
   const caloriesPerMeal = Math.round(targetCalories / mealsPerDay);
   
   const dietaryRestrictions = {
-    dietaryStyle: formData.dietaryStyle,
+    //dietaryStyle: formData.dietaryStyle,
     allergies: formData.allergies,
     dislikedFoods: formData.dislikedFoods,
     preferredFoods: formData.preferredFoods
