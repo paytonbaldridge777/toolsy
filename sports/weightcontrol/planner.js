@@ -473,23 +473,23 @@ async function fetchMealOptions(mealType, targetCalories, dietaryRestrictions) {
     includeIngredients: dietaryRestrictions.preferredFoods.join(','),
     addRecipeInformation: true,
     fillIngredients: true,
-    addRecipeNutrition: true
+    addRecipeNutrition: true,
   });
 
+  // Updated to use the Pages Functions proxy endpoint
   const url = `https://kitmodo.pages.dev/api/spoonacular/recipes/complexSearch?${params.toString()}`;
 
   try {
     const response = await fetch(url);
-
     if (!response.ok) {
-      throw new Error(`Cloudflare worker error: ${response.statusText}`);
+      throw new Error(`API Proxy error: ${response.statusText}`);
     }
 
     const data = await response.json();
-    return data.results;
+    return data.results || [];
   } catch (error) {
     console.error("Error fetching meal options:", error);
-    throw error;
+    return [];
   }
 }
 async function renderMealPlan(plan) {
