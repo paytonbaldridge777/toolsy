@@ -17,6 +17,7 @@ let rulesData = null;
 let docsData = null;
 let currentPlan = null;
 let useAdjustedDeadline = false; // Track user choice on timeline
+let ignoreSafetyCaps = false;
 
 // ============================================================================
 // INITIALIZATION
@@ -141,6 +142,17 @@ function navigateToStep(stepNumber) {
 // VALIDATION LOGIC
 // ============================================================================
 function validateStep(stepNumber) {
+  if (userConfirmed) {
+    adjustedDeadlineInput.value = newDeadline.toISOString().split('T')[0];
+    useAdjustedDeadline = true;
+    ignoreSafetyCaps = false;
+  } 
+  else {
+    alert(`Acknowledged risks. Proceeding with your original timeline.`);
+    useAdjustedDeadline = false;
+    ignoreSafetyCaps = true;   // <-- new
+  }
+
   const step = document.getElementById(`step${stepNumber}`);
   const requiredFields = step.querySelectorAll("[required]");
 
@@ -214,6 +226,8 @@ function validateStep(stepNumber) {
 // PLAN GENERATION FUNCTION
 // ============================================================================
 async function generatePlan() {
+  useAdjustedDeadline = false;
+  ignoreSafetyCaps = false; // if using option A
   if (!validateStep(3)) {
     return;
   }
@@ -278,7 +292,8 @@ function collectFormData() {
     allergies: document.getElementById('allergies').value.split(',').map(s => s.trim()).filter(s => s),
     dislikedFoods: document.getElementById('dislikedFoods').value.split(',').map(s => s.trim()).filter(s => s),
     preferredFoods: document.getElementById('preferredFoods').value.split(',').map(s => s.trim()).filter(s => s),
-    mealsPerDay: parseInt(document.getElementById('mealsPerDay').value)
+    mealsPerDay: parseInt(document.getElementById('mealsPerDay').value).
+    ignoreSafetyCaps,
   };
 }
 
@@ -286,6 +301,14 @@ function collectFormData() {
 // CALCULATIONS
 // ============================================================================
 async function calculatePlan(formData) {
+  const safeWeeklyLoss = (maxWeeklyLossPct / 100) * formData.currentWeight;
+
+  const actualWeeklyLoss = formData.ignoreSafetyCaps
+    ? requiredWeeklyLoss
+    : Math.min(requiredWeeklyLoss, safeWeeklyLoss);
+  
+  const adjustedTimeline = weightToLose / actualWeeklyLoss;
+
   const sportRules = rulesData.sports[formData.sport];
   const generalRules = rulesData.general;
   const youthRules = rulesData.youth_overrides;
