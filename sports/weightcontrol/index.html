@@ -125,6 +125,17 @@
           </div>
         </div>
 
+        <!-- Youth Safety Override -->
+        <div id="youthOverrideSection" style="display: none; margin-top: 16px; padding: 16px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px;">
+          <div style="display: flex; align-items: start; gap: 12px;">
+            <input type="checkbox" id="youthSafetyOverride" style="margin-top: 4px;" />
+            <label for="youthSafetyOverride" style="margin: 0; font-size: 0.95rem;">
+              <strong>⚠️ Override Youth Safety Restrictions</strong><br/>
+              <span style="color: #856404;">I understand that the extended timeline is for my safety and proper development. I acknowledge the risks of aggressive weight cutting for youth athletes and take full responsibility for overriding these protections.</span>
+            </label>
+          </div>
+        </div>
+
         <div class="form-row">
           <div class="form-group">
             <label for="sex">Sex *</label>
@@ -262,6 +273,11 @@
         <div class="form-group">
           <label for="dislikedFoods">Disliked Foods</label>
           <input type="text" id="dislikedFoods" class="form-control" placeholder="e.g., broccoli, tofu, salmon (comma-separated)" />
+        </div>
+
+        <div class="form-group">
+          <label for="preferredFoods">Preferred Foods</label>
+          <input type="text" id="preferredFoods" class="form-control" placeholder="e.g., chicken, rice, eggs, avocado (comma-separated)" />
         </div>
 
         <div class="form-group">
