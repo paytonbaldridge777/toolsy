@@ -275,27 +275,32 @@ function collectFormData() {
     currentWeight: parseFloat(document.getElementById('currentWeight').value),
     targetWeight: parseFloat(document.getElementById('targetWeight').value),
     deadlineDate: document.getElementById('deadlineDate').value,
-    bodyFatPct: document.getElementById('bodyFatPct').value ? parseFloat(document.getElementById('bodyFatPct').value) : null,
+    bodyFatPct: document.getElementById('bodyFatPct').value 
+      ? parseFloat(document.getElementById('bodyFatPct').value) 
+      : null,
     youthSafetyOverride: document.getElementById('youthSafetyOverride').checked,
-    
+
     // Step 2
     trainingDays: parseInt(document.getElementById('trainingDays').value),
     trainingIntensity: document.getElementById('trainingIntensity').value,
     weighInWindow: document.getElementById('weighInWindow').value,
-    
+
     // Step 3
     medicalConditions: document.getElementById('medicalConditions').value === 'yes',
     medicalDetails: document.getElementById('medicalDetails').value,
     injuries: document.getElementById('injuries').value,
     cutHistory: document.getElementById('cutHistory').value,
-    //dietaryStyle: document.getElementById('dietaryStyle').value,
-    //allergies: document.getElementById('allergies').value.split(',').map(s => s.trim()).filter(s => s),
-    //dislikedFoods: document.getElementById('dislikedFoods').value.split(',').map(s => s.trim()).filter(s => s),
-    //preferredFoods: document.getElementById('preferredFoods').value.split(',').map(s => s.trim()).filter(s => s),
-    mealsPerDay: parseInt(document.getElementById('mealsPerDay').value).
-    ignoreSafetyCaps,
+
+    dietaryStyle: document.getElementById('dietaryStyle').value,
+    allergies: document.getElementById('allergies').value.split(',').map(s => s.trim()).filter(s => s),
+    dislikedFoods: document.getElementById('dislikedFoods').value.split(',').map(s => s.trim()).filter(s => s),
+    preferredFoods: document.getElementById('preferredFoods').value.split(',').map(s => s.trim()).filter(s => s),
+
+    mealsPerDay: parseInt(document.getElementById('mealsPerDay').value),
+    ignoreSafetyCaps: ignoreSafetyCaps,
   };
 }
+
 
 // ============================================================================
 // CALCULATIONS
