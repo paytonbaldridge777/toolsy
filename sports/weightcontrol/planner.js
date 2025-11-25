@@ -1,6 +1,6 @@
- Weight Control Planner JavaScript (Clean Rewrite)
-// Preserves original functionality, fixes timeline confirm handling,
-// and removes dietary restriction inputs (dietaryStyle/allergies/etc.)
+// Weight Control Planner JavaScript (Clean + Full Functionality)
+// Fixes youth timeline confirm logic, keeps all original sections,
+// removes dietary restriction inputs, and expands meals to 10 options.
 
 // ============================================================================
 // CONSTANTS
@@ -19,8 +19,9 @@ let docsData = null;
 let currentPlan = null;
 
 // timeline choice state
-let useAdjustedDeadline = false;  // user accepted adjusted date via OK
-let ignoreSafetyCaps = false;     // user canceled warning + wants aggressive timeline
+let useAdjustedDeadline = false;   // user clicked OK to accept safer timeline
+let ignoreSafetyCaps = false;      // user clicked Cancel and wants aggressive timeline
+let originalDeadlineDateStr = null; // snapshot of user-entered deadline before any auto-adjust
 
 // ============================================================================
 // INITIALIZATION
@@ -57,11 +58,11 @@ async function loadData() {
 // EVENT LISTENERS
 // ============================================================================
 function setupEventListeners() {
-  // Screen nav
+  // Navigation
   document.getElementById("startPlanBtn")?.addEventListener("click", showFormScreen);
   document.getElementById("backToLandingBtn")?.addEventListener("click", showLandingScreen);
 
-  // Step nav
+  // Step navigation
   document.getElementById("nextStep1Btn")?.addEventListener("click", () => navigateToStep(2));
   document.getElementById("nextStep2Btn")?.addEventListener("click", () => navigateToStep(3));
   document.getElementById("backStep2Btn")?.addEventListener("click", () => navigateToStep(1));
@@ -70,16 +71,13 @@ function setupEventListeners() {
   // Generate plan
   document.getElementById("generatePlanBtn")?.addEventListener("click", generatePlan);
 
-  // Medical details toggle
-  const medicalSelect = document.getElementById("medicalConditions");
-  medicalSelect?.addEventListener("change", (e) => {
+  // Medical conditions toggle
+  document.getElementById("medicalConditions")?.addEventListener("change", (e) => {
     const detailsGroup = document.getElementById("medicalDetailsGroup");
-    if (detailsGroup) {
-      detailsGroup.style.display = e.target.value === "yes" ? "block" : "none";
-    }
+    if (detailsGroup) detailsGroup.style.display = e.target.value === "yes" ? "block" : "none";
   });
 
-  // Result actions
+  // Results actions
   document.getElementById("startOverBtn")?.addEventListener("click", showLandingScreen);
   document.getElementById("printPlanBtn")?.addEventListener("click", () => window.print());
   document.getElementById("exportJsonBtn")?.addEventListener("click", exportPlanJson);
@@ -147,30 +145,28 @@ function validateStep(stepNumber) {
 
   // Step 1 special validation + youth safety prompt
   if (stepNumber === 1) {
+    // Snapshot original deadline before any possible adjustment
+    const deadlineInput = document.getElementById("deadlineDate");
+    originalDeadlineDateStr = deadlineInput.value;
+
+    // Reset flags each time Step 1 is validated
     useAdjustedDeadline = false;
     ignoreSafetyCaps = false;
 
     const currentWeight = parseFloat(document.getElementById("currentWeight").value);
     const targetWeight = parseFloat(document.getElementById("targetWeight").value);
-
-    const deadlineInput = document.getElementById("deadlineDate");
     const deadlineDate = new Date(deadlineInput.value);
 
     const today = new Date();
     const age = parseInt(document.getElementById("age").value, 10);
     const sport = document.getElementById("sport").value;
 
-    if (Number.isNaN(currentWeight) || Number.isNaN(targetWeight)) {
-      alert("Please enter valid weight values.");
-      return false;
-    }
-
     if (targetWeight >= currentWeight) {
       alert("Target weight must be less than current weight for a weight-loss plan.");
       return false;
     }
 
-    if (!(deadlineDate instanceof Date) || isNaN(deadlineDate.getTime()) || deadlineDate <= today) {
+    if (deadlineDate <= today) {
       alert("Target date must be in the future.");
       return false;
     }
@@ -196,7 +192,9 @@ function validateStep(stepNumber) {
       const youthWeeklyPct = rulesData.youth_overrides.max_weekly_loss_pct;
       const youthSafeDailyPct = youthWeeklyPct / 7;
 
-      const safeDaysNeeded = weightToLose / (youthSafeDailyPct / 100 * currentWeight);
+      const safeDaysNeeded =
+        weightToLose / ((youthSafeDailyPct / 100) * currentWeight);
+
       const newDeadline = new Date(today.getTime() + safeDaysNeeded * 24 * 60 * 60 * 1000);
 
       if (requiredDailyPct > youthSafeDailyPct) {
@@ -209,13 +207,16 @@ function validateStep(stepNumber) {
         );
 
         if (ok) {
+          // User ACCEPTED safer timeline
           deadlineInput.value = newDeadline.toISOString().split("T")[0];
           useAdjustedDeadline = true;
           ignoreSafetyCaps = false;
         } else {
-          alert("Acknowledged risks. Proceeding with your original timeline.");
+          // User REJECTED safer timeline: restore original deadline explicitly
+          deadlineInput.value = originalDeadlineDateStr;
           useAdjustedDeadline = false;
           ignoreSafetyCaps = true;
+          alert("Acknowledged risks. Proceeding with your original timeline.");
         }
       }
     }
@@ -232,8 +233,7 @@ async function generatePlan() {
 
   const formData = collectFormData();
 
-  // ensure deadline/flags reflect latest state
-  formData.deadlineDate = document.getElementById("deadlineDate").value;
+  // Inject confirmed flags into the object used by calculations
   formData.ignoreSafetyCaps = ignoreSafetyCaps;
   formData.useAdjustedDeadline = useAdjustedDeadline;
 
@@ -259,7 +259,7 @@ async function generatePlan() {
 }
 
 // ============================================================================
-// FORM DATA
+// FORM DATA (dietary inputs removed)
 // ============================================================================
 function collectFormData() {
   return {
@@ -371,7 +371,9 @@ async function calculatePlan(formData) {
     isYouth,
     applyYouthRules,
     requiredWeeklyLossPct,
-    maxWeeklyLossPct
+    maxWeeklyLossPct,
+    requiredWeeklyLoss,
+    safeWeeklyLoss
   );
 
   const docRefs = [
@@ -464,17 +466,29 @@ function generateWarnings(
   isYouth,
   applyYouthRules,
   requiredPct,
-  maxPct
+  maxPct,
+  requiredWeeklyLoss,
+  safeWeeklyLoss
 ) {
   const warnings = [];
 
+  const capsApplied = !formData.ignoreSafetyCaps && requiredWeeklyLoss > safeWeeklyLoss;
+
+  // Timeline warning (truthful to user choice)
   if (requiredPct > maxPct) {
-    warnings.push(
-      `Your deadline requires losing ${requiredPct.toFixed(
-        1
-      )}% of body weight per week, which exceeds the safe limit of ${maxPct}%. ` +
-        `The plan has been adjusted to a safer timeline.`
-    );
+    if (capsApplied) {
+      warnings.push(
+        `Your deadline requires losing ${requiredPct.toFixed(
+          1
+        )}% of body weight per week, which exceeds the safe limit of ${maxPct}%. The plan has been adjusted to a safer timeline.`
+      );
+    } else {
+      warnings.push(
+        `Your deadline requires losing ${requiredPct.toFixed(
+          1
+        )}% of body weight per week, which exceeds the safe limit of ${maxPct}%. You chose to proceed with your original timeline.`
+      );
+    }
   }
 
   if (isYouth && applyYouthRules) {
@@ -511,7 +525,7 @@ function generateWarnings(
 }
 
 // ============================================================================
-// MEAL PLAN (NO DIETARY PARAMS)
+// MEAL PLAN (10 OPTIONS, NO DIETARY PARAMS)
 // ============================================================================
 async function fetchMealOptions(mealType, targetCalories) {
   const calorieRange = Math.round(targetCalories * 0.15);
@@ -561,7 +575,7 @@ async function generateApiMealPlan(plan) {
 
       const options = await fetchMealOptions(mealType, mealCals);
 
-      const mealOptions = options.slice(0, 5).map((recipe) => {
+      const mealOptions = options.slice(0, 10).map((recipe) => {
         const nutrients = recipe.nutrition?.nutrients || [];
         const calories = nutrients.find((n) => n.name === "Calories")?.amount || mealCals;
         const protein = nutrients.find((n) => n.name === "Protein")?.amount || 0;
@@ -578,7 +592,7 @@ async function generateApiMealPlan(plan) {
         };
       });
 
-      while (mealOptions.length < 5) {
+      while (mealOptions.length < 10) {
         mealOptions.push({
           name: `${mealType[0].toUpperCase() + mealType.slice(1)} Option ${mealOptions.length + 1}`,
           calories: Math.round(mealCals),
@@ -701,7 +715,7 @@ function renderMealDetails(meal) {
 }
 
 // ============================================================================
-// RENDERING (your existing functions assumed present elsewhere)
+// RENDER FUNCTIONS (preserved)
 // ============================================================================
 function renderPlanSummary(plan) {
   const html = `
@@ -738,10 +752,12 @@ function renderPlanSummary(plan) {
 function renderWarnings(plan) {
   const warningsCard = document.getElementById("warningsCard");
   const warningsList = document.getElementById("warningsList");
+
   if (plan.warnings.length === 0) {
     warningsCard.style.display = "none";
     return;
   }
+
   warningsCard.style.display = "block";
   warningsList.innerHTML =
     '<div class="warning-list">' +
@@ -773,14 +789,13 @@ function renderNutritionTargets(plan) {
   document.getElementById("nutritionTargets").innerHTML = html;
 }
 
+// --- Workout guidance (from your original file) ---
 function renderWorkoutGuidance(plan) {
-  const { sportRules, formData, isYouth } = plan;
-  
-  let guidance = '';
-  
-  // Sport-specific guidance
+  const { sportRules } = plan;
+  let guidance = "";
+
   switch (sportRules.category) {
-    case 'combat':
+    case "combat":
       guidance = `
         <div class="workout-week">
           <div class="workout-day">
@@ -811,8 +826,8 @@ function renderWorkoutGuidance(plan) {
         <p class="muted" style="margin-top: 16px;">Adjust volume and intensity based on how you feel. Recovery is crucial during a calorie deficit.</p>
       `;
       break;
-      
-    case 'strength':
+
+    case "strength":
       guidance = `
         <div class="workout-week">
           <div class="workout-day">
@@ -843,8 +858,8 @@ function renderWorkoutGuidance(plan) {
         <p class="muted" style="margin-top: 16px;">Strength preservation is key. Don't chase PRs during a cut—focus on maintaining current strength.</p>
       `;
       break;
-      
-    case 'endurance':
+
+    case "endurance":
       guidance = `
         <div class="workout-week">
           <div class="workout-day">
@@ -879,8 +894,8 @@ function renderWorkoutGuidance(plan) {
         <p class="muted" style="margin-top: 16px;">Endurance athletes must maintain adequate carbohydrate intake. Fuel your key sessions properly—don't train in a depleted state.</p>
       `;
       break;
-      
-    case 'aesthetic':
+
+    case "aesthetic":
       guidance = `
         <div class="workout-week">
           <div class="workout-day">
@@ -915,7 +930,7 @@ function renderWorkoutGuidance(plan) {
         <p class="muted" style="margin-top: 16px;">Maintain training intensity to preserve muscle. Reduce volume if recovery becomes an issue.</p>
       `;
       break;
-      
+
     default:
       guidance = `
         <div class="workout-week">
@@ -947,23 +962,24 @@ function renderWorkoutGuidance(plan) {
         <p class="muted" style="margin-top: 16px;">Balance resistance training to preserve muscle with cardio for additional calorie burn.</p>
       `;
   }
-  
-  document.getElementById('workoutGuidance').innerHTML = guidance;
+
+  document.getElementById("workoutGuidance").innerHTML = guidance;
 }
 
+// --- Reference library (from your original file) ---
 function renderReferenceLibrary(plan) {
-  const relevantDocs = docsData.filter(doc => plan.docRefs.includes(doc.id));
-  
+  const relevantDocs = docsData.filter((doc) => plan.docRefs.includes(doc.id));
+
   let html = '<div class="doc-list">';
-  
-  relevantDocs.forEach(doc => {
+
+  relevantDocs.forEach((doc) => {
     html += `
       <div class="doc-item">
         <div class="doc-info">
           <div class="doc-title">${doc.title}</div>
           <div class="doc-summary">${doc.summary}</div>
           <div class="doc-tags">
-            ${doc.sport_tags.slice(0, 3).map(tag => `<span class="doc-tag">${tag}</span>`).join('')}
+            ${doc.sport_tags.slice(0, 3).map((tag) => `<span class="doc-tag">${tag}</span>`).join("")}
           </div>
         </div>
         <div class="doc-actions">
@@ -972,26 +988,25 @@ function renderReferenceLibrary(plan) {
       </div>
     `;
   });
-  
-  html += '</div>';
-  
-  document.getElementById('referenceLibrary').innerHTML = html;
+
+  html += "</div>";
+  document.getElementById("referenceLibrary").innerHTML = html;
 }
 
 // ============================================================================
-// EXPORT FUNCTIONS
+// EXPORT JSON
 // ============================================================================
 function exportPlanJson() {
   if (!currentPlan) return;
-  
+
   const dataStr = JSON.stringify(currentPlan, null, 2);
-  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  const dataBlob = new Blob([dataStr], { type: "application/json" });
   const url = URL.createObjectURL(dataBlob);
-  
-  const link = document.createElement('a');
+
+  const link = document.createElement("a");
   link.href = url;
-  link.download = `weight-control-plan-${new Date().toISOString().split('T')[0]}.json`;
+  link.download = `weight-control-plan-${new Date().toISOString().split("T")[0]}.json`;
   link.click();
-  
+
   URL.revokeObjectURL(url);
 }
