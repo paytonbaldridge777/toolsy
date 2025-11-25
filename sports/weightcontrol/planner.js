@@ -507,9 +507,9 @@ async function fetchMealOptions(mealType, targetCalories, dietaryRestrictions) {
     maxCalories: Math.round(targetCalories + calorieRange),
     number: 10,
     //diet: dietaryRestrictions.dietaryStyle !== 'none' ? dietaryRestrictions.dietaryStyle : '',
-    intolerances: dietaryRestrictions.allergies.join(','),
-    excludeIngredients: dietaryRestrictions.dislikedFoods.join(','),
-    includeIngredients: dietaryRestrictions.preferredFoods.join(','),
+    //intolerances: dietaryRestrictions.allergies.join(','),
+    //excludeIngredients: dietaryRestrictions.dislikedFoods.join(','),
+    //includeIngredients: dietaryRestrictions.preferredFoods.join(','),
     addRecipeInformation: true,
     fillIngredients: true,
     addRecipeNutrition: true,
@@ -665,8 +665,8 @@ async function generateApiMealPlan(plan) {
       const mealType = mealTypes[mealIdx];
       const mealCals = mealType === 'snack' ? caloriesPerMeal * 0.5 : caloriesPerMeal;
       
-      // Fetch 5 options for this meal
-      const options = await fetchMealOptions(mealType, mealCals, dietaryRestrictions);
+      // Fetch 10 options for this meal
+      const options = await fetchMealOptions(mealType, mealCals, dietaryRestrictions);      
       
       // Transform API results to our format
       const mealOptions = options.slice(0, 5).map(recipe => {
