@@ -1,4 +1,4 @@
-// Weight Control Planner JavaScript (Clean Rewrite)
+ Weight Control Planner JavaScript (Clean Rewrite)
 // Preserves original functionality, fixes timeline confirm handling,
 // and removes dietary restriction inputs (dietaryStyle/allergies/etc.)
 
@@ -773,5 +773,225 @@ function renderNutritionTargets(plan) {
   document.getElementById("nutritionTargets").innerHTML = html;
 }
 
-// renderWorkoutGuidance, renderReferenceLibrary, exportPlanJson
-// stay exactly as you already had them.
+function renderWorkoutGuidance(plan) {
+  const { sportRules, formData, isYouth } = plan;
+  
+  let guidance = '';
+  
+  // Sport-specific guidance
+  switch (sportRules.category) {
+    case 'combat':
+      guidance = `
+        <div class="workout-week">
+          <div class="workout-day">
+            <div class="workout-day-name">Monday - Technical Training</div>
+            <div class="workout-description">Focus on technique and skill work. Keep intensity moderate to preserve energy while in deficit.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Tuesday - Conditioning</div>
+            <div class="workout-description">High-intensity intervals (3-5 rounds, 3-5 min each). Shorter sessions during cut phase.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Wednesday - Strength Maintenance</div>
+            <div class="workout-description">Full-body strength session. Focus on maintaining key lifts with slightly reduced volume.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Thursday - Active Recovery</div>
+            <div class="workout-description">Light drilling, mobility work, or low-intensity cardio.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Friday - Sparring/Live Training</div>
+            <div class="workout-description">Controlled intensity. Listen to your body and scale back if feeling depleted.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Weekend - Rest or Light Activity</div>
+            <div class="workout-description">Prioritize recovery. Optional light cardio or mobility work.</div>
+          </div>
+        </div>
+        <p class="muted" style="margin-top: 16px;">Adjust volume and intensity based on how you feel. Recovery is crucial during a calorie deficit.</p>
+      `;
+      break;
+      
+    case 'strength':
+      guidance = `
+        <div class="workout-week">
+          <div class="workout-day">
+            <div class="workout-day-name">Monday - Main Lift Focus (Squat/Deadlift)</div>
+            <div class="workout-description">Prioritize intensity over volume. Keep sets at competition weight or slightly below.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Tuesday - Accessory Work</div>
+            <div class="workout-description">Target weak points with 15% reduced volume compared to maintenance phase.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Wednesday - Recovery</div>
+            <div class="workout-description">Light movement, stretching, or complete rest.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Thursday - Main Lift Focus (Bench)</div>
+            <div class="workout-description">Maintain technique and intensity. Reduce volume if needed.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Friday - Supplemental Work</div>
+            <div class="workout-description">Address weak points and maintain muscle mass with accessory lifts.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Weekend - Rest</div>
+            <div class="workout-description">Full recovery. Nutrition and sleep are priorities.</div>
+          </div>
+        </div>
+        <p class="muted" style="margin-top: 16px;">Strength preservation is key. Don't chase PRs during a cut—focus on maintaining current strength.</p>
+      `;
+      break;
+      
+    case 'endurance':
+      guidance = `
+        <div class="workout-week">
+          <div class="workout-day">
+            <div class="workout-day-name">Monday - Key Workout #1</div>
+            <div class="workout-description">Maintain your most important quality session. Fuel properly before and after.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Tuesday - Easy Recovery</div>
+            <div class="workout-description">Low intensity, conversational pace. Focus on time over distance.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Wednesday - Moderate Effort</div>
+            <div class="workout-description">Steady state at moderate intensity. Keep fueled throughout.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Thursday - Easy Recovery</div>
+            <div class="workout-description">Very easy effort. Active recovery only.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Friday - Key Workout #2</div>
+            <div class="workout-description">Second quality session. Prioritize carb intake around this session.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Saturday - Long Slow Distance</div>
+            <div class="workout-description">Extended aerobic session at easy pace. Fuel during longer efforts.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Sunday - Rest or Very Easy</div>
+            <div class="workout-description">Complete rest or short, very easy recovery session.</div>
+          </div>
+        </div>
+        <p class="muted" style="margin-top: 16px;">Endurance athletes must maintain adequate carbohydrate intake. Fuel your key sessions properly—don't train in a depleted state.</p>
+      `;
+      break;
+      
+    case 'aesthetic':
+      guidance = `
+        <div class="workout-week">
+          <div class="workout-day">
+            <div class="workout-day-name">Monday - Upper Push</div>
+            <div class="workout-description">Chest, shoulders, triceps. 3-4 exercises, 3-4 sets each.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Tuesday - Lower Body</div>
+            <div class="workout-description">Quads, hamstrings, glutes. Keep intensity high, volume moderate.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Wednesday - Cardio + Core</div>
+            <div class="workout-description">20-30 min moderate intensity cardio. Core work.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Thursday - Upper Pull + Arms</div>
+            <div class="workout-description">Back, biceps. Maintain muscle-building focus despite deficit.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Friday - Lower Body</div>
+            <div class="workout-description">Second leg day. Can reduce volume from Tuesday if needed.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Saturday - Optional Cardio</div>
+            <div class="workout-description">20-30 min low-impact cardio or rest.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Sunday - Rest</div>
+            <div class="workout-description">Complete recovery day.</div>
+          </div>
+        </div>
+        <p class="muted" style="margin-top: 16px;">Maintain training intensity to preserve muscle. Reduce volume if recovery becomes an issue.</p>
+      `;
+      break;
+      
+    default:
+      guidance = `
+        <div class="workout-week">
+          <div class="workout-day">
+            <div class="workout-day-name">Monday - Resistance Training</div>
+            <div class="workout-description">Full-body or upper body focus. 45-60 minutes.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Tuesday - Cardio</div>
+            <div class="workout-description">30-40 minutes moderate intensity. Walking, cycling, or swimming.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Wednesday - Active Recovery</div>
+            <div class="workout-description">Light activity, yoga, or rest.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Thursday - Resistance Training</div>
+            <div class="workout-description">Full-body or lower body focus. 45-60 minutes.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Friday - Cardio</div>
+            <div class="workout-description">30-40 minutes. Mix of steady state and intervals.</div>
+          </div>
+          <div class="workout-day">
+            <div class="workout-day-name">Weekend - Rest or Light Activity</div>
+            <div class="workout-description">Optional light activity or complete rest.</div>
+          </div>
+        </div>
+        <p class="muted" style="margin-top: 16px;">Balance resistance training to preserve muscle with cardio for additional calorie burn.</p>
+      `;
+  }
+  
+  document.getElementById('workoutGuidance').innerHTML = guidance;
+}
+
+function renderReferenceLibrary(plan) {
+  const relevantDocs = docsData.filter(doc => plan.docRefs.includes(doc.id));
+  
+  let html = '<div class="doc-list">';
+  
+  relevantDocs.forEach(doc => {
+    html += `
+      <div class="doc-item">
+        <div class="doc-info">
+          <div class="doc-title">${doc.title}</div>
+          <div class="doc-summary">${doc.summary}</div>
+          <div class="doc-tags">
+            ${doc.sport_tags.slice(0, 3).map(tag => `<span class="doc-tag">${tag}</span>`).join('')}
+          </div>
+        </div>
+        <div class="doc-actions">
+          <button class="doc-btn" onclick="alert('PDF viewing not implemented in this demo')">View</button>
+        </div>
+      </div>
+    `;
+  });
+  
+  html += '</div>';
+  
+  document.getElementById('referenceLibrary').innerHTML = html;
+}
+
+// ============================================================================
+// EXPORT FUNCTIONS
+// ============================================================================
+function exportPlanJson() {
+  if (!currentPlan) return;
+  
+  const dataStr = JSON.stringify(currentPlan, null, 2);
+  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(dataBlob);
+  
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `weight-control-plan-${new Date().toISOString().split('T')[0]}.json`;
+  link.click();
+  
+  URL.revokeObjectURL(url);
+}
